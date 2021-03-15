@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>注解实现Redis并发锁 - gongdear</title><meta name="description" content="An open source blog with Java. Java 开源博客"/><meta property="og:description" content="An open source blog with Java. Java 开源博客"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="注解实现Redis并发锁 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2019/04/03/1554278637273.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="注解实现Redis并发锁 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2019/04/03/1554278637273.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="关于mysql你不得不知道的知识" href="https://gongdear.github.io/articles/2019/04/02/1554170191707.html">
+            <link rel="next" title="使用Docker镜像启动ElasticSearch" href="https://gongdear.github.io/articles/2019/06/03/1559548254191.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20181125.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20181125.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2019-04-03
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Spring">Spring</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Java">Java</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                注解实现Redis并发锁
+            </h2>
+<div class="article__share"
+     data-title="注解实现Redis并发锁"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2019/04/03/1554278637273.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h5 id="toc_h5_0">1. 核心redis锁策略</h5>
+<pre><code>public class RedisLock {
+    private String key;
+    private boolean lock = false;
+
+    private final StringRedisTemplate redisClient;
+    private final RedisConnection redisConnection;
+
+    /**
+     * @param purpose 锁前缀
+     * @param key     锁定的ID等东西
+     */
+    public RedisLock(String purpose, String key, StringRedisTemplate redisClient) {
+        if (redisClient == null) {
+            throw new IllegalArgumentException("redisClient 不能为null!");
+        }
+        this.key = purpose + "_" + key + "_redis_lock";
+        this.redisClient = redisClient;
+        this.redisConnection = redisClient.getConnectionFactory().getConnection();
+    }
+
+    /**
+     * 锁的策略参考: &lt;a href="http://blog.csdn.net/u010359884/article/details/50310387"&gt;基于redis分布式锁实现“秒杀”&lt;/a&gt;
+     * FIXME 此方式加锁策略存在一定缺陷: 在setIfAbsent()之后expire()执行之前程序异常 锁不会被释放. 虽然出现几率极低
+     *
+     * @param timeout timeout的时间范围内轮询锁, 单位: 秒
+     * @param expire  设置锁超时时间
+     * @return true, 获取锁成功; false, 获取锁失败.
+     */
+    public boolean lockA(long timeout, long expire, final TimeUnit unit) {
+        long beginTime = System.nanoTime();  // 用nanos、mills具体看需求.
+        timeout = unit.toNanos(timeout);
+        try {
+            // 在timeout的时间范围内不断轮询锁
+            while (System.nanoTime() - beginTime &lt; timeout) {
+                // 锁不存在的话，设置锁并设置锁过期时间，即加锁
+                if (this.redisClient.opsForValue().setIfAbsent(this.key, "1")) {
+                    this.redisClient.expire(key, expire, unit);//设置锁失效时间, 防止永久阻塞
+                    this.lock = true;
+                    return true;
+                }
+
+                // 短暂休眠后轮询，避免可能的活锁
+                System.out.println("get lock waiting...");
+                Thread.sleep(30);
+            }
+        } catch (Exception e) {
+            throw new RedisLockException("locking error", e);
+        }
+        return false;
+    }
+
+    /**
+     * 特别注意: 如果多服务器之间存在时间差, 并不建议用System.nanoTime()、System.currentTimeMillis().
+     * 更好的是统一用redis-server的时间, 但只能获取到milliseconds.
+     * 锁的策略参考: &lt;a href="http://www.jeffkit.info/2011/07/1000/?spm=5176.100239.blogcont60663.7.9f4d4a8h4IOxe"&gt;用Redis实现分布式锁&lt;/a&gt;
+     *
+     * @param timeout 获取锁超时, 单位: 毫秒
+     * @param expire 锁失效时常, 单位: 毫秒
+     * @return true, 获取锁成功; false, 获取锁失败.
+     */
+    public boolean lockB(long timeout, long expire) {
+        long bt = System.currentTimeMillis();
+        long lockVal;
+        String lockExpireTime;
+        try {
+            while (!this.lock) {
+                if(System.currentTimeMillis() - bt &gt; timeout){
+                    throw new RedisLockException("get lock timeout!");
+                }
+
+                // 锁的键值: {当前时间} + {失效时常} = {锁失效时间}
+                lockVal = getRedisTime() + expire;
+
+                // 1. 尝试获取锁
+                boolean ifAbsent = this.redisClient.opsForValue().setIfAbsent(this.key, lockVal + "");
+                if (ifAbsent) { // 设置成功, 表示获得锁
+                    this.lock = true;
+                    return true;
+                }
+
+                lockExpireTime = this.redisClient.opsForValue().get(this.key);
+                long curTime = getRedisTime();
+
+                if (curTime &gt; NumberUtils.toLong(lockExpireTime, 0)) {
+                    lockExpireTime = this.redisClient.opsForValue().getAndSet(this.key, lockVal + "");
+
+                    if (curTime &gt; NumberUtils.toLong(lockExpireTime, 0)) {
+                        this.lock = true;
+                        return true;
+                    }
+                }
+
+                // 锁被占用, 短暂休眠等待轮询
+                System.out.println(this + ": get lock waiting...");
+                Thread.sleep(40);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RedisLockException("locking error", e);
+        }
+        System.out.println(this + ": get lock error.");
+        return false;
+    }
+
+    /**
+     * @return current redis-server time in milliseconds.
+     */
+    private long getRedisTime() {
+        return this.redisConnection.time();
+    }
+
+    private void closeConnection(){
+        if(!this.redisConnection.isClosed()){
+            this.redisConnection.close();
+        }
+    }
+
+    /** 释放锁 */
+    public void unlock() {
+        if (this.lock) {
+            redisClient.delete(key);
+        }
+    }
+
+    public boolean isLock() {
+        return lock;
+    }
+}
+</code></pre>
+<h5 id="toc_h5_1">2. 注解部分</h5>
+<pre><code>@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface RedisLockedKey {
+    /**
+     * 复杂对象中需要加锁的成员变量
+     */
+    String field() default "";
+}
+</code></pre>
+<p>@Target(ElementType.METHOD)<br>
+@Retention(RetentionPolicy.RUNTIME)<br>
+@Documented<br>
+public @interface RedisDistributedLock {<br>
+/** 锁key的前缀 <em>/<br>
+String lockedPrefix() default "";<br>
+/</em>* 轮询锁的时间超时时常, 单位: ms <em>/<br>
+long timeout() default 2000;<br>
+/</em>* redis-key失效时常, 单位: ms */<br>
+int expireTime() default 1000;<br>
+}</p>
+<pre><code>@Component
+@Aspect
+public class RedisDistributedLockAop {
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    /**
+     * 定义缓存逻辑
+     */
+    @Around("@annotation(com.vergilyn.demo.springboot.distributed.lock.annotation.RedisDistributedLock)")
+    public void cache(ProceedingJoinPoint pjp) {
+        Method method = getMethod(pjp);
+
+        RedisDistributedLock cacheLock = method.getAnnotation(RedisDistributedLock.class);
+        String key = getRedisKey(method.getParameterAnnotations(), pjp.getArgs());
+
+        RedisLock redisLock = new RedisLock(cacheLock.lockedPrefix(), key, redisTemplate);
+
+        //       boolean isLock = redisLock.lockB(cacheLock.timeout(), cacheLock.expireTime());
+        boolean isLock = redisLock.lockA(cacheLock.timeout(), cacheLock.expireTime(), TimeUnit.MILLISECONDS);
+        if (isLock) {
+            try {
+                pjp.proceed();
+                return;
+            } catch (Throwable e) {
+                e.printStackTrace();
+            } finally {
+                redisLock.unlock();
+            }
+        }
+        System.out.println("执行方法失败");
+    }
+
+    /**
+     * 获取被拦截的方法对象
+     */
+    private Method getMethod(ProceedingJoinPoint pjp) {
+        Object[] args = pjp.getArgs();
+        Class[] argTypes = new Class[pjp.getArgs().length];
+        for (int i = 0; i &lt; args.length; i++) {
+            argTypes[i] = args[i].getClass();
+        }
+        Method method = null;
+        try {
+            method = pjp.getTarget().getClass().getMethod(pjp.getSignature().getName(), argTypes);
+        } catch (NoSuchMethodException | SecurityException e) {
+            e.printStackTrace();
+        }
+        return method;
+
+    }
+
+    private String getRedisKey(Annotation[][] annotations, Object[] args){
+        if (null == args || args.length == 0) {
+            throw new RedisLockException("方法参数为空，没有被锁定的对象");
+        }
+        if (null == annotations || annotations.length == 0) {
+            throw new RedisLockException("没有被注解的参数");
+        }
+        // 只支持第一个注解为RedisLockedKey的参数
+        for (int i = 0; i &lt; annotations.length; i++) {
+            for (int j = 0; j &lt; annotations[i].length; j++) {
+                if (annotations[i][j] instanceof RedisLockedKey) { //注解为LockedComplexObject
+                    RedisLockedKey redisLockedKey = (RedisLockedKey) annotations[i][j];
+                    String field = redisLockedKey.field();
+                    try {
+                        // field存在, 表示取参数对象的相应field;
+                        if(StringUtils.isBlank(field)){
+                            return args[i].toString();
+                        }else {
+                            return args[i].getClass().getDeclaredField(redisLockedKey.field()).toString();
+                        }
+                    } catch (NoSuchFieldException | SecurityException e) {
+                        e.printStackTrace();
+                        throw new RedisLockException("注解对象中不存在属性: " + redisLockedKey.field());
+                    }
+                }
+            }
+        }
+
+        throw new RedisLockException("未找到注解对象!");
+    }
+} 
+</code></pre>
+<p>public class RedisLockException extends RuntimeException{<br>
+public RedisLockException(String msg, Throwable throwable) {<br>
+super(msg, throwable);<br>
+}<br>
+public RedisLockException(String msg) {<br>
+super(msg);<br>
+}<br>
+}</p>
+<p>调用代码：</p>
+<pre><code>@RedisDistributedLock(lockedPrefix="TEST_PREFIX") 
+public void lockMethod(String arg1, @RedisLockedKey Long arg2) { 
+    //最简单的秒杀，这里仅作为demo示例 
+    System.out.println("lockMethod, goods: " + reduceInventory(arg2)); 
+}
+</code></pre>
+<p>以上改进代码依然可能存在的问题:<br>
+　　　　1) 连接很可能没有正常关闭.<br>
+　　　　2) 连接依然过多, 假设并发有1000个, 那一样会产生1000个连接, 且这些连接只会在竞争获取锁完后才会释放.(且产生了1000个RedisLock对象)<br>
+　　　　3) 是否可以缓存注解对象?</p>
+<p>　　针对问题<code>2)</code>, 主要想达到怎么尽可能减少redis连接?<br>
+　　比如: 有1000个并发, 其中200个是兑换商品A, 其中300个是兑换商品B, 其中500个是兑换商品C.</p>
+<p>　　1、是否可以用<code>单例模式</code>来实现<code>RedisLock</code>?<br>
+　　　　对<code>单例</code>、<code>多线程</code>还是很混乱, 不好说. 但如果可行, 会否太影响获取锁的性能?<br>
+　　比如兑换商品A的200个并发共用一个redisConnection, 感觉还是合理的, 毕竟互相之间是竞争关系.<br>
+　　但商品A、商品B、商品C如果也共用一个redisConnection, 是不是完全不合理?<br>
+　　他们之间根本是"并行"的, 相互之间没有一点联系.<br>
+　　2、所以, 是否更进一步的实现是: 同一个锁竞争用相同的<code>RedisLock</code>对象和<code>RedisConnection</code>连接.<br>
+　　即竞争商品A的200个并发用同一个"redisConnection_A"、"redisLock_A", 商品B的300个并发用同一个"redisConnection_B"、"redisLock_B"？</p>
+<p>　　针对问题<code>3)</code>, 在代码<code>RedisDistributedLockAop</code>中, 每次都会:<br>
+　　　　1)<code>getMethod(pjp)</code>: 获取拦截方法.<br>
+　　　　2) 通过拦截方法解析出<code>getRedisKey</code>.</p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h5">
+            <a href="#toc_h5_0">1. 核心redis锁策略</a>
+        </li>
+        <li class="toc__h5">
+            <a href="#toc_h5_1">2. 注解部分</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1554278637273"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1554278637273",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1554278637273",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Spring,Java",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1554278637273', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 190ms, 2021/03/15 13:04:52 -->

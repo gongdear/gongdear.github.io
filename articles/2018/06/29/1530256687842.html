@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>《算法导论》读书笔记之红黑树 - gongdear</title><meta name="description" content="红黑树"/><meta property="og:description" content="红黑树"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="《算法导论》读书笔记之红黑树 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2018/06/29/1530256687842.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="《算法导论》读书笔记之红黑树 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2018/06/29/1530256687842.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="Ubuntu 18.04设置dns" href="https://gongdear.github.io/articles/2018/06/29/1530252168355.html">
+            <link rel="next" title="Ubuntu安装qgis和postgresql" href="https://gongdear.github.io/articles/2018/06/30/1530336406376.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20190222.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20190222.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2018-06-29
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/%E7%AE%97%E6%B3%95">算法</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/%E7%BA%A2%E9%BB%91%E6%A0%91">红黑树</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                《算法导论》读书笔记之红黑树
+            </h2>
+<div class="article__share"
+     data-title="《算法导论》读书笔记之红黑树"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2018/06/29/1530256687842.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h2 id="toc_h2_0">什么是红黑树？</h2>
+<p>红黑树是一棵<a href="http://www.mccreefei.cn/2017/07/26/binary-search-tree/" target="_blank">二叉搜索树</a>，它的结点上新增了一个存储位来表示结点的颜色，颜色可以是红或者黑。通过颜色进行约束，确保没有一条路径会比其他路径长出两倍，因此是近似平衡的。</p>
+<p>红黑树满足如下五条性质:</p>
+<ol>
+<li>每个结点要么是红色，要么是黑色。</li>
+<li>根结点是黑色的。</li>
+<li>每个叶结点是黑色的。</li>
+<li>如果一个结点是红色的，那么它的两个子结点必然是黑色的。</li>
+<li>对于每个结点，从该结点到其所有后代叶结点的简单路径上，均包含相同数目的黑色结点。</li>
+</ol>
+<p><strong>请注意红黑树的这五点性质非常重要，因为红黑树所有操作都必须满足这五点性质，否则就不能称为红黑树。</strong></p>
+<p>另外为了简洁和节省空间，我们定义一个叶结点<code>NIL</code>，它的颜色属性为黑，<code>left</code>、<code>right</code>、<code>parent</code>都指向自身且<code>key</code>值没有意义，所有指向叶结点的结点都指向这一个结点，根结点的父亲也指向这个叶结点<code>NIL</code>。下图便是一个简单的红黑树：<br>
+<a href="http://otse9kdii.bkt.clouddn.com/17-7-29/57694845.jpg" target="_blank"><img src="http://otse9kdii.bkt.clouddn.com/17-7-29/57694845.jpg" alt=""></a></p>
+<p>下面是结点的定义：</p>
+<p>public enum Color {RED, BLACK};</p>
+<pre><code>class Node {
+
+    public Node left;
+
+    public Node right;
+
+    public Node parent;
+
+    public int key;
+
+    public Color color;
+
+}
+</code></pre>
+<p>|</p>
+<h2 id="toc_h2_1"><a href="http://www.mccreefei.cn/2017/03/07/red-black-tree/#%E6%97%8B%E8%BD%AC" title="旋转" target="_blank"></a>旋转</h2>
+<p>红黑树的插入和删除操作都要借助于旋转，所以这里先讲解下旋转操作。一共有两种旋转：左旋和右旋。当某个结点x在做左旋时，假设它的右孩子是y而不是NIL。左旋以x到y的链为支轴进行。它使y成为子树的新根结点，x成为y的左孩子，y的左孩子成为x的右孩子。并且左旋操作保持了二叉搜索树的性质。右旋操作同理，如下图所示：<br>
+<a href="http://otse9kdii.bkt.clouddn.com/17-7-29/45829504.jpg" target="_blank"><img src="http://otse9kdii.bkt.clouddn.com/17-7-29/45829504.jpg" alt=""></a></p>
+<p>下面是旋转代码：</p>
+<p>public void leftRotate(Node x) {</p>
+<pre><code>    if (x == NIL || x.right == NIL) return;
+
+    Node y = x.right;
+
+    x.right = y.left; //将y的左孩子接到x的右结点上
+
+    if (y.left != NIL) {
+
+        y.left.parent = x;
+
+    }
+
+    //使y成为子树的新根结点
+
+    if (x.parent == NIL) {
+
+        root = y;
+
+    } else if (x == x.parent.left) {
+
+        x.parent.left = y;
+
+    } else {
+
+        x.parent.right = y;
+
+    }
+
+    y.parent = x.parent;
+
+    y.left = x; //x接到y的左结点上
+
+    x.parent = y;
+
+}
+
+public void rightRatate(Node x) {
+
+    if (x == NIL || x.left == NIL) return;
+
+    Node y = x.left;
+
+    x.left = y.right;
+
+    if (y.right != NIL) {
+
+        y.right.parent = x;
+
+    }
+
+    if (x.parent == NIL) {
+
+        root = y;
+
+    } else if (x.parent.left == x) {
+
+        x.parent.left = y;
+
+    } else {
+
+        x.parent.right = y;
+
+    }
+
+    y.parent = x.parent;
+
+    y.right = x;
+
+    x.parent = y;
+
+}
+</code></pre>
+<p>|</p>
+<h2 id="toc_h2_2"><a href="http://www.mccreefei.cn/2017/03/07/red-black-tree/#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5" title="红黑树的插入" target="_blank"></a>红黑树的插入</h2>
+<p>红黑树的插入思想是新结点以二叉搜索树的性质插入到书中，并且把新节点染成红色,再以新结点往上进行调整使之满足红黑树的性质。下面是红黑树的插入代码：</p>
+<p>public void rb_insert(int key) {</p>
+<pre><code>    Node newNode = new Node();//包装成新结点
+
+    newNode.key = key;
+
+    newNode.left = NIL;
+
+    newNode.right = NIL;
+
+    newNode.parent = NIL;
+
+    newNode.color = Color.RED;
+
+    //将新结点以二叉搜索树的性质插入到树种
+
+    Node x = root;
+
+    Node y = NIL;
+
+    while (x != NIL) {
+
+        y = x;
+
+        if (key &lt; x.key) {
+
+            x = x.left;
+
+        } else {
+
+            x = x.right;
+
+        }
+
+    }
+
+    newNode.parent = y;
+
+    if (y == NIL) {
+
+        root = newNode;
+
+    } else if (key &lt; y.key) {
+
+        y.left = newNode;
+
+    } else {
+
+        y.right = newNode;
+
+    }
+
+    rb_insert_fixup(newNode); //再对新结点进行调整以满足红黑树的性质
+
+}
+</code></pre>
+<p>|</p>
+<p>插入操作中性质1和性质3一定不会破坏，另外新结点被染成红色，那么各条路径上的黑结点数量不会变，那么性质5也不会破坏。这样一来，插入操作仅有可能破坏的性质就是2和4。维护性质2很简单，只需要最后将<code>root</code>结点染成黑色。重点就是如何在<code>rb_insert_fixup</code>中维护性质4且不破坏其他性质。这里我们设新结点为z，z父结点p为红色（z父结点为黑时此时已经满足了性质4），z父结点为红色显然z父结点的父结点q不是<code>NIL</code>（根结点为黑色），设p为q的left（p为q的right时可以同理），设y为q的right。<code>rb_insert_fixup</code>主要分为下面三种情况：</p>
+<ol>
+<li>
+<p>z的叔结点也就是y为红色<br>
+<a href="http://otse9kdii.bkt.clouddn.com/17-7-29/47644224.jpg" target="_blank"><img src="http://otse9kdii.bkt.clouddn.com/17-7-29/47644224.jpg" alt=""></a><br>
+这种情况下，将z父结点和y结点都染成黑色，z父结点的父结点染成红色，此时z父结点的父结点成为新的z。从图中可以看出这个操作并没有破坏原来的性质。新结点z还要再进行三种情况的判断。</p>
+</li>
+<li>
+<p>z的叔结点y是黑色，并且z是父结点的一个右孩子<br>
+这种情况下，z的父结点成为新的z并且以新z进行左旋此时就会转变为情况3进行处理。</p>
+</li>
+<li>
+<p>z的叔结点y是黑色，并且z是父结点的一个左孩子<br>
+<a href="http://otse9kdii.bkt.clouddn.com/17-7-29/79524385.jpg" target="_blank"><img src="http://otse9kdii.bkt.clouddn.com/17-7-29/79524385.jpg" alt=""></a><br>
+这种情况下将z父结点染黑，z父结点的父结点染红并以z父结点进行右旋处理。从图中我们可以看出旋转过程中始终保持了性质5没有被破坏，并且情况3的处理修复了性质4。这样一来就完成了红黑树的插入调整。下面是<code>rb_insert_fixup</code>代码：</p>
+<p>private void rb_insert_fixup(Node z) {</p>
+<pre><code>    while (z.parent != NIL &amp;&amp; z.parent.color == Color.RED) {
+
+        if (z.parent == z.parent.parent.left) {
+
+            Node y = z.parent.parent.right;
+
+            if (y.color == Color.RED) { //情况1
+
+                y.color = Color.BLACK;
+
+                z.parent.color = Color.BLACK;
+
+                z.parent.parent.color = Color.RED;
+
+                z = z.parent.parent;
+
+            } else if (z == z.parent.right) { //情况2
+
+                z = z.parent;
+
+                leftRotate(z);
+
+            } else { //情况3
+
+                z.parent.color = Color.BLACK;
+
+                z.parent.parent.color = Color.RED;
+
+                rightRatate(z.parent.parent);
+
+            }
+
+        } else {
+
+            Node y = z.parent.parent.left;
+
+            if (y.color == Color.RED) { //情况1 
+
+                y.color = Color.BLACK;
+
+                z.parent.color = Color.BLACK;
+
+                z.parent.parent.color = Color.RED;
+
+                z = z.parent.parent;
+
+            } else if (z == z.parent.left) { //情况2
+
+                z = z.parent;
+
+                rightRatate(z);
+
+            } else { //情况3
+
+                z.parent.color = Color.BLACK;
+
+                z.parent.parent.color = Color.RED;
+
+                leftRotate(z.parent.parent);
+
+            }
+
+        }
+
+    }
+
+    root.color = Color.BLACK; //满足红黑树性质2 
+
+}
+</code></pre>
+<p>|</p>
+</li>
+</ol>
+<p>用一个具体实例看下整个调整的流程：<br>
+<a href="http://otse9kdii.bkt.clouddn.com/17-7-29/66777035.jpg" target="_blank"><img src="http://otse9kdii.bkt.clouddn.com/17-7-29/66777035.jpg" alt=""></a><br>
+a图此时属于情况1，经过调整后7结点成为了新的z继续向上调整。此时z叔结点1已经是黑色并且z是一个右孩子属于情况2，经过情况2的左旋处理后变成了情况3，经过情况3的右旋处理后调整成功，现在满足红黑树的所有性质，又成为了一棵红黑树。红黑树的整个插入过程运行时间为<code>O（lgn）</code>。</p>
+<h2 id="toc_h2_3"><a href="http://www.mccreefei.cn/2017/03/07/red-black-tree/#%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4" title="红黑树的删除" target="_blank"></a>红黑树的删除</h2>
+<p>红黑树的删除操作比插入更加复杂，也更加不好理解，这里我就写下我自己的理解可能细节方面有些偏差。首先删除操作需要用到子过程<code>rb_transplant</code>，它的作用和二叉搜索树中的<code>transplant</code>相似，只是判断NULL变成了判断<code>NIL</code>叶结点。下面是<code>rb_transplant</code>代码：</p>
+<p>private void rb_transplant(Node p, Node q) {</p>
+<pre><code>    if (p == NIL) return;
+
+    Node parent = p.parent;
+
+    if (parent == NIL) this.root = q;
+
+    else if (parent.left == p) parent.left = q;
+
+    else parent.right = q;
+
+    if (q != NIL) q.parent = parent;
+
+}
+</code></pre>
+<p>|</p>
+<p>接下来就是删除操作了，注意红黑树的删除操作是基于二叉搜索树修改的，所以要理解红黑树的删除就必须先理解二叉搜索树的删除。这里我们设要删除的结点为z并且z在树中真实存在。<strong>y指向“需要删除的结点”，注意这里”需要删除的结点”意思是逻辑上需要删除的结点</strong>，比如：如果z两个孩子结点都不是<code>NIL</code>，那么y会指向z右子树的最小孩子，这是因为我们知道二叉搜索树删除操作中y最终会顶替z成为新的z，我们只需要将y结点的颜色变为z的颜色，这样y就成为了逻辑上要删除的结点。我们设x指向顶替原来y结点的结点，这里有点拗口，解释一下，如果z左孩子是<code>NIL</code>，那么y指向的是z，顶替原来y结点的结点就是z的右孩子所以x指向z的右孩子，如果z两个孩子都不是NIL，那么y会指向z右子树的最小结点，此时顶替原来y结点的结点就是y的右孩子，所以x指向y的右孩子。如果原来y的颜色为红色，那么红黑树的性质全都没有被破坏，完成删除操作。但如果是黑色就要进行调整操作了。下面是删除的代码：</p>
+<p>public Node rb_delete(int val) {</p>
+<pre><code>    Node z = search(val);
+
+    if (z == NIL) return z; //找到要删除的结点
+
+    Node y = z;
+
+    Node x;
+
+    Color originalColor = y.color;//y会被赋予z的颜色所以要保存原来y的颜色
+
+    f(z.left == NIL) {
+
+        x = z.right;
+
+        rb_transplant(z, z.right);
+
+    } else if (z.right == NIL) {
+
+        x = z.left;
+
+        rb_transplant(z, z.left);
+
+    } else {
+
+        y = z.right;  //z孩子都不是NIL那么y会指向z右孩子的最小结点
+
+        while (y.left != NIL) {
+
+            y = y.left;
+
+        }
+
+        originalColor = y.color;//记得要保存原来y的颜色
+
+        x = y.right;
+
+        if (y != z.right) {
+
+            rb_transplant(y, y.right);
+
+            y.right = z.right;
+
+            z.right.parent = y;
+
+        }
+
+        rb_transplant(z, y);
+
+        y.left = z.left;
+
+        z.left.parent = y;
+
+        y.color = z.color;//z的颜色赋给y，相当于要删除的结点为原来的y
+
+    }
+
+    if (originalColor == Color.BLACK) {//如果原来y为黑色要调整以满足红黑树性质
+
+        rb_deleteFixUp(x);
+
+    }
+
+    return z;
+
+}
+</code></pre>
+<p>如果原来的y是黑色会有下面三种情况破坏红黑树的性质：</p>
+<ol>
+<li>
+<p>如果删除的是个根结点并且根结点的一个红孩子成为了新根结点，这就不满足性质2，这种情况需要将顶替的结点染成黑色即可。</p>
+</li>
+<li>
+<p>如果x是红色的并且x的父结点是红色这就不满足性质4，这种情况需要接下来分情况讨论。</p>
+</li>
+<li>
+<p>在树中移动y，使得任何包含y的简单路径上黑色结点个数少1，这就不满足性质5，这种情况我们可以将现在占有原来y位置的x增加一重额外的黑色（y是没有左孩子的）。这样如果x的颜色为黑色那么它就是双重黑色，如果x的颜色为红色，那么它就是红黑色。这其实破坏了性质1，我们只需要配合旋转，重新染色等调整后将x的颜色变成红色，这时只需将x染黑就满足了性质1，或者x成为根结点，这就相当于移除了一重黑色也就满足了性质1。</p>
+</li>
+</ol>
+<p>我们设x结点为黑色并且x不是根结点（如果x是红色或者x是根结点只要简单的将x染黑便满足所有性质），c为x的父结点，设x是c的left，w是c的right也就是x的兄弟结点，下面就来分情况讨论：（注意图中黑色代表黑色结点，灰色代表红色结点，白色代表任意红或黑结点）<br>
+<a href="http://otse9kdii.bkt.clouddn.com/17-7-29/89667078.jpg" target="_blank"><img src="http://otse9kdii.bkt.clouddn.com/17-7-29/89667078.jpg" alt=""></a></p>
+<ol>
+<li>
+<p>x的兄弟结点w为红色<br>
+这种情况下，我们只需要将w染黑将x的父结点染红并且以x的父结点进行左旋，w重新指向x的兄弟结点。这样就将情况1转化为情况2、3或4处理。</p>
+</li>
+<li>
+<p>x的兄弟结点w为黑色，并且w的左右子结点也为黑色<br>
+注意此时x是双重黑色，所以w必然有两个不为<code>NIL</code>的子结点，否则不满足性质5。这种情况下只需将w染红，然后x指向x的父结点，注意到如果新x是红色，那么只要将x染成黑色便已满足所有红黑树性质。</p>
+</li>
+<li>
+<p>x的兄弟结点w为黑色，并且w的左孩子为红色，右孩子为黑色<br>
+这种情况下，我们需要将w染红，w的左孩子染黑然后以w进行右旋，w重新指向x的兄弟结点从而转化为情况4。</p>
+</li>
+<li>
+<p>x的兄弟结点w为黑色，并且w的右孩子为红色<br>
+这种情况下，w赋予c的颜色，c染黑，w的右孩子染黑，再以c进行左旋。从图中便可看出这种情况的处理满足除性质2外的所有性质，所以将x指向root，最终将x染黑便满足了所有性质。</p>
+</li>
+</ol>
+<p>x是父结点的右孩子时同理，至此就完成了整个删除调整操作，以下是删除调整的代码：</p>
+<p>private void rb_deleteFixUp(Node x) {</p>
+<pre><code>    while (x != root &amp;&amp; x.color == Color.BLACK &amp;&amp; x != NIL) {
+
+        if (x == x.parent.left) {
+
+            Node w = x.parent.right;
+
+            if (w.color == Color.RED) { //情况1
+
+                w.color = Color.BLACK;
+
+                x.parent.color = Color.RED;
+
+                leftRotate(x.parent);
+
+                w = x.parent.right;
+
+            }
+
+            if (w.left.color == Color.BLACK &amp;&amp; w.right.color == Color.BLACK) {//情况2
+
+                w.color = Color.RED;
+
+                x = x.parent;
+
+            } else if (w.right.color == Color.BLACK) { //情况3
+
+                w.color = Color.RED;
+
+                w.left.color = Color.BLACK;
+
+                rightRatate(w);
+
+                w = x.parent.right;
+
+            }
+
+            if (w.right.color == Color.RED) { //情况4
+
+                w.color = x.parent.color;
+
+                w.right.color = Color.BLACK;
+
+                x.parent.color = Color.BLACK;
+
+                leftRotate(x.parent);
+
+                x = root;
+
+            }
+
+        } else {
+
+            Node w = x.parent.left;
+
+            if (w.color == Color.RED) { //情况1
+
+                w.color = Color.BLACK;
+
+                x.parent.color = Color.RED;
+
+                rightRatate(x.parent);
+
+                w = x.parent.left;
+
+            }
+
+            if (w.left.color == Color.BLACK &amp;&amp; w.right.color == Color.BLACK) {//情况2
+
+                w.color = Color.RED;
+
+                x = x.parent;
+
+            } else if (w.left.color == Color.BLACK) { //情况3
+
+                w.color = Color.RED;
+
+                w.right.color = Color.BLACK;
+
+                leftRotate(w);
+
+                w = x.parent.left;
+
+            }
+
+            if (w.left.color == Color.RED) { //情况4
+
+                w.color = x.parent.color;
+
+                w.left.color = Color.BLACK;
+
+                x.parent.color = Color.BLACK;
+
+                rightRatate(x.parent);
+
+                x = root;
+
+            }
+
+        }
+
+    }
+
+    x.color = Color.BLACK;
+
+}
+</code></pre>
+<p>|</p>
+<p>整个删除过程的运行时间为<code>O(lgn)</code>。</p>
+<h2 id="toc_h2_4"><a href="http://www.mccreefei.cn/2017/03/07/red-black-tree/#%E6%80%BB%E7%BB%93" title="总结" target="_blank"></a>总结</h2>
+<p>花了两天时间终于把红黑树啃完了，大体上算是理解了，可能细节方面有些偏差。理解之后就会发现当初发明红黑树的人是多么的牛X，其实红黑树用途挺广泛的，比如java8的<code>Hashmap</code>中就用到了红黑树，以往冲突部分是链表相连，现在当链表中的结点大于某个值是就采用红黑树存储，这样在冲突较高的场合下效率有了显著的提升。</p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h2">
+            <a href="#toc_h2_0">什么是红黑树？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_1">旋转</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_2">红黑树的插入</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_3">红黑树的删除</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_4">总结</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1530256687842"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1530256687842",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1530256687842",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("算法,红黑树",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1530256687842', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 549ms, 2021/03/15 13:05:16 -->

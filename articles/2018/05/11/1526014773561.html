@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>地图投影介绍 - gongdear</title><meta name="description" content="地图投影介绍"/><meta property="og:description" content="地图投影介绍"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="地图投影介绍 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2018/05/11/1526014773561.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="地图投影介绍 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2018/05/11/1526014773561.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="堆与栈的介绍、区别" href="https://gongdear.github.io/articles/2018/05/11/1526014707234.html">
+            <link rel="next" title="Spring应用分层" href="https://gongdear.github.io/articles/2018/05/11/1526015415006.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20180225.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20180225.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2018-05-11
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/GIS">GIS</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                地图投影介绍
+            </h2>
+<div class="article__share"
+     data-title="地图投影介绍"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2018/05/11/1526014773561.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <p>大比例尺制图中实际用到的投影有27种之多，其中最重要的有：墨卡托(Mercator)投影(85%)，Lambert等角正割圆锥投影(5%)，Albers等积正割圆锥投影，等距圆锥投影，最为常用的是横轴墨卡托投影。</p>
+<p>具体来说，不同区域常用的地图投影不同。</p>
+<p>1.等角正切方位投影，主要用于两极地区1:100万地图。以极地为投影中心，又称球面极地投影。纬线为以极为中心的同心圆，经线为由极向四周辐射的直线，纬距由中心向外扩大。投影中央部分的长度和面积变形小，向外逐渐增大。</p>
+<p><img src="http://note.youdao.com/yws/res/88/187DBED4B938481A98523AB343AAA1B9" alt=""></p>
+<p>2.等积斜切方位投影，主要用于亚洲、欧洲、北美等大区域地图。中国政区亦采用该投影，投影中心点为30°N,105 ° E。又称地平投影。此投影将极地偏于一边，投影中心点随需要而定。中央经线为直线，其余经线和纬线均为曲线，纬线为同交点椭圆弧。中央经线上纬线自投影中心点向上向下逐渐减小；投影中心点向外，长度和角度变形逐渐增大。</p>
+<p><img src="http://note.youdao.com/yws/res/90/2EC081A5942A425C96E39E7774F76E6D" alt=""></p>
+<p>3.等距正割圆锥投影，适用于东西方向长的地图。圆锥体面割于球面两条纬线。纬线呈同心圆弧，经线呈从纬线圆心辐射的直线束。各经线和两标纬无长度变形，即M=1,n1=1,n2=1，其它纬线均有长度变形。在两标纬之间角度、长度和面积变形为负，在两标纬外变形为正。离开标纬愈远，变形的绝对值愈大。</p>
+<p><img src="http://note.youdao.com/yws/res/91/9837920223BA4469B82C884158925BE1" alt=""></p>
+<p>4.等积正割圆锥投影，适用于东西南北近乎等大的地区，以及要求面积正确的地图。经纬线形状与等距正割圆锥投影相同。为达到等积目的，即mn=1，将经线长度加以缩放改进。两标纬上无长度变形，在两标纬之间经线长度变形为正，纬线长度变形为负；在两标纬外经线长度变形为负，纬线长度变形为正。角度变形在标纬附近很小，离开标纬愈远，变形愈大。</p>
+<p><img src="http://note.youdao.com/yws/res/89/6597CCCB764C4F7DA243004520D97DD4" alt=""></p>
+<p>5.等角正割圆锥投影，全球1:100万地形图的数学基础。经纬线形状与等距正割圆锥投影相同。为达到等角目的，即m=n，将经线长度加以缩放改进。两标纬上无变形，在两标纬之间面积、长度变形为正，两标纬外变形为负，离开标纬愈远，变形愈大。适用于要求方向正确的地图。</p>
+<p>1962年联合国在波恩举行的国际地图会议建议作为1:100万地形图的数学基础。1978年我国规定用它作为1:100万分幅地形图的数学基础。以纬差4为一带，从赤道起从南到北共分15个投影带，每个投影带独立投影，单独计算坐标。</p>
+<p><img src="http://note.youdao.com/yws/res/93/C674E0B04D58407187F5C68E2AE39E5D" alt=""></p>
+<p>6.等角正切圆柱投影(墨卡托投影)，由比利时人墨卡托于1569年为航海所创立。其实用价值为图上任意两点连成的直线为等角航线，按此方位角航行，可一直到达目的地。</p>
+<p><img src="http://note.youdao.com/yws/res/94/AA15BA18A1EA432895989F2F54AEEC0B" alt=""></p>
+<p>7. Gauss-Krüger(等角横切椭圆柱投影)，德国人高斯(C.F.Gauss,1777-1855)于19世纪20年代，克吕格(J. Krüger,1857-1923)改进完善。中央经线投影为直线，其长度没有变形，与球面实际长度相等，其余经线为向极点收敛的弧线，距中央经线愈远，变形愈大。 赤道线投影后是直线，但有<a href="https://link.zhihu.com/?target=http%3A//baike.baidu.com/view/1589067.htm" target="_blank">长度变形</a>。除<a href="https://link.zhihu.com/?target=http%3A//baike.baidu.com/view/1275.htm" target="_blank">赤道</a>外的其余纬线，投影后为凸向赤道的曲线，并以赤道为对称轴。经线和纬线投影后仍然保持正交。所有长度变形的线段，其长度变形比均大于1. 随远离中央经线，面积变形也愈大。若采用分带投影的方法，可使投影边缘的变形不致过大。</p>
+<p><img src="http://note.youdao.com/yws/res/95/D95B9572349B474EAE4C2AE743CF1271" alt=""></p>
+<p>8. UTM投影（Universal Transverse Mercator Projection--通用横轴墨卡托投影，横轴等角割椭圆柱面投影），椭圆柱割地球于<a href="https://link.zhihu.com/?target=http%3A//baike.baidu.com/view/1401705.htm" target="_blank">南纬</a>80度、北纬84度两条<a href="https://link.zhihu.com/?target=http%3A//baike.baidu.com/view/1251409.htm" target="_blank">等高圈</a>，投影后两条相割的经线上没有变形，而<a href="https://link.zhihu.com/?target=http%3A//baike.baidu.com/view/1351524.htm" target="_blank">中央经线</a>上长度比0.9996。UTM投影是为了全球战争需要创建的，美国于1948年完成这种通用投影系统的计算。与<a href="https://link.zhihu.com/?target=http%3A//baike.baidu.com/view/311590.htm" target="_blank">高斯-克吕格投影</a>相似，该投影角度没有变形，中央经线为直线，且为投影的<a href="https://link.zhihu.com/?target=http%3A//baike.baidu.com/view/204893.htm" target="_blank">对称轴</a>，中央经线的比例因子取0.9996是为了保证离中央经线左右约180km处有两条不失真的标准经线。</p>
+<p><img src="http://note.youdao.com/yws/res/92/4D8B15FBED9D4E41AF1F23030B0F5B29" alt=""></p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1526014773561"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1526014773561",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1526014773561",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("GIS",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1526014773561', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 561ms, 2021/03/15 13:05:19 -->

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>基于Centos7安装CDH6.3.0集群(一) - gongdear</title><meta name="description" content="An open source blog with Java. Java 开源博客"/><meta property="og:description" content="An open source blog with Java. Java 开源博客"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="基于Centos7安装CDH6.3.0集群(一) - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2020/08/29/1598633033724.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="基于Centos7安装CDH6.3.0集群(一) - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2020/08/29/1598633033724.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="Postgis实时瓦片" href="https://gongdear.github.io/articles/2020/07/10/1594364240119.html">
+            <link rel="next" title="基于Centos7安装CDH6.3.0集群(二)" href="https://gongdear.github.io/articles/2020/08/29/1598670683386.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://b3logfile.com/file/2020/08/image-bffc8c66.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)">
+        <div style="background-image: url(https://b3logfile.com/file/2020/08/image-bffc8c66.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2020-08-29
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Centos7">Centos7</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/CDH">CDH</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Hadoop">Hadoop</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Spark">Spark</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                基于Centos7安装CDH6.3.0集群(一)
+            </h2>
+<div class="article__share"
+     data-title="基于Centos7安装CDH6.3.0集群(一)"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2020/08/29/1598633033724.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h1 id="toc_h1_0">一 环境准备</h1>
+<p>这里是CDH对环境的要求：<a href="https://www.cloudera.com/documentation/enterprise/6/release-notes/topics/rg_requirements_supported_versions.html#cm_cdh_compatibility" target="_blank">Cloudera Enterprise 6 Requirements and Supported Versions</a></p>
+<p>首先根据需要创建几个虚拟机，我是直接在家里zstack上面创建了6个，分别是common 用来安装公共的数据库和时间同步服务等，上面有docker环境，然后两个master和三个node，配置如下：</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-bffc8c66.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>在机器的系统都装好以后开始执行以下操作</p>
+<h2 id="toc_h2_1">1 生成公私钥</h2>
+<pre><code>[root@commonbase ~]# ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:txYPTckMAK/5UphR3DQxmXMcM6Ou9GuVpV9mQX6dp18 root@commonbase
+The key's randomart image is:
++---[RSA 2048]----+
+|      .oo+*==.   |
+|       o. =Bo= . |
+|      . . .o= o o|
+|       * . o  .++|
+|      = S = .+ .+|
+|       + + =+ . E|
+|      . o +... =.|
+|       . ...  . .|
+|         ..      |
++----[SHA256]-----+
+[root@commonbase ~]# 
+</code></pre>
+<h2 id="toc_h2_2">2 互相配置信任免密码登陆</h2>
+<pre><code>[root@commonbase ~]# ssh-copy-id root@cdhmaster1
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
+The authenticity of host 'cdhmaster1 (192.168.1.201)' can't be established.
+ECDSA key fingerprint is SHA256:/N1iHHWyB5NhH1QX1e2LKRAAJ2ficDjOgncyCOCmhNQ.
+ECDSA key fingerprint is MD5:de:e0:e4:e9:f6:c2:e8:48:fb:81:e9:44:b1:46:e7:75.
+Are you sure you want to continue connecting (yes/no)? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@cdhmaster1's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'root@cdhmaster1'"
+and check to make sure that only the key(s) you wanted were added.
+</code></pre>
+<p>这里对自己也要copy 每个机器都操作一遍</p>
+<h2 id="toc_h2_3">3 关闭selinux</h2>
+<pre><code>[root@cdhmaster1 ~]# vi /etc/sysconfig/selinux 
+
+-&gt; SELINUX=disabled
+
+[root@cdhmaster1 ~]# scp /etc/sysconfig/selinux root@cdhmaster2:/etc/sysconfig/selinux
+selinux                                                                                                 100%  542   856.9KB/s   00:00  
+[root@cdhmaster1 ~]# scp /etc/sysconfig/selinux root@cdhnode1:/etc/sysconfig/selinux
+selinux                                                                                                 100%  542   662.1KB/s   00:00  
+[root@cdhmaster1 ~]# scp /etc/sysconfig/selinux root@cdhnode2:/etc/sysconfig/selinux
+selinux                                                                                                 100%  542   797.2KB/s   00:00  
+[root@cdhmaster1 ~]# scp /etc/sysconfig/selinux root@cdhnode3:/etc/sysconfig/selinux
+selinux                                                                                                 100%  542   836.9KB/s   00:00  
+[root@cdhmaster1 ~]# reboot
+</code></pre>
+<h2 id="toc_h2_4">4 关闭防火墙</h2>
+<pre><code>[root@cdhmaster1 ~]# systemctl disable firewalld
+Removed symlink /etc/systemd/system/multi-user.target.wants/firewalld.service.
+Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
+[root@cdhmaster1 ~]# systemctl stop firewalld
+</code></pre>
+<p>5 设置hosts</p>
+<p>将集群的Host的ip和域名配置到每台机器的 <code>/etc/hosts</code>。<br>
+<strong>注意</strong> hostname必须是一个FQDN（全限定域名），例如 <code>commonbase.example.com</code>，否则后面转到页面时在启动Agent时有个验证会无法通过。</p>
+<pre><code>[root@cdhmaster1 ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+# home common
+192.168.1.200	commonbase.example.com	commonbase
+
+# home masters
+192.168.1.201	cdhmaster1.example.com	cdhmaster1
+192.168.1.202	cdhmaster2.example.com	cdhmaster2
+
+# home nodes
+192.168.1.211	cdhnode1.example.com	cdhnode1
+192.168.1.212	cdhnode2.example.com	cdhnode2
+192.168.1.213	cdhnode3.example.com	cdhnode3
+
+[root@cdhmaster1 ~]# hostnamectl set-hostname cdhmaster1.example.com
+[root@cdhmaster1 ~]# hostnamectl 
+   Static hostname: cdhmaster1.example.com
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: ac9825d124e7483d8575a805cab735a9
+           Boot ID: b37b57af573345a3be8744dbf9779b4b
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-1127.el7.x86_64
+      Architecture: x86-64
+[root@cdhmaster1 ~]# scp /etc/hosts root@commonbase:/etc/hosts
+hosts                                                                                                   100%  479    19.9KB/s   00:00  
+[root@cdhmaster1 ~]# scp /etc/hosts root@cdhmaster2:/etc/hosts
+hosts                                                                                                   100%  479     3.5KB/s   00:00  
+[root@cdhmaster1 ~]# scp /etc/hosts root@cdhnode1:/etc/hosts
+hosts                                                                                                   100%  479    26.6KB/s   00:00  
+[root@cdhmaster1 ~]# scp /etc/hosts root@cdhnode2:/etc/hosts
+hosts                                                                                                   100%  479     0.5KB/s   00:01  
+[root@cdhmaster1 ~]# scp /etc/hosts root@cdhnode3:/etc/hosts
+hosts
+[root@cdhmaster1 ~]# cat /etc/sysconfig/network
+# Created by anaconda
+HOSTNAME=cdhmaster1.example.com
+</code></pre>
+<h2 id="toc_h2_5">5 配置ntp</h2>
+<h3 id="toc_h3_6">5.1 ntp所所有机器配置</h3>
+<pre><code>[root@commonbase etc]# cat /etc/sysconfig/ntpd
+# Command line options for ntpd
+OPTIONS="-g"
+SYNC_HWCLOCK=yes
+[root@commonbase etc]# cat /etc/ntp/step-tickers
+# List of NTP servers used by the ntpdate service.
+
+#0.centos.pool.ntp.org
+commonbase.example.com
+</code></pre>
+<h3 id="toc_h3_7">5.1 ntp服务端配置</h3>
+<p>这里将commonbase机器作为ntp的服务端</p>
+<pre><code>[root@commonbase etc]# ip route show
+default via 192.168.1.1 dev eth0 proto dhcp metric 100 
+169.254.169.254 via 192.168.1.246 dev eth0 proto dhcp metric 100 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 
+192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.200 metric 100
+
+[root@commonbase etc]# cat /etc/ntp.conf
+driftfile /var/lib/ntp/drift
+logfile /var/log/ntp.log
+pidfile   /var/run/ntpd.pid
+leapfile  /etc/ntp.leapseconds
+includefile /etc/ntp/crypto/pw
+keys /etc/ntp/keys
+#允许任何IP的客户端进行时间同步，但不允许修改NTP服务端参数，default类似于0.0.0.0
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+#restrict 10.135.3.58 nomodify notrap nopeer noquery
+#允许通过本地回环接口进行所有访问
+restrict 127.0.0.1
+restrict  -6 ::1
+# 允许内网其他机器同步时间。网关和子网掩码。注意有些集群的网关可能比较特殊，可以用下面的命令获取这部分的信息
+# 查看网关信息：/etc/sysconfig/network-scripts/ifcfg-网卡名；route -n、ip route show  
+restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap
+# 允许上层时间服务器主动修改本机时间
+#server asia.pool.ntp.org minpoll 4 maxpoll 4 prefer
+## 外部时间服务器不可用时，以本地时间作为时间服务
+server  127.127.1.0     # local clock
+fudge   127.127.1.0 stratum 10
+[root@commonbase etc]# systemctl restart ntpd
+[root@commonbase etc]# systemctl enable ntpd
+Created symlink from /etc/systemd/system/multi-user.target.wants/ntpd.service to /usr/lib/systemd/system/ntpd.service.
+[root@commonbase etc]# systemctl status ntpd
+● ntpd.service - Network Time Service
+   Loaded: loaded (/usr/lib/systemd/system/ntpd.service; enabled; vendor preset: disabled)
+   Active: active (running) since 五 2020-08-28 23:57:36 CST; 1min 41s ago
+ Main PID: 19335 (ntpd)
+   CGroup: /system.slice/ntpd.service
+           └─19335 /usr/sbin/ntpd -u ntp:ntp -g
+
+8月 28 23:57:36 commonbase.example.com systemd[1]: Starting Network Time Service...
+8月 28 23:57:36 commonbase.example.com ntpd[19335]: proto: precision = 0.045 usec
+8月 28 23:57:36 commonbase.example.com ntpd[19335]: 0.0.0.0 c01d 0d kern kernel time sync enabled
+8月 28 23:57:36 commonbase.example.com systemd[1]: Started Network Time Service.
+</code></pre>
+<h3 id="toc_h3_8">5.2 ntp客户端配置</h3>
+<pre><code>[root@cdhmaster1 etc]# ntpstat
+synchronised to NTP server (192.168.1.200) at stratum 12
+   time correct to within 979 ms
+   polling server every 64 s
+[root@cdhmaster1 etc]# cat /etc/ntp.conf
+driftfile /var/lib/ntp/drift
+logfile /var/log/ntp.log
+pidfile   /var/run/ntpd.pid
+leapfile  /etc/ntp.leapseconds
+includefile /etc/ntp/crypto/pw
+keys /etc/ntp/keys
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+restrict 127.0.0.1
+restrict -6 ::1
+server 192.168.1.200 iburst
+
+[root@cdhmaster1 etc]# systemctl start ntpd
+[root@cdhmaster1 etc]# systemctl status ntpd
+● ntpd.service - Network Time Service
+   Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since 六 2020-08-29 00:31:08 CST; 2s ago
+  Process: 1743 ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS (code=exited, status=0/SUCCESS)
+ Main PID: 1744 (ntpd)
+   CGroup: /system.slice/ntpd.service
+           └─1744 /usr/sbin/ntpd -u ntp:ntp -g
+
+8月 29 00:31:08 cdhmaster1.example.com systemd[1]: Starting Network Time Service...
+8月 29 00:31:08 cdhmaster1.example.com ntpd[1744]: proto: precision = 0.033 usec
+8月 29 00:31:08 cdhmaster1.example.com systemd[1]: Started Network Time Service.
+8月 29 00:31:08 cdhmaster1.example.com ntpd[1744]: 0.0.0.0 c01d 0d kern kernel time sync enabled
+[root@cdhmaster1 etc]# systemctl enable ntpd
+Created symlink from /etc/systemd/system/multi-user.target.wants/ntpd.service to /usr/lib/systemd/system/ntpd.service.
+[root@cdhmaster1 etc]# ntpstat
+unsynchronised
+  time server re-starting
+   polling server every 8 s
+-&gt; 这里需要注意服务端端口开放情况
+[root@cdhmaster1 etc]# ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+ commonbase.exam LOCAL(0)        11 u    1   64    1    0.316   30.167   0.043
+[root@cdhmaster1 etc]# ntpstat
+synchronised to NTP server (192.168.1.200) at stratum 12
+   time correct to within 979 ms
+   polling server every 64 s
+[root@cdhmaster1 etc]# scp ntp.conf root@cdhmaster2:/etc/ntp.conf
+ntp.conf                                                                                                100%  333   512.5KB/s   00:00  
+[root@cdhmaster1 etc]# scp ntp.conf root@cdhnode1:/etc/ntp.conf
+ntp.conf                                                                                                100%  333   461.9KB/s   00:00  
+[root@cdhmaster1 etc]# scp ntp.conf root@cdhnode2:/etc/ntp.conf
+ntp.conf                                                                                                100%  333   525.6KB/s   00:00  
+[root@cdhmaster1 etc]# scp ntp.conf root@cdhnode3:/etc/ntp.conf
+ntp.conf
+</code></pre>
+<h2 id="toc_h2_9">6 安装mysql</h2>
+<p>我这里直接在commonbase上面docker启动的mysql，可以参考我之前的docker教程。</p>
+<pre><code>[root@commonbase shell]# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                     NAMES
+5d08e9cd8102        mysql:5.7.19        "docker-entrypoint.s…"   14 seconds ago      Up 12 seconds       0.0.0.0:39106-&gt;3306/tcp   cdh_mysql_5719
+</code></pre>
+<h1 id="toc_h1_10">二 资源准备</h1>
+<h2 id="toc_h2_11">1 准备apache服务器(非必须)</h2>
+<p>在commonbase上面准备一个apache服务器，把文件挂载到本地文件夹</p>
+<p><code>docker run -p 80:80 --name apache2 -v /etc/localtime:/etc/localtime -v /data/apache2/data/htdocs:/usr/local/apache2/htdocs --restart=always -d httpd</code></p>
+<pre><code>[root@commonbase shell]# docker ps
+CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                           NAMES
+3cab3dd3cfa8        mysql:5.7.19                    "docker-entrypoint.s…"   7 hours ago         Up 7 hours          0.0.0.0:39106-&gt;3306/tcp         cdh-mysql
+9b8a6981d02e        redis                           "docker-entrypoint.s…"   7 hours ago         Up 7 hours          0.0.0.0:6379-&gt;6379/tcp          redis-server
+77dcec912062        httpd                           "httpd-foreground"       8 hours ago         Up 8 hours          0.0.0.0:80-&gt;80/tcp              apache2
+</code></pre>
+<h2 id="toc_h2_12">2  准备资源</h2>
+<p>在apache的htdocs目录下创建 <code>cloudera-repos</code>目录</p>
+<h3 id="toc_h3_13">2.1 下载parcel</h3>
+<p><a href="https://archive.cloudera.com/cdh6/6.3.2/parcels/" target="_blank">https://archive.cloudera.com/cdh6/6.3.2/parcels/</a></p>
+<pre><code>wget https://archive.cloudera.com/cdh6/6.3.2/parcels/CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel
+wget https://archive.cloudera.com/cdh6/6.3.2/parcels/CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1
+wget https://archive.cloudera.com/cdh6/6.3.2/parcels/manifest.json
+</code></pre>
+<h3 id="toc_h3_14">2.2 下载rpms</h3>
+<p><a href="https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/" target="_blank">https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/</a></p>
+<pre><code>wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm
+wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm
+wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/cloudera-manager-server-6.3.1-1466458.el7.x86_64.rpm
+wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/cloudera-manager-server-db-2-6.3.1-1466458.el7.x86_64.rpm
+wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/enterprise-debuginfo-6.3.1-1466458.el7.x86_64.rpm
+wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPMS/x86_64/oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm
+</code></pre>
+<h3 id="toc_h3_15">2.3 获取其他资源</h3>
+<pre><code>wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/RPM-GPG-KEY-cloudera
+wget https://archive.cloudera.com/cm6/6.3.1/redhat7/yum/cloudera-manager.repo
+wget https://archive.cloudera.com/cm6/6.3.1/allkeys.asc
+</code></pre>
+<p>为了加速安装可以将以上文件按照对应目录放到apache的 <code>cloudera-repos</code>目录下面</p>
+<h3 id="toc_h3_16">2.4 初始化repodata（非必须）</h3>
+<p>如果没有安装 createrepo，请 yum 安装 createrepo</p>
+<pre><code>yum -y install createrepo
+cd /data/apache2/data/htdocs/cloudera-repos/cm6/6.3.1/redhat7/yum/
+createrepo .
+[root@commonbase 6.3.1]# cd redhat7/yum/
+[root@commonbase yum]# ls
+cloudera-manager.repo  RPM-GPG-KEY-cloudera  RPMS
+[root@commonbase yum]# createrepo .
+Spawning worker 0 with 2 pkgs
+Spawning worker 1 with 2 pkgs
+Spawning worker 2 with 1 pkgs
+Spawning worker 3 with 1 pkgs
+Workers Finished
+Saving Primary metadata
+Saving file lists metadata
+Saving other metadata
+Generating sqlite DBs
+Sqlite DBs complete
+</code></pre>
+<h2 id="toc_h2_17">*3 完整镜像版下载</h2>
+<h3 id="toc_h3_18">3.1 下载 parcel files</h3>
+<pre><code class="language-guage-bash">cd /var/www/html/cloudera-repos
+sudo wget --recursive --no-parent --no-host-directories https://archive.cloudera.com/cdh6/6.3.2/parcels/ -P /data/apache2/data/htdocs/cloudera-repos
+sudo wget --recursive --no-parent --no-host-directories https://archive.cloudera.com/gplextras6/6.3.2/parcels/ -P /data/apache2/data/htdocs/cloudera-repos
+sudo chmod -R ugo+rX /data/apache2/data/htdocs/cloudera-repos/cdh6
+sudo chmod -R ugo+rX /data/apache2/data/htdocs/cloudera-repos/gplextras6
+
+</code></pre>
+<h3 id="toc_h3_19">3.2 下载 Cloudera Manager</h3>
+<pre><code class="language-guage-bash">sudo wget --recursive --no-parent --no-host-directories https://archive.cloudera.com/cm6/6.3.1/redhat7/ -P /data/apache2/data/htdocs/cloudera-repos
+sudo wget https://archive.cloudera.com/cm6/6.3.1/allkeys.asc -P /data/apache2/data/htdocs/cloudera-repos/cm6/6.3.1/
+sudo chmod -R ugo+rX /data/apache2/data/htdocs/cloudera-repos/cm6
+</code></pre>
+<p>4 下载数据库驱动</p>
+<p>这里保存元数据的数据库选用 <code>Mysql</code>，因此需要下载Mysql数据库驱动，如果选用的其他数据，请详细阅读<a href="https://www.cloudera.com/documentation/enterprise/6/6.2/topics/cm_ig_installing_configuring_dbs.html#concept_r5p_brw_vcb" target="_blank">安装和配置数据库</a>。</p>
+<p>并将下载的驱动压缩包解压，或获得 <code>mysql-connector-java-5.1.46-bin.jar</code>，记得务必将其名字改为 <code>mysql-connector-java.jar</code></p>
+<pre><code class="language-guage-bash">wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.46.tar.gz
+# 解压
+tar zxvf mysql-connector-java-5.1.46.tar.gz
+# 重命名mysql-connector-java-5.1.46-bin.jar为mysql-connector-java.jar，并放到/usr/share/java/下
+mv mysql-connector-java-5.1.46-bin.jar /usr/share/java/mysql-connector-java.jar
+# 同时发送到其它节点
+[root@commonbase mysql-connector-java-5.1.46]# scp mysql-connector-java.jar root@cdhmaster1:/usr/share/java/mysql-connector-java.jar
+mysql-connector-java.jar                                                                                                                               100%  981KB   2.2MB/s   00:00  
+[root@commonbase mysql-connector-java-5.1.46]# scp mysql-connector-java.jar root@cdhmaster2:/usr/share/java/mysql-connector-java.jar
+mysql-connector-java.jar                                                                                                                               100%  981KB   2.1MB/s   00:00  
+[root@commonbase mysql-connector-java-5.1.46]# scp mysql-connector-java.jar root@cdhnode1:/usr/share/java/mysql-connector-java.jar
+mysql-connector-java.jar                                                                                                                               100%  981KB   9.6MB/s   00:00  
+[root@commonbase mysql-connector-java-5.1.46]# scp mysql-connector-java.jar root@cdhnode2:/usr/share/java/mysql-connector-java.jar
+mysql-connector-java.jar                                                                                                                               100%  981KB   4.0MB/s   00:00  
+[root@commonbase mysql-connector-java-5.1.46]# scp mysql-connector-java.jar root@cdhnode3:/usr/share/java/mysql-connector-java.jar
+mysql-connector-java.jar 
+</code></pre>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h1">
+            <a href="#toc_h1_0">一 环境准备</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_1">1 生成公私钥</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_2">2 互相配置信任免密码登陆</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_3">3 关闭selinux</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_4">4 关闭防火墙</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_5">5 配置ntp</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_6">5.1 ntp所所有机器配置</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_7">5.1 ntp服务端配置</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_8">5.2 ntp客户端配置</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_9">6 安装mysql</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_10">二 资源准备</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_11">1 准备apache服务器(非必须)</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_12">2 准备资源</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_13">2.1 下载parcel</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_14">2.2 下载rpms</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_15">2.3 获取其他资源</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_16">2.4 初始化repodata（非必须）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_17">*3 完整镜像版下载</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_18">3.1 下载 parcel files</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_19">3.2 下载 Cloudera Manager</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1598633033724"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1598633033724",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1598633033724",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Centos7,CDH,Hadoop,Spark",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1598633033724', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 643ms, 2021/03/15 13:04:41 -->

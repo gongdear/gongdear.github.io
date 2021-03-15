@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>计算机系为什么要学数据库原理和设计？ - gongdear</title><meta name="description" content="计算机系为什么要学数据库原理和设计？"/><meta property="og:description" content="计算机系为什么要学数据库原理和设计？"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="计算机系为什么要学数据库原理和设计？ - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2018/08/15/1534311616993.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="计算机系为什么要学数据库原理和设计？ - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2018/08/15/1534311616993.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="VUE使用axios发请求" href="https://gongdear.github.io/articles/2018/07/20/1532067361961.html">
+            <link rel="next" title="Java中的23种设计模式详解" href="https://gongdear.github.io/articles/2018/09/12/1536750662201.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20171104.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20171104.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2018-08-15
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                计算机系为什么要学数据库原理和设计？
+            </h2>
+<div class="article__share"
+     data-title="计算机系为什么要学数据库原理和设计？"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2018/08/15/1534311616993.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <p>作者：南慕伦<br>
+链接：<a href="https://www.zhihu.com/question/273489729/answer/382181550" target="_blank">https://www.zhihu.com/question/273489729/answer/382181550</a><br>
+来源：知乎<br>
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>刚刚接触数据库的时候，我也有和你一样的困惑。现在想起来，主要还是因为教学模式存在一定的问题，没有把来龙去脉讲清楚，没头没脑的灌输知识，最后不知为何而学，没动力，学着也痛苦。</p>
+<p>很多老师也没有想清楚这一点，照本宣科罢了。毕业几年之后，现在我也算是个数据库领域的工程师，来分享我个人的一点见解，结合我个人学习的经验和现在的理解谈谈为什么要学习数据库。</p>
+<p>简而言之，因为你学的是《数据库系统<strong>原理</strong>》，而不是《数据库系统应用》，更不是《SQL从入门到精通》。只有掌握了原理，才能了解当前的数据库是如何实现的，存在哪些问题，进而不断优化，突破当前数据库系统的局限性，做出更优秀的数据库。</p>
+<p>下面的内容会比较长，我会利用一些比较基础地例子和常见事物的类比，给你一个从感性到理性的认识，了解引入这些概念带来的<strong>优势</strong>以及这些概念的<strong>局限性</strong>。其中也包含很多我个人的理解，不一定对，权当抛砖引玉，是希望能够对你有所帮助。</p>
+<h2 id="toc_h2_0"><strong>什么叫数据库？</strong></h2>
+<p>常说，要“知其然还要知其所以然”。从你的提问来看，你已经初步做到了“知其然”，对数据库的功能有了一个初步的了解，知道数据库的基本功能就是“增删改查”。但是你要知道，关系型数据库只是数据库中的一种。广义上，任何能够满足对数据进行“增删改查”功能的程序，都叫数据库。这世界上就有很多数据库不是关系型数据库，你一定听说过『NoSQL』这个概念. 搜索引擎文档的存储、多媒体和地理信息的数据库，往往都不是使用关系型数据库。另外，最近正逐渐流行的图数据库，也是另一个门类。</p>
+<p>这里插播几个趣闻吧，远在计算机庞大而夸张，数据库理论尚未普及的年代，就有了一些充满智慧的数据库技术的应用。下面举两个令我惊叹的例子。</p>
+<p>在刘慈欣的小说《三体》中，有一段非常经典的人列计算机描写：</p>
+<blockquote>
+<p>下面，贯穿人列计算机的系统总线上的轻转兵快速运动起来，总线立刻变成了一条湍急的河流．这河流沿途又分成无数条细小的支流，渗入到各个模块阵列之中。很快，黑白旗的涟漪演化成汹涌的浪潮，激荡在整块主板上。中央的CPU区激荡最为剧烈，像一片燃烧的火药。突然，仿佛火药燃尽，CPU区的扰动渐渐平静下来，最后竟完全静止了，以它为圆心，这静止向各个方向飞快扩散开来，像快速封冻的海面，最后整块主板大部分静止了，其间只有一些零星的死循环在以不变的节奏没有生气地闪动着，显示阵列中出现了闪动的红色。<br>
+——《三体》·刘慈欣</p>
+</blockquote>
+<p>书中的描写通过形象地对计算机系统微观世界的类比，展示了一个宏大的场面。但是实际上，小说中用三千万人打造的人列计算机实在太浪费资源了，总共三千万士兵，一个人只表示一个比特位。实际上，以人的智商完全可以执行更复杂的指令，让这套系统的运转更加高效。</p>
+<p><img src="https://pic3.zhimg.com/v2-5aff03f02470dc635304679d9339c456_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/80/v2-5aff03f02470dc635304679d9339c456_hd.jpg" alt=""></p>
+<p>1920年美国指纹数据库</p>
+<p>先来看一张图吧，估计第一眼大家一定不知道这个图是干什么的——这是1920年代的美国指纹数据库：<a href="https://link.zhihu.com/?target=http%3A//www.wenxuecity.com/news/2016/03/27/gossip-116772.html" target="_blank">美国“指纹工厂”：2万人管理着全国7000万指纹(组图)</a>。</p>
+<p>没错，现在我们去美国领事馆签证，或者入境美国的时候摁的指纹信息，早在100年前美国就开始收集了。这是现实版的人列计算机啊！</p>
+<p><img src="https://pic3.zhimg.com/v2-5d27d4441be3cfc27a2ab2891312658a_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/80/v2-5d27d4441be3cfc27a2ab2891312658a_hd.jpg" alt=""></p>
+<p>1920年美工指纹数据库工人</p>
+<p><img src="https://pic3.zhimg.com/v2-46a8559ae87946eb53d1ec399f9ec6c6_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/80/v2-46a8559ae87946eb53d1ec399f9ec6c6_hd.jpg" alt=""></p>
+<p>指纹特征分类</p>
+<p>严格来说， 这个数据库不叫关系型数据库——至少，你不能简单地用MySQL去替代人力的查询。至于什么是关系型数据库，我们稍后再说。</p>
+<p>下面来讲另一个，一个叫<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Calvin_Mooers" target="_blank">Calvin Mooers</a>的计算机科学家，这个Mooers跟那个提出摩尔定律的 Moore不是一个摩尔。早在二战期间，电子计算机还有两层楼那么大的时候，他就发明了一套编码系统叫做Zatocoding，用来索引海量的文档——而且是纸质文档。</p>
+<p>怎么做的呢？它先把相关文档的边缘统一打上洞：</p>
+<p><img src="https://pic1.zhimg.com/v2-12fd2ef673fdeb030c054c558ee890d0_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/80/v2-12fd2ef673fdeb030c054c558ee890d0_hd.jpg" alt=""></p>
+<p>采用Zatocoding的文档</p>
+<p>每一个孔代表的是一个布尔表达式，也就是一个答案为『是』或者『否』的问题。举个例子，这些文档是关于某些天天气状况的，那么每个孔的对应如下问题：</p>
+<ol>
+<li>是否下雨</li>
+<li>气温是否大于30℃</li>
+<li>气温是否小于0℃</li>
+<li>……</li>
+</ol>
+<p>以此类推，然后，对于每一个答案为『否』的孔，将其剪掉：</p>
+<p><img src="https://pic4.zhimg.com/v2-c02fa232e43393a37bb6fc758e510ddb_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/80/v2-c02fa232e43393a37bb6fc758e510ddb_hd.jpg" alt=""></p>
+<p>最后把所有文档用线串起来，有孔的穿孔，没孔的穿洞，就像这样（示意图并没有画全）：</p>
+<p><img src="https://pic1.zhimg.com/v2-cbb23538cb514bb0e2a38b8f65a257e0_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/80/v2-cbb23538cb514bb0e2a38b8f65a257e0_hd.jpg" alt=""></p>
+<p>最后这所有文档将被40条线串起来。然后，当需要查找某个问题为『是』的文档，只需要将其对应的绳子给提起来即可（因为回答为否的洞已经被剪开，提绳子的时候会掉下去），这样绳子上挂着的就都是相关的文档了。同时，这个索引还支持逻辑或运算。利用布尔运算的定律，支持逻辑与运算也是非常简单的。</p>
+<p>大名鼎鼎的<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Bloom_filter" target="_blank">bloom filter</a>就是对这个原理的总结提炼。</p>
+<p>由此可见，支持增删改查的数据库未必都有表，未必都是关系型数据。</p>
+<h2 id="toc_h2_1"><strong>关系型数据库为什么入选计算机科学与技术的基础课程？</strong></h2>
+<p>因为它“科学”，换句话说，理论发展得比较完善。尚处在发展中，有大量未知问题的领域不太适合作本科基础教学，那种感觉就像高中学物理和学化学的一样，物理把为数不多的几个定理和数据组合一下总能得到结果，而化学感觉是一堆『拍脑袋想出来的规则』加一堆『被疯狂打脸的例外』……这里不是我故意要『黑』一下化学，<a href="https://link.zhihu.com/?target=http%3A//www.sohu.com/a/68883280_372416" target="_blank">大神Matrix67也有同样的感觉</a>：</p>
+<blockquote>
+<p>之所以在高中时选择学文科，是因为他对化学“很不认同”。高一分专业考试时，他的化学不及格，为了进实验班，只好学了文科。“化学这门学科实在是太不科学了，缺乏内在美。”一提起化学，他总是不住地摇头。</p>
+</blockquote>
+<p>感兴趣的可以看看这个帖子里化学大神们的讨论：<a href="https://www.zhihu.com/question/20824343" target="_blank">为什么中学化学给人一种不严谨的感觉？</a></p>
+<p>注意我这里并不是要否定化学的科学性，因为即便是物理在深入到尚未完善的领域之后依然是一对规则加一堆例外——二十世纪初当人们一度认为物理学已经完备的时候，天空飘来了<a href="https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/%25E7%2589%25A9%25E7%2590%2586%25E4%25B8%25A4%25E6%259C%25B5%25E4%25B9%258C%25E4%25BA%2591" target="_blank">两朵乌云</a>，然后引起了物理理论的一场革命。我这里只是想用两个学科学习的直观感受来说明从关系型数据库入手对学生来说更容易。</p>
+<p>另一方面，教学配套材料很多，对于学生入门和老师教学来说非常方便，可以让教学更关注于<strong>本质</strong>——数据库系统的构建思想。我以为，数据库原理课程的精髓，应当是数据库构建的过程，而数据库本身的使用反而是最不重要的一环。</p>
+<p>我曾经在知乎上讨论过另一个问题：<a href="https://www.zhihu.com/question/68571300" target="_blank">大学编程入门为什么不以C#作为首选？</a>其实和这个问题有点类似。你说用C#来教操作系统我支不支持，如果有好的配套材料，比如用C#写好的教学操作系统，我当然支持。但是，现在绝大部分的操作系统底层无一例外是C写的，绝大部分操作系统课的课程作业也是C语言，工业界绝大部分系统级底层应用也是用C写的，而且操作系统课程的核心恰恰不是语言，而是架构的设计——既然如此，何必舍本逐末，舍近求远，把目光放在C还是C#上呢？</p>
+<p>那么回到这个问题，同样的，学习数据库原理的目的是什么，是怎么使用吗？一部分目的是，学会了原理能够更好的使用；但是，另一个更重要的目的，是在现有的数据库解决方案不能满足需求的时候，如何利用在构建关系型数据库过程中积累的方法经验，开发在特定场景下更好的数据库应用。</p>
+<p>先看看关系型数据库是什么——它是对一类数据库设计经验的总结和设计方法的抽象，以期得到一个通用的数据库的解决方法。</p>
+<p>打个比方，小学奥数题鸡兔同笼问题：</p>
+<blockquote>
+<p>有若干只鸡兔同在一个笼子里，从上面数，有35个头，从下面数，有94只脚。问笼中各有多少只鸡和兔？</p>
+</blockquote>
+<p>小学的解法有很多种：</p>
+<p>假设法</p>
+<blockquote>
+<p>假设全是鸡：2×35=70（只）<br>
+鸡脚比总脚数少：94－70=24 （只）<br>
+兔子比鸡多的脚数：4-2=2（只）<br>
+兔子的只数：24÷2=12 （只）<br>
+鸡的只数：35－12=23（只）</p>
+<p>假设全是兔子：4×35=140（只）<br>
+兔子脚比总数多：140-94=46（只）<br>
+兔子比鸡多的脚数：4-2=2（只）<br>
+鸡的只数：46÷2=23（只）<br>
+兔子的只数=35-23=12（只）</p>
+</blockquote>
+<p>抬腿法一</p>
+<blockquote>
+<p>假如让鸡抬起一只脚，兔子抬起2只脚，还有94÷2=47（只）脚。笼子里的兔就比鸡的脚数多1，这时，脚与头的总数之差47-35=12，就是兔子的只数。</p>
+</blockquote>
+<p>抬腿法二、抬腿法三……</p>
+<p>你看，同一个问题，张三有张三的解法，李四有李四的解法。于是聪明的王五在观察所有方法之后，做了一个总结，解决这个问题我们可以使用一元一次方程：</p>
+<blockquote>
+<p>解：设兔有x只，则鸡有(35-x）只。<br>
+4x+2(35-x)=94<br>
+解得 x=12</p>
+</blockquote>
+<p>又进一步，有人发现，<a href="https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIyODM2ODk1MA%3D%3D%26mid%3D2247484128%26idx%3D1%26sn%3D3ca0c7f3641288635b63b77da3bf5d1b%26chksm%3De853b5b9df243caf18fb06ba0b63f4e857c8315884e92bb252984bfbb0c603a49dd3188f43ef%26scene%3D21%23wechat_redirect" target="_blank">牛吃草</a>问题也可以用方程解，于是在这基础上发展了二元一次方程，甚至N元一次方程。进一步，当研究到更复杂的问题的时候，比如抛物线，行星轨道，发现一次方程不够用了，于是又进一步扩展出了高次方程……</p>
+<p>于是，我们的代数系统渐渐发展，变成了如今这样庞大的体系，也足够应付相当一部分应用场景：小商小贩的价格计算、金融模型、天梯轨迹的预测……</p>
+<p>数据库也是类似的发展轨迹。</p>
+<p><a href="//www.zhihu.com/people/71d6bdbb655437c643aaec880ed62fc6" target="_blank">@wivwiv</a></p>
+<p>在回答里提到这样一个例子：</p>
+<blockquote>
+<p>去年作为大三学生去旁听毕业答辩，某同学作品是一个安卓端的英汉词典，支支吾吾吞吞吐吐说不清他数据的存储方式，老师只好降低难度让他把 Apple 的中文改为 梨。<br>
+他一番摸索，工程下找到了一个 txt 文件，ctrl + f 来把这个翻译对照改了。懂行的憋住笑，不懂行的觉得没毛病，答辩老师一致拍案叫绝，遂过。<br>
+不懂基本的数据库，你以后得工程要存数据是不是也这样?</p>
+</blockquote>
+<p>其实，这个同学的英汉词典采用这样的存储方式并没有太大的不妥，这恰恰是数据库的某种意义上的基本形态——二维表，也就是关系数据库中的『关系』，应付这种场景足矣。</p>
+<p>那么我们先来看看关系型数据库到底试图解决一个什么样的问题？ACID：</p>
+<ul>
+<li>Atomicity：原子性</li>
+<li>Consistency：一致性</li>
+<li>Isolation：隔离性</li>
+<li>Duration：持久性</li>
+</ul>
+<p>这里我就不详细展开了，需要了解的去看课本。在这其中，『一致性』是重中之重。</p>
+<h2 id="toc_h2_2">为什么要学范式？</h2>
+<p>在你困惑的那些概念中，各种所谓的『范式』很大程度上就是为一致性提供服务的。</p>
+<p>就拿<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/First_normal_form" target="_blank">1NF</a>（关系中的每个属性都不可再分）来说吧，乍看好像没什么用，但是上次我看到这个问题的讨论就忍俊不禁：<a href="https://www.zhihu.com/question/265060790" target="_blank">如何劝说后端开发不要拿变量命名 JSON 的key值？</a></p>
+<p><a href="//www.zhihu.com/people/2605a702944ec1c63ce73e8bc4f9c3b8" target="_blank">@max poon</a></p>
+<p>的回答：</p>
+<blockquote>
+<p>问问他，如果以后需要加多一个author属性，他准备如何拓展。</p>
+</blockquote>
+<p><a href="//www.zhihu.com/people/b364d5f025744d003692d542991305f3" target="_blank">@Axetroy</a></p>
+<p>回复：</p>
+<blockquote>
+<p>然后后端一听, 这简单, 看我的<br>
+[{'书籍1':"500|作者1"},{'书籍2':"180|作者2"},{...},...]</p>
+</blockquote>
+<p>你可以仔细思考一下，如果在创建表的时候不遵循1NF，查询的时候会导致什么样的后果？1NF又给我们查询带来了哪些方便？显然，其中一个好处就是，查询的时候不需要再对得到的内容进一步解析。</p>
+<p>那么<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Second_normal_form" target="_blank">2NF</a>、<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Third_normal_form" target="_blank">3NF</a>乃至<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Boyce%25E2%2580%2593Codd_normal_form" target="_blank">BCNF</a>又是用来解决什么问题的呢？</p>
+<p><a href="//www.zhihu.com/people/0d99df288b4c7fe2eff8b851cac20807" target="_blank">@刘慰</a></p>
+<p>老师的回答非常清晰和详细，可以参阅：<a href="https://www.zhihu.com/question/24696366" target="_blank">解释一下关系数据库的第一第二第三范式？</a>如果认真读完，你应该能够有一个清晰的认识，限于篇幅和时间，我在这里就不展开了。</p>
+<h2 id="toc_h2_3">为什么要学关系代数？</h2>
+<p>简单来说，就是关系代数是对关系数据库查询所做的抽象。抽象的好处是减少人脑的负担，有了抽象之后，我们可以忽略掉工程上的细节，更清晰地看到某些问题的本质，从而从数学上做一些推理和优化：当一切都变成表达式之后，我们就可以利用数学性质做推理了，而不必去关心实现的细节——因为那都是抽象之后可以忽略的底层信息。</p>
+<p>其实，从本质上来说，『关系代数』与『线性代数』和『布尔代数』并没有什么区别，如果你学过『抽象代数』的话应该会有更深的体会。</p>
+<p>一个例子便是计算优化。线性代数是大学生的必修课程，在这里我就举一个简单的例子，线性代数中的<a href="https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/%25E7%259F%25A9%25E9%2598%25B5%23%25E7%259F%25A9%25E9%2598%25B5%25E4%25B9%2598%25E6%25B3%2595" target="_blank">矩阵乘法</a>运算满足结合律与左右分配律。对于多个矩阵连乘的计算，使用不同的计算顺序会导致计算量千差万别。如果能按照计算量最小的矩阵乘法顺序进行计算，可以大大加速矩阵乘法的计算——这是一个经典的动态规划算法应用：<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/liufeng_king/article/details/8497607" target="_blank">0010算法笔记--【动态规划】矩阵连乘问题 - CSDN博客</a></p>
+<p>同样的，在关系代数里，也有可以用类似的方法加速计算。比方说，『自然连接』，也就是SQL里的『natural join』操作也满足结合律，这样就大大方便了计算优化。如果你了解join的底层实现，不论是hash join，还是nested loop join,抑或是其他任何算法，一般来说，需要join的两个表行数越多，计算量越大。那么，越早做哪些让行数减少的join，之后的join的计算量就越小，而连续join的次数越多，这个差异就越大。</p>
+<p>对于如下这个稍微复杂一点的SQL查询：</p>
+<pre><code>SELECT
+  people.name,
+  orgunits.longname,
+  people.email,
+  affiliations.starting,
+  count(DISTINCT subjects.code)
+FROM
+  staff
+  JOIN people ON staff.id = people.id
+  JOIN affiliations ON affiliations.staff = people.id
+  JOIN staff_roles ON staff_roles.id = affiliations.role
+  JOIN orgunits ON orgunits.id = affiliations.orgunit
+  JOIN orgunit_types ON orgunits.utype = orgunit_types.id
+  JOIN course_staff ON course_staff.staff = staff.id
+  JOIN courses ON courses.id = course_staff.course
+  JOIN subjects ON subjects.id = courses.subject
+WHERE
+  affiliations.isprimary = TRUE
+  AND staff_roles.name = 'Head of School'
+  AND affiliations.ending IS NULL
+  AND orgunit_types.name = 'School'
+  AND course_staff.staff = people.id
+GROUP BY
+  people.name,
+  orgunits.longname,
+  people.email,
+  affiliations.starting
+HAVING
+  count(subjects.code) &gt; 0
+ORDER BY
+  people.name ASC;
+
+</code></pre>
+<p>调用explain命令来看看postgres内部是如何执行这个查询的，这就是所谓的query plan：</p>
+<pre><code> GroupAggregate  (cost=634.26..634.32 rows=2 width=82)
+   Group Key: people.name, orgunits.longname, people.email, affiliations.starting
+   Filter: (count(subjects.code) &gt; 0)
+   -&gt;  Sort  (cost=634.26..634.27 rows=2 width=83)
+         Sort Key: people.name, orgunits.longname, people.email, affiliations.starting
+         -&gt;  Nested Loop  (cost=28.48..634.25 rows=2 width=83)
+               -&gt;  Nested Loop  (cost=28.19..633.53 rows=2 width=78)
+                     -&gt;  Nested Loop  (cost=27.91..633.21 rows=1 width=90)
+                           -&gt;  Nested Loop  (cost=27.61..632.84 rows=1 width=90)
+                                 -&gt;  Nested Loop  (cost=27.32..301.62 rows=1 width=82)
+                                       -&gt;  Nested Loop  (cost=27.03..300.80 rows=1 width=39)
+                                             Join Filter: (affiliations.role = staff_roles.id)
+                                             -&gt;  Seq Scan on staff_roles  (cost=0.00..18.05 rows=1 width=4)
+                                                   Filter: ((name)::text = 'Head of School'::text)
+                                             -&gt;  Hash Join  (cost=27.03..271.74 rows=881 width=43)
+                                                   Hash Cond: (affiliations.orgunit = orgunits.id)
+                                                   -&gt;  Seq Scan on affiliations  (cost=0.00..202.85 rows=8807 width=16)
+                                                         Filter: (isprimary AND (ending IS NULL))
+                                                   -&gt;  Hash  (cost=26.22..26.22 rows=65 width=35)
+                                                         -&gt;  Hash Join  (cost=1.14..26.22 rows=65 width=35)
+                                                               Hash Cond: (orgunits.utype = orgunit_types.id)
+                                                               -&gt;  Seq Scan on orgunits  (cost=0.00..17.48 rows=648 width=39)
+                                                               -&gt;  Hash  (cost=1.12..1.12 rows=1 width=4)
+                                                                     -&gt;  Seq Scan on orgunit_types  (cost=0.00..1.12 rows=1 width=4)
+                                                                           Filter: ((name)::text = 'School'::text)
+                                       -&gt;  Index Scan using people_pkey on people  (cost=0.29..0.82 rows=1 width=43)
+                                             Index Cond: (id = affiliations.staff)
+                                 -&gt;  Index Only Scan using course_staff_pkey on course_staff  (cost=0.29..331.08 rows=14 width=8)
+                                       Index Cond: (staff = people.id)
+                           -&gt;  Index Scan using courses_pkey on courses  (cost=0.29..0.36 rows=1 width=8)
+                                 Index Cond: (id = course_staff.course)
+                     -&gt;  Index Only Scan using staff_pkey on staff  (cost=0.29..0.32 rows=1 width=4)
+                           Index Cond: (id = people.id)
+               -&gt;  Index Scan using subjects_pkey on subjects  (cost=0.29..0.36 rows=1 width=13)
+                     Index Cond: (id = courses.subject)
+
+</code></pre>
+<p>简单解释一下，这里面第一行的GroupAggregate和后面行-&gt;后跟着的表示一个基本操作，基本上可以对应到关系代数中的各种运算，比如GroupAggregate就是聚集运算，Hash Join是Join的一种实现方式，等等；缩进代表的是这些操作的隶属关系。</p>
+<p>看到了吧，这就是所谓隐藏在关系代数背后的细节——的一部分。跟原始的query比较一下，你会发现join的顺序已经发生了改变。括号内你可以看到每一个操作的cost，它的join是从cost最小的开始的（你可以理解为产生的行数最少），这就是利用关系运算的定律以及数据库本身的统计信息来计算的优化。当然了，这样的计算是粗糙的，有时候结果未必是最优的，具体可以看看这个例子：<a href="https://link.zhihu.com/?target=https%3A//amplitude.engineering/how-a-single-postgresql-config-change-improved-slow-query-performance-by-50x-85593b8991b0" target="_blank">How a single PostgreSQL config change improved slow query performance by 50x</a>，就是因为数据库的默认设置是机械硬盘，而使用的是固态硬盘，导致cost的计算出现了偏差。</p>
+<p>更多采用关系代数对数据查询进行优化的例子可以看这里，我也就不展开了：<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Relational_algebra%23Use_of_algebraic_properties_for_query_optimization" target="_blank">Relational algebra</a></p>
+<h2 id="toc_h2_4">关系型数据库的不足</h2>
+<p>前面说到，我们目前的代数体系已经相当庞大，涵盖了我们生活的方方面面。但是寄希望于在代数体系内解决一切问题是<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/pongba/article/details/1336028" target="_blank">不可能</a>的：</p>
+<blockquote>
+<p>哥德尔的不完备性定理证明了数学是一个未完结的学科，永远有需要我们以人的头脑从系统之外去用我们独有的直觉发现的东西。</p>
+</blockquote>
+<p>高度发展的代数系统尚且如此，更何况才发展不到百年的数据库系统呢？关系代数作为关系型数据库的理论基础，它的局限性也是关系型数据库的<a href="https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/%25E5%2585%25B3%25E7%25B3%25BB%25E4%25BB%25A3%25E6%2595%25B0_%28%25E6%2595%25B0%25E6%258D%25AE%25E5%25BA%2593%29" target="_blank">局限性</a>——正如同<a href="https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/%25E5%2581%259C%25E6%259C%25BA%25E9%2597%25AE%25E9%25A2%2598" target="_blank">停机问题</a>指出了图灵机的局限性一样。由于我数理逻辑学得并不好，这里不敢不懂装懂，理论方面没法解释，只能从一些别的角度来探讨了。</p>
+<p>理论虽然简单优雅，可是实践起来逃不开软硬件的限制。</p>
+<p><strong>一致性带来的性能问题</strong></p>
+<p>鉴于一致性的种类很多，这里就说强一致性。为了提升数据库的性能，往往采用多线程进行实现。而为了保证强一致性，在读写操作里面就需要加锁。当然，最简单的方法是给整个数据库加一个互斥锁——这样正确性保证了，性能却不行了。于是就有考虑更细粒度的加锁。数据库中B+树如此重要，除了读写上有优势之外，更重要的原因是它加锁很方便——当然了，方便只是相对而言的，真正实现起来非常繁琐——如果你已经上了系统课就应该了解，一旦牵涉到锁，问题就多了：死锁、活锁、饥饿……这些都是需要考虑的问题，当这个问题被抽象出来之后，就有了下面这张表：</p>
+<p><img src="https://pic1.zhimg.com/v2-cfd5c77675132dbf896d32f686c631c8_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/80/v2-cfd5c77675132dbf896d32f686c631c8_hd.jpg" alt=""></p>
+<p>SQL Server Lock Table</p>
+<p>我们需要小心翼翼地去使用锁，才能够避免上述问题的发生——光这一个话题，就有好多论文了。而近几年微软弄出了一套叫做BW-树的结构，使用原子操作和特殊的维护方法避免掉了锁的使用：<a href="https://link.zhihu.com/?target=https%3A//www.microsoft.com/en-us/research/publication/the-bw-tree-a-b-tree-for-new-hardware/" target="_blank">The Bw-Tree: A B-tree for New Hardware Platforms - Microsoft Research</a></p>
+<p>同时，一致性的要求还会引起分布式系统之间的同步问题，这个话题也比较广，在这里也就不展开了。</p>
+<p><strong>连接的开销</strong></p>
+<p>关系型数据库的核心就是连接，然而join本身是一个比较重的操作。如果你对数据库内部两个表怎么join不是很了解的话，你可以思考思考一下你会怎么去实现？</p>
+<p>其实原理很简单，最最基本的就是，如果有索引可以用hash join，没有index就只能两层for循环对两个表进行遍历了——当然，为了提高缓存命中率，有一个常见的优化技巧是分块for循环，但本质上还是两层for循环。</p>
+<p>然而，由于关系型数据库本身的存储和索引方式，join操作的开销依然非常巨大。</p>
+<p>有一种非常常见的情况就是社交网络的N步邻居查询。假设我们有一个表people (id int, name text)，还有一个表friend (from int, to int, attr1 type1, att2 type2, ...)，假设我们要查3步邻居怎么办？得这么做：</p>
+<pre><code>SELECT DISTINCT friend_3.id
+FROM people
+JOIN friend friend_1 ON friend_1.from = people.id
+JOIN friend friend_2 ON friend_2.from = friend_1.to
+JOIN friend friend_3 ON friend_3.from = friend_2.to
+WHERE ...;
+
+</code></pre>
+<p>当然，对于这种查询，经常会有一些每一步查询计算量都是指数级增长，缓存命中率直线下降。更致命的是，它只能单点查询，如果想同时对多个点查询，只能分别执行多个SQL语句，加剧锁带来的资源消耗和性能下降。另一方面，要写递归查询、不定长度的查询非常困难。</p>
+<p>所以，在反洗钱、电话诈骗等深度链接分析的应用领域，图数据库开始崛起——我说的是真·图数据库，那种给关系型数据库套壳的不算。</p>
+<p><strong>关系模型往往不是最自然的抽象</strong></p>
+<p>之前说了，为了方便查询的实现和对查询进行优化，加入了各种范式。但是这些范式往往限制了我们用直接的方法去建立模型。比如说，一个常用的数据库测试数据集是TPC-H，先来看看它的表结构：</p>
+<p><img src="https://pic1.zhimg.com/v2-0481e7f380d52dc44898d9ed290190bc_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/80/v2-0481e7f380d52dc44898d9ed290190bc_hd.jpg" alt=""></p>
+<p>TPC-H表</p>
+<p>注意看左边的SUPPLIER表和PART表，它们的关系靠PARTSUPP这个表连接起来。但是在实际情形中，应该是PART-SUPPILER两个实体直接连接，同时这个连接上附带了一些属性而已。</p>
+<p><img src="https://pic3.zhimg.com/v2-43f8945f305f8e05455ad0486793d836_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/80/v2-43f8945f305f8e05455ad0486793d836_hd.jpg" alt=""></p>
+<p>图数据库TigerGraph中的Schema</p>
+<p>在这个问题上，图数据库的建模就比关系型数据库直观很多。如上图所示，这是一个用来表示公司之间投资关系的Schema，如果是关系型数据库，CompanyInvestCompany需要单独建一个表来存储，查询的时候需要Company JOIN CompanyInvestCompany JOIN Company，作两个JOIN操作，非常耗时，而图数据库只需要一步。</p>
+<h2 id="toc_h2_5">最后</h2>
+<p>我啰啰嗦嗦地从小学奥数讲到数据库，列举了题主所提到的概念在数据库中的应用，以及当前关系型数据库的各种局限性，就是希望用我的经历给有同样疑惑的朋友一点启发，因为我也曾面临同样的迷茫，学而不知为何所学的效率是最低的。这里面有许多东西都是我到了研究生，甚至工作以后才慢慢有所领悟，可是这些其实本科阶段完全可以有比较深入和透彻的理解。</p>
+<h2 id="toc_h2_6"></h2>
+<p>参考</p>
+<p><a href="https://www.zhihu.com/question/24696366" target="_blank">解释一下关系数据库的第一第二第三范式？</a><br>
+<a href="https://link.zhihu.com/?target=http%3A//www.cs.cmu.edu/%7Echristos/courses/826.S16/FOILS-pdf/220_text2.pdf" target="_blank">http://www.cs.cmu.edu/~christos/courses/826.S16/FOILS-pdf/220_text2.pdf</a><br>
+<a href="https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/%25E9%25B8%25A1%25E5%2585%2594%25E5%2590%258C%25E7%25AC%25BC/5907332" target="_blank">鸡兔同笼（一种数学奥数题目）_百度百科</a><br>
+<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/pongba/article/details/1336028" target="_blank">康托尔、哥德尔、图灵--永恒的金色对角线(rev#2) - CSDN博客</a><br>
+<a href="https://www.zhihu.com/question/24225007" target="_blank">非关系型数据库和关系型数据库区别，优势比较？</a><br>
+<a href="https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/%25E5%2585%25B3%25E7%25B3%25BB%25E4%25BB%25A3%25E6%2595%25B0_%28%25E6%2595%25B0%25E6%258D%25AE%25E5%25BA%2593%29" target="_blank">关系代数 (数据库)</a><br>
+<a href="https://link.zhihu.com/?target=https%3A//insidebigdata.com/2018/03/14/interview-dr-yu-xu-ceo-founder-tigergraph/" target="_blank">Interview: Dr. Yu Xu, CEO and Founder of TigerGraph - insideBIGDATA</a></p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h2">
+            <a href="#toc_h2_0">什么叫数据库？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_1">关系型数据库为什么入选计算机科学与技术的基础课程？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_2">为什么要学范式？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_3">为什么要学关系代数？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_4">关系型数据库的不足</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_5">最后</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_6"></a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1534311616993"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1534311616993",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1534311616993",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("数据库",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1534311616993', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 553ms, 2021/03/15 13:05:06 -->

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>使用kubeadm安装kubernetes1.15 - gongdear</title><meta name="description" content="使用kubeadm安装kubernetes1.15"/><meta property="og:description" content="使用kubeadm安装kubernetes1.15"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="使用kubeadm安装kubernetes1.15 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2019/08/13/1565683985186.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="使用kubeadm安装kubernetes1.15 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2019/08/13/1565683985186.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="Jenkins+GitLab+Docker+SpringCloud实现可持续自动化微服务" href="https://gongdear.github.io/articles/2019/08/02/1564735994109.html">
+            <link rel="next" title="Helm安装和配置" href="https://gongdear.github.io/articles/2019/08/16/1565935481170.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/file/2019/09/image-7ca553bf.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/file/2019/09/image-7ca553bf.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2019-09-21
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Kubernetes">Kubernetes</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                使用kubeadm安装kubernetes1.15
+            </h2>
+<div class="article__share"
+     data-title="使用kubeadm安装kubernetes1.15"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2019/08/13/1565683985186.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h1 id="toc_h1_0">准备工作</h1>
+<p>内核性能</p>
+<pre><code>cat &gt;&gt; /etc/sysctl.conf&lt;&lt;EOF
+net.ipv4.ip_forward=1
+net.bridge.bridge-nf-call-iptables=1
+net.ipv4.neigh.default.gc_thresh1=4096
+net.ipv4.neigh.default.gc_thresh2=6144
+net.ipv4.neigh.default.gc_thresh3=8192
+EOF
+</code></pre>
+<p>开启ipvs</p>
+<pre><code>[root@kubernetesmaster ~]# uname -r
+5.3.0-1.el7.elrepo.x86_64
+</code></pre>
+<pre><code>[root@kubernetesmaster ~]# cat /etc/sysconfig//modules/ipvs.modules 
+#!/bin/bash
+module=(ip_vs
+        ip_vs_rr
+        ip_vs_wrr
+        ip_vs_sh
+        ip_vs_lc
+        br_netfilter
+        nf_conntrack)
+for kernel_module in ${module[@]};do
+    /sbin/modinfo -F filename $kernel_module |&amp; grep -qv ERROR &amp;&amp; echo $kernel_module &gt;&gt; /etc/modules-load.d/ipvs.conf || :
+done
+
+ipvs_modules_dir="/usr/lib/modules/5.3.0-1.el7.elrepo.x86_64/kernel/net/netfilter/ipvs"
+for i in `ls $ipvs_modules_dir | sed  -r 's#(.*).ko#\1#'`; do
+    /sbin/modinfo -F filename $i  &amp;&gt; /dev/null
+    if [ $? -eq 0 ]; then
+        /sbin/modprobe $i
+    fi
+done
+</code></pre>
+<pre><code>[root@kubernetesmaster ~]# source /etc/sysconfig//modules/ipvs.modules
+</code></pre>
+<pre><code>[root@kubernetesmaster modules]# lsmod | grep ip_vs
+ip_vs_wrr              16384  0 
+ip_vs_wlc              16384  0 
+ip_vs_sh               16384  0 
+ip_vs_sed              16384  0 
+ip_vs_rr               16384  0 
+ip_vs_pe_sip           16384  0 
+nf_conntrack_sip       32768  1 ip_vs_pe_sip
+ip_vs_ovf              16384  0 
+ip_vs_nq               16384  0 
+ip_vs_mh               16384  0 
+ip_vs_lc               16384  0 
+ip_vs_lblcr            16384  0 
+ip_vs_lblc             16384  0 
+ip_vs_ftp              16384  0 
+ip_vs_fo               16384  0 
+ip_vs_dh               16384  0 
+ip_vs                 155648  30 ip_vs_wlc,ip_vs_rr,ip_vs_dh,ip_vs_lblcr,ip_vs_sh,ip_vs_ovf,ip_vs_fo,ip_vs_nq,ip_vs_lblc,ip_vs_pe_sip,ip_vs_wrr,ip_vs_lc,ip_vs_mh,ip_vs_sed,ip_vs_ftp
+nf_nat                 40960  3 iptable_nat,xt_MASQUERADE,ip_vs_ftp
+nf_conntrack          147456  6 xt_conntrack,nf_nat,nf_conntrack_sip,nf_conntrack_netlink,xt_MASQUERADE,ip_vs
+nf_defrag_ipv6         24576  2 nf_conntrack,ip_vs
+libcrc32c              16384  4 nf_conntrack,nf_nat,xfs,ip_vs
+</code></pre>
+<p>数值根据实际环境自行配置，最后执行<code>sysctl -p</code>保存配置。<br>
+所有节点都要写入hosts</p>
+<p>以下都要在所有节点上执行</p>
+<ul>
+<li>准备docker yum仓库</li>
+<li>准备k8s yum仓库</li>
+<li>准备 epel yum仓库</li>
+</ul>
+<p>配置docker的yum库</p>
+<blockquote>
+<p>cd /etc/yum.repos.d/</p>
+</blockquote>
+<blockquote>
+<p>wget <a href="https://mirrors.aliyun.com/dockerce/linux/centos/docker-ce.repo" target="_blank">https://mirrors.aliyun.com/dockerce/linux/centos/docker-ce.repo</a></p>
+</blockquote>
+<p>配置k8s的yum库</p>
+<blockquote>
+<p>cd /etc/yum.repos.d/</p>
+</blockquote>
+<blockquote>
+<p>cat &lt;&lt; EOF &gt; kubernetes.repo<br>
+[kubernetes]<br>
+name=kubernetes<br>
+baseurl=<a href="https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/" target="_blank">https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/</a><br>
+gpgcheck=0<br>
+enabled=1<br>
+EOF</p>
+</blockquote>
+<p>配置epel的yum库</p>
+<blockquote>
+<p>cat &gt; /etc/yum.repos.d/epel.repo &lt;&lt; EOF<br>
+[epel]<br>
+name=Extra Packages for Enterprise Linux 7 - $basearch<br>
+baseurl=<a href="https://mirrors.tuna.tsinghua.edu.cn/epel/7/$basearch" target="_blank">https://mirrors.tuna.tsinghua.edu.cn/epel/7/$basearch</a><br>
+#mirrorlist=<a href="https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch" target="_blank">https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch</a><br>
+failovermethod=priority<br>
+enabled=1<br>
+gpgcheck=1<br>
+gpgkey=<a href="file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7" target="_blank">file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</a><br>
+[epel-debuginfo]<br>
+name=Extra Packages for Enterprise Linux 7 - $basearch - Debug<br>
+baseurl=<a href="https://mirrors.tuna.tsinghua.edu.cn/epel/7/$basearch/debug" target="_blank">https://mirrors.tuna.tsinghua.edu.cn/epel/7/$basearch/debug</a><br>
+#mirrorlist=<a href="https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch" target="_blank">https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch</a><br>
+failovermethod=priority<br>
+enabled=0<br>
+gpgkey=<a href="file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7" target="_blank">file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</a><br>
+gpgcheck=1<br>
+[epel-source]<br>
+name=Extra Packages for Enterprise Linux 7 - $basearch - Source<br>
+baseurl=<a href="https://mirrors.tuna.tsinghua.edu.cn/epel/7/SRPMS" target="_blank">https://mirrors.tuna.tsinghua.edu.cn/epel/7/SRPMS</a><br>
+#mirrorlist=<a href="https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch" target="_blank">https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch</a><br>
+failovermethod=priority<br>
+enabled=0<br>
+gpgkey=<a href="file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7" target="_blank">file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</a><br>
+gpgcheck=1<br>
+EOF</p>
+</blockquote>
+<p>以下都要在所有节点上执行</p>
+<ul>
+<li>docker安装</li>
+<li>kubeadm部署</li>
+</ul>
+<blockquote>
+<p>yum -y install  kubeadm-1.15.0-0.x86_64  kubectl-1.15.0-0.x86_64 kubelet-1.15.0-0.x86_64 kubernetes-cni-0.7.5-0.x86_64</p>
+</blockquote>
+<p>swap没关的话就忽略swap参数</p>
+<blockquote>
+<p>vim /etc/sysconfig/kubelet</p>
+</blockquote>
+<blockquote>
+<p>KUBELET_EXTRA_ARGS="--fail-swap-on=false"</p>
+</blockquote>
+<p>开机启动kubelet</p>
+<blockquote>
+<p>systemctl enable kubelet</p>
+</blockquote>
+<p>k8s安装时的错误：<br>
+#如果有如下报错:<br>
+<code>sysctl: cannot stat /proc/sys/net/bridge/bridge-nf-call-ip6tables: No such file or directory</code><br>
+<code>sysctl: cannot stat /proc/sys/net/bridge/bridge-nf-call-iptables: No such file or directory</code><br>
+解决方法：<br>
+安装bridge-util软件，加载bridge模块，加载br_netfilter模块</p>
+<blockquote>
+<p>yum install -y bridge-utils.x86_64<br>
+modprobe bridge<br>
+modprobe br_netfilter</p>
+</blockquote>
+<p><code>[ERROR FileContent--proc-sys-net-ipv4-ip_forward]: /proc/sys/net/ipv4/ip_forward contents are not set to 1</code><br>
+执行</p>
+<blockquote>
+<p>sysctl -w net.ipv4.ip_forward=1</p>
+</blockquote>
+<p><code>没有文件 /proc/sys/net/bridge/bridge-nf-call-iptables</code></p>
+<blockquote>
+<p>cat &gt; /etc/rc.sysinit &lt;&lt; EOF<br>
+#!/bin/bash<br>
+for file in /etc/sysconfig/modules/*.modules ; do<br>
+[ -x $file ] &amp;&amp; $file<br>
+done<br>
+EOF<br>
+cat &gt; /etc/sysconfig/modules/br_netfilter.modules &lt;&lt; EOF<br>
+modprobe br_netfilter<br>
+EOF<br>
+chmod 755 /etc/sysconfig/modules/br_netfilter.modules<br>
+lsmod |grep br_netfilter</p>
+</blockquote>
+<p>重启后</p>
+<blockquote>
+<p>echo "1" &gt;/proc/sys/net/bridge/bridge-nf-call-iptables</p>
+</blockquote>
+<h1 id="toc_h1_1">安装kubernetes</h1>
+<p><code>kubeadm init --kubernetes-version=v1.15.2 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.96.0.0/12</code></p>
+<blockquote>
+</blockquote>
+<p>[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-apiserver:v1.15.2: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers), error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-controller-manager:v1.15.2: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers), error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-scheduler:v1.15.2: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers), error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-proxy:v1.15.2: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers), error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/pause:3.1: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers), error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/etcd:3.3.10: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers), error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/coredns:1.3.1: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers), error: exit status 1</p>
+<p>老方法 曲线救国：</p>
+<blockquote>
+<p>docker pull mirrorgooglecontainers/kube-apiserver:v1.15.2<br>
+docker pull mirrorgooglecontainers/kube-controller-manager:v1.15.2<br>
+docker pull mirrorgooglecontainers/kube-scheduler:v1.15.2<br>
+docker pull mirrorgooglecontainers/kube-proxy:v1.15.2<br>
+docker pull mirrorgooglecontainers/pause:3.1<br>
+docker pull mirrorgooglecontainers/etcd:3.3.10<br>
+docker pull mirrorgooglecontainers/coredns:1.3.1</p>
+</blockquote>
+<p>可能我现在1.15.2太新了 曲线失败 尝试老一点的版本 1.15.0 过几天再试试：<br>
+<code>kubeadm init --kubernetes-version=v1.15.0 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.96.0.0/12</code></p>
+<blockquote>
+<p>[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-apiserver:v1.15.0: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)<br>
+, error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-controller-manager:v1.15.0: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)<br>
+, error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-scheduler:v1.15.0: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)<br>
+, error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-proxy:v1.15.0: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)<br>
+, error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/pause:3.1: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)<br>
+, error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/etcd:3.3.10: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)<br>
+, error: exit status 1<br>
+[ERROR ImagePull]: failed to pull image k8s.gcr.io/coredns:1.3.1: output: Error response from daemon: Get <a href="https://k8s.gcr.io/v2/" target="_blank">https://k8s.gcr.io/v2/</a>: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)<br>
+, error: exit status 1</p>
+</blockquote>
+<blockquote>
+<p>docker pull mirrorgooglecontainers/kube-apiserver:v1.15.0<br>
+docker pull mirrorgooglecontainers/kube-controller-manager:v1.15.0<br>
+docker pull mirrorgooglecontainers/kube-scheduler:v1.15.0<br>
+docker pull mirrorgooglecontainers/kube-proxy:v1.15.0<br>
+docker pull mirrorgooglecontainers/pause:3.1<br>
+docker pull mirrorgooglecontainers/etcd:3.3.10<br>
+docker pull mirrorgooglecontainers/coredns:1.3.1</p>
+</blockquote>
+<p>这个版本都拉下来了</p>
+<blockquote>
+<p>[root@kubernetesmaster docker]# docker tag eb516548c180 k8s.gcr.io/coredns:1.3.1<br>
+[root@kubernetesmaster docker]# docker tag 2c4adeb21b4f k8s.gcr.io/etcd:3.3.10<br>
+[root@kubernetesmaster docker]# docker tag da86e6ba6ca1 k8s.gcr.io/pause:3.1<br>
+[root@kubernetesmaster docker]# docker tag 201c7a840312 k8s.gcr.io/kube-apiserver:v1.15.0<br>
+[root@kubernetesmaster docker]# docker tag 8328bb49b652 k8s.gcr.io/kube-controller-manager:v1.15.0<br>
+[root@kubernetesmaster docker]# docker tag 2d3813851e87 k8s.gcr.io/kube-scheduler:v1.15.0<br>
+[root@kubernetesmaster docker]# docker tag d235b23c3570 k8s.gcr.io/kube-proxy:v1.15.0</p>
+</blockquote>
+<p><code>kubeadm init --kubernetes-version=v1.15.0 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.96.0.0/12</code></p>
+<p>忽略错误<br>
+<code>kubeadm init --kubernetes-version=v1.15.0 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.96.0.0/12 --ignore-preflight-errors=all</code></p>
+<p>成功后会再控制台打印这样的输出</p>
+<blockquote>
+<p>Your Kubernetes control-plane has initialized successfully!</p>
+</blockquote>
+<blockquote>
+<p>To start using your cluster, you need to run the following as a regular user:</p>
+</blockquote>
+<blockquote>
+<p>mkdir -p $HOME/.kube<br>
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config<br>
+sudo chown $(id -u):$(id -g) $HOME/.kube/config</p>
+</blockquote>
+<blockquote>
+<p>You should now deploy a pod network to the cluster.<br>
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:<br>
+<a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/" target="_blank">https://kubernetes.io/docs/concepts/cluster-administration/addons/</a></p>
+</blockquote>
+<blockquote>
+<p>Then you can join any number of worker nodes by running the following on each as root:</p>
+</blockquote>
+<blockquote>
+<p>kubeadm join 192.168.1.120:6443 --token 9xnm1x.rh79xwavbdi7at4a <br>
+--discovery-token-ca-cert-hash sha256:1efc0b8c266a7494105a93684a571ff6d2bec596c1fcde9347cd569f21cf3f7b</p>
+</blockquote>
+<p>初始化完成后<br>
+记住节点要加入的token<br>
+<code>9xnm1x.rh79xwavbdi7at4a \ --discovery-token-ca-cert-hash sha256:1efc0b8c266a7494105a93684a571ff6d2bec596c1fcde9347cd569f21cf3f7b</code><br>
+ps<br>
+到这里可以打个snapshot用来回滚了</p>
+<p>master部署网络插件flannel</p>
+<blockquote>
+<p>kubectl apply -f <a href="https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml" target="_blank">https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</a></p>
+</blockquote>
+<p>kubectl命令自动补全</p>
+<blockquote>
+<p>yum install bash-completion*<br>
+写入环境变量<br>
+source &lt;(kubectl completion bash)<br>
+echo "source &lt;(kubectl completion bash)" &gt;&gt; ~/.bashrc</p>
+</blockquote>
+<p>各节点利用token部署</p>
+<blockquote>
+<p>kubeadm join 192.168.1.120:6443 --token 9xnm1x.rh79xwavbdi7at4a <br>
+--discovery-token-ca-cert-hash sha256:1efc0b8c266a7494105a93684a571ff6d2bec596c1fcde9347cd569f21cf3f7b</p>
+</blockquote>
+<p>默认token的有效期为24小时，当过期之后，该token就不可用了，以后加入节点需要新token</p>
+<p>master重新生成新的token</p>
+<blockquote>
+<p>[root@kubernetesmaster ~]# kubeadm token create<br>
+905hgq.1akgmga715dzooxo</p>
+</blockquote>
+<blockquote>
+<p>[root@kubernetesmaster ~]# kubeadm token list<br>
+TOKEN                     TTL       EXPIRES                     USAGES                   DESCRIPTION   EXTRA GROUPS<br>
+905hgq.1akgmga715dzooxo   23h       2019-06-23T15:18:24+08:00   authentication,signing   <none>        system:bootstrappers:kubeadm:default-node-token</none></p>
+</blockquote>
+<p>获取ca证书sha256编码hash值</p>
+<blockquote>
+<p>[root@kubernetesmaster ~]# openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'<br>
+2db0df25f40a3376e35dc847d575a2a7def59604b8196f031663efccbc8290c2</p>
+</blockquote>
+<p>利用新token加入集群</p>
+<blockquote>
+<p>kubeadm join 192.168.1.120:6443 --token 905hgq.1akgmga715dzooxo <br>
+--discovery-token-ca-cert-hash sha256:2db0df25f40a3376e35dc847d575a2a7def59604b8196f031663efccbc8290c2</p>
+</blockquote>
+<p>查看各节点是否就绪</p>
+<blockquote>
+<p>[root@kubernetesmaster ~]# kubectl get node<br>
+NAME       STATUS   ROLES    AGE    VERSION<br>
+kubernetesmaster Ready    master   3m1s   v1.15.0<br>
+kubernetesnode1 Ready    <none>   72s    v1.15.0<br>
+kubernetesnode2 Ready    <none>   54s    v1.15.0</none></none></p>
+</blockquote>
+<p>kubernetesnode3 Ready    <none>   36s    v1.15.0</none></p>
+<p>如果未就绪</p>
+<p>执行</p>
+<blockquote>
+<p>journalctl -f</p>
+</blockquote>
+<p>也可以过滤kubelet</p>
+<blockquote>
+<p>journalctl -f -u kubelet</p>
+</blockquote>
+<p>如果查看发现</p>
+<blockquote>
+<p>KubeletNotReady runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized</p>
+</blockquote>
+<p>解决：</p>
+<blockquote>
+<p>mkdir /etc/cni/net.d/<br>
+vim /etc/cni/net.d/10-flannel.conf<br>
+{<br>
+"name": "cbr0",<br>
+"type": "flannel",<br>
+"delegate": {<br>
+"isDefaultGateway": true<br>
+}<br>
+}</p>
+</blockquote>
+<p>2019-09-21<br>
+今天重新配置集群，之前的网络问题终于找到原因了</p>
+<p>master安装完以后 命令行输出了这句话<br>
+<img src="https://img.hacpai.com/file/2019/09/image-7ca553bf.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>紧接着在master节点部署网络插件flannel，这时可以通过kubectl命令来安装，即：</p>
+<pre><code>kubectl apply -f kube-flannel.yml
+</code></pre>
+<p>注意：kube-flannel.yml文件，可以在<a href="https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml获取到，当然文章最后提供的安装包里面也有该文件的。" target="_blank">https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml获取到，当然文章最后提供的安装包里面也有该文件的。</a></p>
+<p>此时可以查看master的状态，即输入如下命令：</p>
+<pre><code>kubectl get nodes
+</code></pre>
+<p>可见看到master的状态为Ready，即表明master节点部署成功！</p>
+<h1 id="toc_h1_2">安装dashboard:</h1>
+<p>安装</p>
+<blockquote>
+<p>kubectl apply -f <a href="https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml" target="_blank">https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml</a></p>
+</blockquote>
+<p>创建访问账户<br>
+使用 Kubernetes 的服务帐户机制创建一个新用户，授予该用户管理权限，并使用绑定到该用户的承载令牌登录到 dashboadr web 界面。这里主要有以下几个步骤：</p>
+<p>创建服务帐户和集群角色绑定<br>
+获取用户登录 Token<br>
+创建导入浏览器的 .p12 文件</p>
+<h1 id="toc_h1_3">创建服务帐户</h1>
+<blockquote>
+<p>cat &gt; dashboard_service_account_admin.yaml &lt;&lt; EOF<br>
+apiVersion: v1<br>
+kind: ServiceAccount<br>
+metadata:<br>
+name: admin-user<br>
+namespace: kube-system<br>
+EOF<br>
+kubectl apply -f dashboard_service_account_admin.yaml</p>
+</blockquote>
+<h1 id="toc_h1_4">创建集群角色绑定</h1>
+<blockquote>
+<p>cat &gt; dashboard_cluster_role_binding_admin.yaml &lt;&lt; EOF<br>
+apiVersion: rbac.authorization.k8s.io/v1<br>
+kind: ClusterRoleBinding<br>
+metadata:<br>
+name: admin-user<br>
+roleRef:<br>
+apiGroup: rbac.authorization.k8s.io<br>
+kind: ClusterRole<br>
+name: cluster-admin<br>
+subjects:</p>
+</blockquote>
+<ul>
+<li>kind: ServiceAccount<br>
+name: admin-user<br>
+namespace: kube-system<br>
+EOF<br>
+kubectl apply -f dashboard_cluster_role_binding_admin.yaml</li>
+</ul>
+<p>获取用户登录 Token</p>
+<blockquote>
+<p>kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') &gt; admin-token.yaml &amp;&amp; cat admin-token.yaml</p>
+</blockquote>
+<p>输出如下：（记录输出的 token 信息即可）</p>
+<blockquote>
+<p>Name:         admin-user-token-gcdtv<br>
+Namespace:    kube-system<br>
+Labels:       <none><br>
+Annotations:  kubernetes.io/service-account.name: admin-user<br>
+kubernetes.io/service-account.uid: 64f6798d-a550-4366-a53c-bef75476ad95</none></p>
+</blockquote>
+<blockquote>
+<p>Type:  kubernetes.io/service-account-token</p>
+</blockquote>
+<blockquote>
+<p>Data<br>
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLWdjZHR2Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI2NGY2Nzk4ZC1hNTUwLTQzNjYtYTUzYy1iZWY3NTQ3NmFkOTUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.eyQtdyTMQa3o-tgc35QRJLoPjGbzilJW78HAUN4hoqdIFa4Pdpus9odxVW0fAsqvyLkhhLllI0z-P4WAw8tPTxxzLG1GEnh3k6JhAPnT073CsEdweDEpNjkzeCjWNoJgT1wRyXdK_CNLUalQ0R5nS1z6wYOM_IvRReja0fy8YLCVa4WJe7-u7iyVAzonsXbdo9DlUpr7MWLTMec0yoaTRAirFJ16KT0BIv_EuT7O0NdNiTA1pSw5bGa3-OG4lTE7aK7FoM1DblE8x04SGQMcIg-RY8rLdLeclKT_CrwM9JbuovciI_ONL8oaV8Vpmdi-cU5J5VOPGanZ3hpcfiKhDA<br>
+ca.crt:     1025 bytes<br>
+namespace:  11 bytes</p>
+</blockquote>
+<p>创建导入浏览器的 .p12 证书文件</p>
+<blockquote>
+<p>grep 'client-certificate-data' ~/.kube/config | head -n 1 | awk '{print $2}' | base64 -d &gt;&gt; kubecfg.crt<br>
+grep 'client-key-data' ~/.kube/config | head -n 1 | awk '{print $2}' | base64 -d &gt;&gt; kubecfg.key<br>
+openssl pkcs12 -export -clcerts -inkey kubecfg.key -in kubecfg.crt -out kubecfg.p12 -name "kubernetes-web-client"</p>
+</blockquote>
+<p>输出如下：（记录输入的证书密码，登录时导入证书会用到）</p>
+<blockquote>
+<p>Enter Export Password:        // 输入证书密码<br>
+Verifying - Enter Export Password:         // 输入证书密码</p>
+</blockquote>
+<p>访问 kubernetes-dashboard 的 UI 界面<br>
+导入证书<br>
+在访问 kubernetes-dashboard 的 UI 界面前，首先需下载刚刚生成的 kubecfg.p12 证书文件并导入浏览器</p>
+<p>访问界面<br>
+访问 <code>https://&lt;MASTER_IP&gt;:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/</code><br>
+选择令牌，输入刚刚记录的 token 即可</p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h1">
+            <a href="#toc_h1_0">准备工作</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_1">安装kubernetes</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_2">安装dashboard:</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_3">创建服务帐户</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_4">创建集群角色绑定</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1565683985186"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1565683985186",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1565683985186",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Kubernetes",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1565683985186', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 532ms, 2021/03/15 13:04:55 -->

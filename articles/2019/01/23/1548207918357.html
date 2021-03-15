@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>Jenkins持续集成docker镜像到私库 - gongdear</title><meta name="description" content="Jenkins持续集成docker镜像到私库"/><meta property="og:description" content="Jenkins持续集成docker镜像到私库"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="Jenkins持续集成docker镜像到私库 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2019/01/23/1548207918357.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="Jenkins持续集成docker镜像到私库 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2019/01/23/1548207918357.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="Kubernetes安装kube-dns服务发现" href="https://gongdear.github.io/articles/2019/01/18/1547780551604.html">
+            <link rel="next" title="Jenkins持续集成至kubernetes集群" href="https://gongdear.github.io/articles/2019/01/23/1548208919121.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20180805.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20180805.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2019-02-27
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Jenkins">Jenkins</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Docker">Docker</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                Jenkins持续集成docker镜像到私库
+            </h2>
+<div class="article__share"
+     data-title="Jenkins持续集成docker镜像到私库"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2019/01/23/1548207918357.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <p>#1 spring-boot工程在pom文件中加入如下配置项<br>
+<plugin><br>
+<groupid>org.springframework.bootgroupId&gt;<br>
+<artifactid>spring-boot-maven-pluginartifactId&gt;<br>
+<configuration></configuration></artifactid></groupid></plugin></p>
+<p><mainclass>com.gongdear.gateway.ApplicationmainClass&gt;<br>
+<layout>ZIPlayout&gt;<br>
+configuration&gt;<br>
+<executions><br>
+<execution><br>
+<goals><br>
+<goal>repackagegoal&gt;<br>
+goals&gt;<br>
+execution&gt;<br>
+executions&gt;<br>
+plugin&gt;<br>
+<plugin><br>
+<groupid>com.spotifygroupId&gt;<br>
+<artifactid>docker-maven-pluginartifactId&gt;<br>
+<configuration><br>
+<imagename>${docker.imageName.prefix}/${project.artifactId}:${project.version}imageName&gt;<br>
+<baseimage>java:8baseImage&gt;<br>
+<maintainer>${docker.maintainer}maintainer&gt;<br>
+<volumes>/tmpvolumes&gt;<br>
+<entrypoint>["java", "-Djava.security.egd=file:/dev/./urandom","-jar", "${project.build.finalName}.jar"]entryPoint&gt;<br>
+<resources><br>
+<resource><br>
+<targetpath>/targetPath&gt;<br>
+<directory>${project.build.directory}directory&gt;<br>
+<include>${project.build.finalName}.jarinclude&gt;<br>
+resource&gt;<br>
+resources&gt;<br>
+configuration&gt;<br>
+plugin&gt;<br>
+<img src="https://img.hacpai.com/file/2019/02/image-7e6c7c66.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></include></directory></targetpath></resource></resources></entrypoint></volumes></maintainer></baseimage></imagename></configuration></artifactid></groupid></plugin></goal></goals></execution></executions></layout></mainclass></p>
+<p>此处配置为免dockerfile直接打docker镜像的配置<br>
+打包时执行 mvn clean package docker:build 就可以在本地生成docker镜像<br>
+[INFO] Using authentication suppliers: [ConfigFileRegistryAuthSupplier]<br>
+[INFO] Copying /home/gongdear/src/gateway/target/gateway.jar -&gt; /home/gongdear/src/gateway/target/docker/gateway.jar<br>
+[INFO] Building image dockerhub.gongdear.com/gateway:1.0-RELEASE<br>
+Step 1/5 : FROM java:8</p>
+<p>---&gt; d23bdf5b1b1b<br>
+Step 2/5 : MAINTAINER <a href="mailto:gongdear@gmail.com" target="_blank">gongdear@gmail.com</a></p>
+<p>---&gt; Using cache<br>
+---&gt; 4af248cad229<br>
+Step 3/5 : ADD /gateway.jar //</p>
+<p>---&gt; 1479acc37a0f<br>
+Step 4/5 : ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar", "gateway.jar"]</p>
+<p>---&gt; Running in 28897782db7f<br>
+Removing intermediate container 28897782db7f<br>
+---&gt; 8e2f81aeda24<br>
+Step 5/5 : VOLUME /tmp</p>
+<p>---&gt; Running in 210d59cc1eb7<br>
+Removing intermediate container 210d59cc1eb7<br>
+---&gt; 5558c2e2e97e<br>
+ProgressMessage{id=null, status=null, stream=null, error=null, progress=null, progressDetail=null}<br>
+Successfully built 5558c2e2e97e<br>
+Successfully tagged dockerhub.gongdear.com/gateway:1.0-RELEASE<br>
+[INFO] Built dockerhub.gongdear.com/gateway:1.0-RELEASE<br>
+[INFO] ------------------------------------------------------------------------<br>
+[INFO] BUILD SUCCESS<br>
+[INFO] ------------------------------------------------------------------------<br>
+[INFO] Total time:  23.609 s<br>
+[INFO] Finished at: 2019-01-22T11:03:23+08:00<br>
+[INFO] ------------------------------------------------------------------------<br>
+[root@kvmmain gateway]# docker images<br>
+REPOSITORY                          TAG                  IMAGE ID            CREATED             SIZE<br>
+dockerhub.gongdear.com/gateway      1.0-RELEASE          5558c2e2e97e        8 seconds ago       676MB<br>
+dockerhub.gongdear.com/crawler      0.1.1                e667d480644e        2 hours ago         671MB<br>
+dockerhub.gongdear.com/gateway      <none>               f6cca9232c8a        13 hours ago        676MB<br>
+dockerhub.gongdear.com/gateway      1.0-SNAPSHOT         ac5cb8b0bb0d        18 hours ago        676MB</none></p>
+<p><img src="https://gongdear.com:443/upload/1bc6125e707841a3a440e8c078c34d77_image.png" alt="imagepng"></p>
+<p>进阶版 mvn指令可以直接将docker镜像推送到dockerhub或私有库，前提是上述配置文件中${docker.imageName.prefix} 是私库的地址<br>
+[root@kvmmain gateway]# mvn clean package docker:build -DpushImage<br>
+[INFO] Scanning for projects...<br>
+[WARNING]<br>
+[WARNING] Some problems were encountered while building the effective model for com.gongdear:gateway🏺1.0-RELEASE<br>
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 113, column 21<br>
+[WARNING] 'build.plugins.plugin.version' for com.spotify:docker-maven-plugin is missing. @ line 95, column 21<br>
+[WARNING] 'build.plugins.plugin.version' for org.springframework.boot:spring-boot-maven-plugin is missing. @ line 79, column 21<br>
+[WARNING]<br>
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.<br>
+[WARNING]<br>
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.<br>
+[WARNING]<br>
+[INFO]<br>
+[INFO] ------------------------&lt; com.gongdear:gateway &gt;------------------------<br>
+[INFO] Building gateway 1.0-RELEASE<br>
+[INFO] --------------------------------[ jar ]---------------------------------<br>
+[INFO]<br>
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ gateway ---<br>
+[INFO] Deleting /home/gongdear/src/gateway/target<br>
+[INFO]<br>
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ gateway ---<br>
+[INFO] Using 'UTF-8' encoding to copy filtered resources.<br>
+[INFO] skip non existing resourceDirectory /home/gongdear/src/gateway/src/main/resources<br>
+[INFO] Copying 1 resource<br>
+[INFO]<br>
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ gateway ---<br>
+[INFO] Changes detected - recompiling the module!<br>
+[INFO] Compiling 2 source files to /home/gongdear/src/gateway/target/classes<br>
+[INFO]<br>
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ gateway ---<br>
+[INFO] Using 'UTF-8' encoding to copy filtered resources.<br>
+[INFO] skip non existing resourceDirectory /home/gongdear/src/gateway/src/test/resources<br>
+[INFO]<br>
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ gateway ---<br>
+[INFO] No sources to compile<br>
+[INFO]<br>
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ gateway ---<br>
+[INFO] No tests to run.<br>
+[INFO]<br>
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ gateway ---<br>
+[INFO] Building jar: /home/gongdear/src/gateway/target/gateway.jar<br>
+[INFO]<br>
+[INFO] --- spring-boot-maven-plugin:2.1.0.RELEASE:repackage (default) @ gateway ---<br>
+[INFO] Layout: ZIP<br>
+[INFO] Replacing main artifact /home/gongdear/src/gateway/target/gateway.jar<br>
+[INFO]<br>
+[INFO] --- docker-maven-plugin:1.2.0:build (default-cli) @ gateway ---<br>
+[INFO] Using authentication suppliers: [ConfigFileRegistryAuthSupplier]<br>
+[INFO] Copying /home/gongdear/src/gateway/target/gateway.jar -&gt; /home/gongdear/src/gateway/target/docker/gateway.jar<br>
+[INFO] Building image dockerhub.gongdear.com/gateway:1.0-RELEASE<br>
+Step 1/5 : FROM java:8</p>
+<p>---&gt; d23bdf5b1b1b<br>
+Step 2/5 : MAINTAINER <a href="mailto:gongdear@gmail.com" target="_blank">gongdear@gmail.com</a></p>
+<p>---&gt; Using cache<br>
+---&gt; 4af248cad229<br>
+Step 3/5 : ADD /gateway.jar //</p>
+<p>---&gt; d5c56be69deb<br>
+Step 4/5 : ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar", "gateway.jar"]</p>
+<p>---&gt; Running in 150cd4f5e379<br>
+Removing intermediate container 150cd4f5e379<br>
+---&gt; 3f3c12c969d2<br>
+Step 5/5 : VOLUME /tmp</p>
+<p>---&gt; Running in 0e77cd1d901e<br>
+Removing intermediate container 0e77cd1d901e<br>
+---&gt; 4a3428f8e7a6<br>
+ProgressMessage{id=null, status=null, stream=null, error=null, progress=null, progressDetail=null}<br>
+Successfully built 4a3428f8e7a6<br>
+Successfully tagged dockerhub.gongdear.com/gateway:1.0-RELEASE<br>
+[INFO] Built dockerhub.gongdear.com/gateway:1.0-RELEASE<br>
+[INFO] Pushing dockerhub.gongdear.com/gateway:1.0-RELEASE<br>
+The push refers to repository [dockerhub.gongdear.com/gateway]<br>
+28e4eb162bb6: Pushed<br>
+35c20f26d188: Layer already exists<br>
+c3fe59dd9556: Layer already exists<br>
+6ed1a81ba5b6: Layer already exists<br>
+a3483ce177ce: Layer already exists<br>
+ce6c8756685b: Layer already exists<br>
+30339f20ced0: Layer already exists<br>
+0eb22bfb707d: Layer already exists<br>
+a2ae92ffcd29: Layer already exists<br>
+1.0-RELEASE: digest: sha256:3211630fa47d6f799efadcdd3d6a39508da24fab5e3c65b1baa6e2b65fab69ae size: 2212<br>
+null: null<br>
+[INFO] ------------------------------------------------------------------------<br>
+[INFO] BUILD SUCCESS<br>
+[INFO] ------------------------------------------------------------------------<br>
+[INFO] Total time:  05:30 min<br>
+[INFO] Finished at: 2019-01-22T13:13:36+08:00<br>
+[INFO] ------------------------------------------------------------------------<br>
+[root@kvmmain gateway]# docker images<br>
+REPOSITORY                          TAG                  IMAGE ID            CREATED             SIZE<br>
+dockerhub.gongdear.com/gateway      1.0-RELEASE          4a3428f8e7a6        5 minutes ago       676MB<br>
+<none>                              <none>               09b5b4dd5bbf        11 minutes ago      676MB<br>
+dockerhub.gongdear.com/crawler      0.1.1                e667d480644e        4 hours ago         671MB<br>
+dockerhub.gongdear.com/gateway      1.0-SNAPSHOT         ac5cb8b0bb0d        20 hours ago        676MB<br>
+bestwu/kubernetes-dashboard-amd64   v1.6.3               691a82db1ecd        18 months ago       139MB<br>
+java                                8                    d23bdf5b1b1b        2 years ago         643MB<br>
+mirrorgooglecontainers/skydns       2015-10-13-8c72f8c   718809956625        3 years ago         40.6MB<br>
+mirrorgooglecontainers/kube2sky     1.11                 2c2534f5ba34        3 years ago         19.2MB</none></none></p>
+<p>可见加上-DpushImage参数后会自动push当前镜像到私库<br>
+此时基本已经具备编写jenkins脚本的基础<br>
+#2 jenkins的脚本配置<br>
+<img src="https://gongdear.com:443/upload/801b778cced941cf9f764ab567424fc7_image.png" alt="imagepng"><br>
+<img src="https://gongdear.com:443/upload/7061098d8d6a4d9b8b2faba5d250dc5c_image.png" alt="imagepng"><br>
+<img src="https://gongdear.com:443/upload/a65985f076de404e967aa0d44a1e85f8_image.png" alt="imagepng"></p>
+<p>此时就可以进行参数化构建 构建完成以后自动将镜像push到私库中<br>
+<img src="https://gongdear.com:443/upload/27d00d48b16f4e2ca6f8f32d49af447d_image.png" alt="imagepng"></p>
+<p><img src="https://gongdear.com:443/upload/eba5a717a4fc4b11bedfd80add9ad29d_image.png" alt="imagepng"></p>
+<p>可是这样还有个问题 如果都是同一个版本的代码，构建完成以后会留下tag为none的历史版本<br>
+执行 docker images|grep none|awk '{print $3}'|xargs docker rmi -f 可以将所有标签为none的镜像删除<br>
+<img src="https://gongdear.com:443/upload/cc3d11575a6c40f2b117a45b7bb63e7a_image.png" alt="imagepng"><br>
+<img src="https://gongdear.com:443/upload/2d66bc36e6704a95812e31f9ff0bc51c_image.png" alt="imagepng"></p>
+<p>可见此时已经可以不需要手动输入任何命令就可以将代码直接打包成私库中的镜像，并且版本号和pom文件中版本保持一致</p>
+<p><a href="https://img.hacpai.com/file/2019/02/5d149901bcdf40669042d2e6f6649688image-5208aae8.png" target="_blank">5d149901bcdf40669042d2e6f6649688image.png</a><a href="https://img.hacpai.com/file/2019/02/5d149901bcdf40669042d2e6f6649688image-380eea31.png" target="_blank">5d149901bcdf40669042d2e6f6649688image.png</a></p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1548207918357"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1548207918357",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1548207918357",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Jenkins,Docker",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1548207918357', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 495ms, 2021/03/15 13:04:53 -->

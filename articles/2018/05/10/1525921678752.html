@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>Postgresql配置文件参数 - gongdear</title><meta name="description" content="postgresql配置文件"/><meta property="og:description" content="postgresql配置文件"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="Postgresql配置文件参数 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2018/05/10/1525921678752.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="Postgresql配置文件参数 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2018/05/10/1525921678752.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="Centos7安装Postgresql数据库和Postgis插件" href="https://gongdear.github.io/articles/2018/05/10/1525921420617.html">
+            <link rel="next" title="Postgresql数据目录迁移" href="https://gongdear.github.io/articles/2018/05/10/1525922323977.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20181209.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20181209.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2018-05-10
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Postgresql">Postgresql</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                Postgresql配置文件参数
+            </h2>
+<div class="article__share"
+     data-title="Postgresql配置文件参数"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2018/05/10/1525921678752.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <p>如果要查看配置文件中的一些选项，则可以登录psql后 使用 命令来查看；</p>
+<p>show  选项名;</p>
+<p>show all；  #查看所有数据库参数的值</p>
+<p>主要选项：</p>
+<p>| 选项 | 默认值 | 说明 | 是否优化 | 原因 |<br>
+| max_connections | 100 | 允许客户端的最大并发连接数目 | 否 | 因为在测试的过程中，100个连接已经足够 |<br>
+| fsync | on | 强制把数据同步更新到磁盘 | 是 | 因为系统的IO压力很大，为了更好的测试其他配置的影响，把改参数改为off |<br>
+| shared_buffers | 24MB | 决定有多少内存可以被PostgreSQL用于缓存数据（推荐内存的1/4) | 是 | 在IO压力很大的情况下，提高该值可以减少IO |<br>
+| work_mem | 1MB | 使内部排序和一些复杂的查询都在这个buffer中完成 | 是 | 有助提高排序等操作的速度，并且减低IO |<br>
+| effective_cache_size | 128MB | 优化器假设一个查询可以用的最大内存，和shared_buffers无关（推荐内存的1/2) | 是 | 设置稍大，优化器更倾向使用索引扫描而不是顺序扫描 |<br>
+| maintenance_work_mem | 16MB | 这里定义的内存只是被VACUUM等耗费资源较多的命令调用时使用 | 是 | 把该值调大，能加快命令的执行 |<br>
+| wal_buffer | 768kB | 日志缓存区的大小 | 是 | 可以降低IO，如果遇上比较多的并发短事务，应该和commit_delay一起用 |<br>
+| checkpoint_segments | 3 | 设置wal log的最大数量数（一个log的大小为16M） | 是 | 默认的48M的缓存是一个严重的瓶颈，基本上都要设置为10以上 |<br>
+| checkpoint_completion_target | 0.5 | 表示checkpoint的完成时间要在两个checkpoint间隔时间的N%内完成 | 是 | 能降低平均写入的开销 |<br>
+| commit_delay | 0 | 事务提交后，日志写到wal log上到wal_buffer写入到磁盘的时间间隔。需要配合commit_sibling | 是 | 能够一次写入多个事务，减少IO，提高性能 |<br>
+| commit_siblings | 5 | 设置触发commit_delay的并发事务数，根据并发事务多少来配置 | 是 |</p>
+<p>减少IO，提高性能</p>
+<p>|</p>
+<p>| superuser_reserved_connections | 3 | 预留给超级用户的数据库连接数目，该值必须小于max_connections。 | 是 | 减少IO，提高性能 |</p>
+<p><strong>一、连接配置与安全认证</strong></p>
+<p>1**、连接Connection Settings**</p>
+<p>listen_addresses (string)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它指定数据库用来监听客户端连接的TCP/IP地址。默认是值是* ，表示数据库在启动以后将在运行数据的机器上的所有的IP地址上监听用户请求（如果机器只有一个网卡，只有一个IP地址，有多个网卡的机器有多个 IP地址）。可以写成机器的名字，也可以写成IP地址，不同的值用逗号分开，例如，’server01’, ’140.87.171.49, 140.87.171.21’。如果被设成localhost，表示数据库只能接受本地的客户端连接请求，不能接受远程的客户端连接请求。</p>
+<p>port (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它指定数据库监听户端连接的TCP端口。默认值是5432。</p>
+<p>max_connections (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它决定数据库可以同时建立的最大的客户端连接的数目。默认值是100。每个连接占用 400字节共享内存。Note:  Increasing max_connections costs ~400 bytes of shared memory per  connection slot, plus lock space (see max_locks_per_transaction).</p>
+<p>superuser_reserved_connections (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它表示预留给超级用户的数据库连接数目。它的值必须小于max_connections。 普通用户可以在数据库中建立的最大的并发连接的数目是max_connections 默认值是3。</p>
+<p>unix_socket_group (string)</p>
+<p>这个参数只有在启动数据库时，才能被设置。设置Unix-domain socket所在的操作系统用户组。默认值是空串，用启动数据库的操作系统用户所在的组作为Unix-domain socket的用户组。</p>
+<p>unix_socket_permissions  (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它设置Unix-domain socket的访问权限，格式与操作系统的文件访问权限是一样的。默认值是0770，表示任何操作系统用户都能访问Unix-domain socket。可以设为0770（所有Unix-domain socket文件的所有者所在的组包含的用户都能访问）和0700(只有Unix-domain socket文件的所有者才能访问)。对于Unix-domain socket，只有写权限才有意义，读和执行权限是没有意义的。</p>
+<p>#unix_socket_directories = '/tmp'       # comma-separated list of directories</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p>#bonjour = off                          # advertise server via Bonjour</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p>#bonjour_name = ''                      # defaults to the computer name</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p><strong>2、安全认证Security and Authentication</strong></p>
+<p>authentication_timeout (integer)</p>
+<p>这个参数只能在postgresql.conf文件中被设置，它指定一个时间长度，在这个时间长度内，必须完成客户端认证操作，否则客户端连接请求将被拒绝。它可以阻止某些客户端进行认证时长时间占用数据库连接。单位是秒，默认值是60。</p>
+<p>ssl (boolean)</p>
+<p>这个参数只有在启动数据库时，才能被设置。决定数据库是否接受SSL连接。默认值是off。</p>
+<p>ssl_ciphers (string)</p>
+<p>指定可以使用的SSL加密算法。查看操作系统关于openssl的用户手册可以得到完整的加密算法列表（执行命令openssl ciphers –v也可以得到）。</p>
+<p>#ssl_prefer_server_ciphers = on         # (change requires restart)</p>
+<p>#ssl_ecdh_curve = 'prime256v1'          # (change requires restart)</p>
+<p>#ssl_renegotiation_limit = 0            # amount of data between renegotiations</p>
+<p>#ssl_cert_file = 'server.crt'           # (change requires restart)</p>
+<p>#ssl_key_file = 'server.key'            # (change requires restart)</p>
+<p>#ssl_ca_file = ''                       # (change requires restart)</p>
+<p>#ssl_crl_file = ''                      # (change requires restart)</p>
+<p>#password_encryption = on</p>
+<p>#db_user_namespace = off</p>
+<h1 id="toc_h1_0">GSSAPI using Kerberos</h1>
+<p>#krb_server_keyfile = ''</p>
+<p>#krb_caseins_users = off</p>
+<h1 id="toc_h1_1">- TCP Keepalives -</h1>
+<p>tcp_keepalives_idle (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是0，意思是使用操作系统的默认值。它设置TCP套接字的TCP_KEEPIDLE属性。这个参数对于通过Unix-domain socket建立的数据库连接没有任何影响。即 间歇性发送TCP心跳包，房子连接被网络设备中断。</p>
+<p>tcp_keepalives_interval (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是0，意思是使用操作系统的默认值。它设置TCP套接字的TCP_KEEPINTVL属性。这个参数对于通过Unix-domain socket建立的数据库连接没有任何影响。</p>
+<p>tcp_keepalives_count (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是0，意思是使用操作系统的默认值。它设置TCP套接字的TCP_KEEPCNT属性。这个参数对于通过Unix-domain socket建立的数据库连接没有任何影响。</p>
+<p><strong>二、文件配置FILE LOCATIONS</strong></p>
+<h1 id="toc_h1_2">The default values of these variables are driven from the -D command-line</h1>
+<h1 id="toc_h1_3">option or PGDATA environment variable, represented here as ConfigDir.</h1>
+<p>#data_directory = 'ConfigDir'           # use data in another directory</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p>#hba_file = 'ConfigDir/pg_hba.conf'     # host-based authentication file</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p>#ident_file = 'ConfigDir/pg_ident.conf' # ident configuration file</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<h1 id="toc_h1_4">If external_pid_file is not explicitly set, no extra PID file is written.</h1>
+<p>#external_pid_file = ''                 # write an extra PID file</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p><strong>三、内存 Memory</strong></p>
+<p>shared_buffers (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它表示数据缓冲区中的数据块的个数，每个数据块的大小是8KB。数据缓冲区位于数据库的共享内存中，它越大越好，不能小于128KB。默认值是128MB。</p>
+<p>temp_buffers (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是8MB。它决定存放临时表的数据缓冲区中的数据块的个数，每个数据块的大小是8KB。临时表缓冲区存放在每个数据库进程的私有内存中，而不是存放在数据库的共享内存中。最小值800KB</p>
+<p>max_prepared_transactions (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它决定能够同时处于prepared状态的事务的最大数目（参考PREPARE TRANSACTION命令）。如果它的值被设为0。则将数据库将关闭prepared事务的特性。它的值通常应该和max_connections的值一样大。每个事务消耗600字节(b)共享内存。</p>
+<p>work_mem (integer)</p>
+<p>这个参数可以在任何时候被设置。它决定数据库的排序操作和哈希表使用的内存缓冲区的大小。如果work_mem指定的内存被耗尽，数据库将使用磁盘文件进行完成操作，速度会慢很多。ORDER BY、DISTINCT和merge连接会使用排序操作。哈希表在Hash连接、hash聚集函数和用哈希表来处理IN谓词中的子查询中被使用。单位是KB，默认值是4MB。</p>
+<p>maintenance_work_mem (integer)</p>
+<p>这个参数可以在任何时候被设置。它决定数据库的维护操作使用的内存空间的大小。数据库的维护操作包括VACUUM、CREATE INDEX和ALTER TABLE ADD FOREIGN KEY等操作。 maintenance_work_mem的值如果比较大，通常可以缩短VACUUM数据库和从dump文件中恢复数据库需要的时间。maintenance_work_mem存放在每个数据库进程的私有内存中，而不是存放在数据库的共享内存中。单位是KB，默认值是64MB。</p>
+<p>max_stack_depth (integer)</p>
+<p>这个参数可以在任何时候被设置，但只有数据库超级用户才能修改它。它决定一个数据库进程在运行时的STACK所占的空间的最大值。数据库进程在运行时，会自动检查自己的STACK大小是否超过max_stack_depth，如果超过，会自动终止当前事务。这个值应该比操作系统设置的进程STACK的大小的上限小1MB。使用操作系统命令“ulimit –s“可以得到操作系统设置的进程STACK的最大值。单位是KB，默认值是2MB。</p>
+<p>#huge_pages = try                       # on, off, or try  (change requires restart)</p>
+<p>#尽量使用大页，需要操作系统的支持，配置vm.nr_hugepages*2MB大于 shared_buffers.</p>
+<p>dynamic_shared_memory_type = posix</p>
+<pre><code>                                     # the default is the first option
+
+                                    # supported by the operating system:
+
+                                    #   posix
+
+                                    #   sysv
+
+                                    #   windows
+
+                                    #   mmap
+
+                                    # use none to disable dynamic shared memory
+</code></pre>
+<p>#autovacuum_work_mem = -1</p>
+<h1 id="toc_h1_5">min 1MB, or -1 to use           maintenance_work_mem</h1>
+<p><strong>四、资源（空闲空间映射）</strong></p>
+<p>Free Space Map<br>
+数据库的所有可用空间信息都存放在一个叫free space map (FSM)的结构中，它记载数据文件中每个数据块的可用空间的大小。FSM中没有记录的数据块，即使有可用空间，也不会系统使用。系统如果需要新的物理存储空间，会首先在FSM中查找，如果FSM中没有一个数据页有足够的可用空间，系统就会自动扩展数据文件。所以，FSM如果太小，会导致系统频繁地扩展数据文件，浪费物理存储空间。命令VACUUM VERBOSE在执行结束以后，会提示当前的FSM设置是否满足需要，如果FSM的参数值太小，它会提示增大参数。</p>
+<p>FSM存放在数据库的共享内存中，由于物理内存的限制，FSM不可能跟踪数据库的所有的数据文件的所有数据块的可用空间信息，只能跟踪一部分数据块的可用空间信息。</p>
+<p>max_fsm_relations (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。默认值是1000。它决定FSM跟踪的表和索引的个数的上限。每个表和索引在FSM中占7个字节的存储空间。</p>
+<p>max_fsm_pages (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它决定FSM中跟踪的数据块的个数的上限。initdb在创建数据库集群时会根据物理内存的大小决定它的值。每个数据块在fsm中占6个字节的存储空间。它的大小不能小于16 * max_fsm_relations。默认值是20000。</p>
+<p><strong>五、内核资源Kernel Resource Usage</strong></p>
+<p>max_files_per_process (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。他设定每个数据库进程能够打开的文件的数目。默认值是1000。</p>
+<p>shared_preload_libraries (string)</p>
+<p>这个参数只有在启动数据库时，才能被设置。它设置数据库在启动时要加载的操作系统共享库文件。如果有多个库文件，名字用逗号分开。如果数据库在启动时未找到shared_preload_libraries指定的某个库文件，数据库将无法启动。默认值为空串。</p>
+<p><strong>六、垃圾资源回收Cost-Based Vacuum Delay</strong></p>
+<p>执行VACUUM 和ANALYZE命令时，因为它们会消耗大量的CPU与IO资源，而且执行一次要花很长时间，这样会干扰系统执行应用程序发出的SQL命令。为了解决这个问题，VACUUM 和ANALYZE命令执行一段时间后，系统会暂时终止它们的运行，过一段时间后再继续执行这两个命令。这个特性在默认的情况下是关闭的。将参数vacuum_cost_delay设为一个非零的正整数就可以打开这个特性。</p>
+<p>用户通常只需要设置参数vacuum_cost_delay和vacuum_cost_limit，其它的参数使用默认值即可。VACUUM 和ANALYZE命令在执行过程中，系统会计算它们执行消耗的资源，资源的数量用一个正整数表示，如果资源的数量超过vacuum_cost_limit，则执行命令的进程会进入睡眠状态，睡眠的时间长度是是vacuum_cost_delay。vacuum_cost_limit的值越大，VACUUM 和ANALYZE命令在执行的过程中，睡眠的次数就越少，反之，vacuum_cost_limit的值越小，VACUUM 和ANALYZE命令在执行的过程中，睡眠的次数就越多。</p>
+<p>vacuum_cost_delay (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是0。它决定执行VACUUM 和ANALYZE命令的进程的睡眠时间。单位是毫秒。它的值最好是10的整数，如果不是10的整数，系统会自动将它设为比该值大的并且最接近该值的是10的倍数的整数。如果值是0，VACUUM 和ANALYZE命令在执行过程中不会主动进入睡眠状态，会一直执行下去直到结束。</p>
+<p>vacuum_cost_page_hit (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是1。锁住缓冲池，查找共享的散列表以及扫描页面的内容的开销(credits)。</p>
+<p>vacuum_cost_page_miss (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是10。表示锁住缓冲池，查找共享散列表，从磁盘读取需要的数据块以及扫描它的内容的开销。</p>
+<p>vacuum_cost_page_dirty (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是20。如果清理修改一个原先是干净的块的预计开销。它需要一个把脏的磁盘块再次冲刷到磁盘上的额外开销。</p>
+<p>vacuum_cost_limit (integer)</p>
+<p>这个参数可以在任何时候被设置。默认值是200。导致清理进程休眠的积累开销。</p>
+<p><strong>七、后台写数据库进程Background Writer</strong></p>
+<p>后台写数据库进程负责将数据缓冲区中的被修改的数据块（又叫脏数据块）写回到数据库物理文件中。</p>
+<p>bgwriter_delay (integer)</p>
+<p>这个参数只能在文件postgresql.conf中设置。它决定后台写数据库进程的睡眠时间。后台写数据库进程每次完成写数据到物理文件中的任务以后，就会睡眠bgwriter_delay指定的时间。 bgwriter_delay的值应该是10的倍数，如果用户设定的值不是10的倍数，数据库会自动将参数的值设为比用户指定的值大的最接近用户指定的值的同时是10的倍数的值。单位是毫秒，默认值是200。即 后端写进程每隔多少毫秒重复一次动作。</p>
+<p>bgwriter_lru_maxpages (integer)</p>
+<p>这个参数只能在文件postgresql.conf中设置。默认值是100。后台写数据库进程每次写脏数据块时，写到外部文件中的脏数据块的个数不能超过bgwriter_lru_maxpages指定的值。例如，如果它的值是500，则后台写数据库进程每次写到物理文件的数据页的个数不能超过500，若超过，进程将进入睡眠状态，等下次醒来再执行写物理文件的任务。如果它的值被设为0, 后台写数据库进程将不会写任何物理文件（但还会执行检查点操作）。</p>
+<p>即 一个周期最多写多少脏页。</p>
+<p>bgwriter_lru_multiplier (floating point)</p>
+<p>这个参数只能在文件postgresql.conf中设置。默认值是2.0。它决定后台写数据库进程每次写物理文件时，写到外部文件中的脏数据块的个数（不能超过bgwriter_lru_maxpages指定的值）。一般使用默认值即可，不需要修改这个参数。这个参数的值越大，后台写数据库进程每次写的脏数据块的个数就越多</p>
+<p><strong>----Asynchronous Behavior----</strong></p>
+<p>#effective_io_concurrency = 1           # 1-1000; 0 disables prefetching</p>
+<p>#max_worker_processes = 8</p>
+<p>如果要使用 worker process,最多可以允许 fork多少个 worker进程</p>
+<p><strong>八、事务日志预写</strong></p>
+<p>full_page_writes (boolean)</p>
+<p>这个参数只能在postgresql.conf文件中被设置。默认值是on。打开这个参数，可以提高数据库的可靠性，减少数据丢失的概率，但是会产生过多的事务日志，降低数据库的性能。 即 服务器在checkpoint之后在对页面的第一次写时将整个页面写到wal里面。</p>
+<p>wal_buffers (integer)</p>
+<p>这个参数只有在启动数据库时，才能被设置。默认值是8。它指定事务日志缓冲区中包含的数据块的个数，每个数据块的大小是8KB，所以默认的事务日志缓冲区的大小是8*8=64KB。事务日志缓冲区位于数据库的共享内存中。即 放在共享内存里用于wal 数据的磁盘页面缓冲区的数目，最小32kb，-1表示基于share buffer的设置。</p>
+<p>wal_writer_delay (integer)</p>
+<p>这个参数只能在postgresql.conf文件中被设置。它决定写事务日志进程的睡眠时间。WAL进程每次在完成写事务日志的任务后，就会睡眠wal_writer_delay指定的时间，然后醒来，继续将新产生的事务日志从缓冲区写到WAL文件中。单位是毫秒（millisecond），默认值是200。 即 每隔多长时间进行一次写操作。</p>
+<p>commit_delay (integer)</p>
+<p>这个参数可以在任何时候被设置。它设定事务在发出提交命令以后的睡眠时间，只有在睡眠了commit_delay指定的时间以后，事务产生的事务日志才会被写到事务日志文件中，事务才能真正地提交。增大这个参数会增加用户的等待时间，但是可以让多个事务被同时提交，提高系统的性能。如果数据库中的负载比较高，而且大部分事务都是更新类型的事务，可以考虑增大这个参数的值。下面的参数commit_siblings会影响commit_delay是否生效。默认值是0，单位是微秒（microsecond）。0表示无延迟。即 向WAL缓冲区写入记录和将缓冲区刷新到磁盘上之间的时间延迟。</p>
+<p>commit_siblings (integer)</p>
+<p>这个参数可以在任何时候被设置。这个参数的值决定参数commit_delay是否生效。假设commit_siblings的值是5，如果一个事务发出一个提交请求，此时，如果数据库中正在执行的事务的个数大于或等于5，那么该事务将睡眠commit_delay指定的时间。如果数据库中正在执行的事务的个数小于5，这个事务将直接提交。默认值是5。即 在commit_delay时间内，最少打开的并发事务数（1-1000）；</p>
+<p>#wal_level = minimal        预写日志模式</p>
+<pre><code>                                    # minimal, archive, hot_standby, or logical
+
+                                    # (change requires restart)
+</code></pre>
+<p>#fsync = on                          设置同步方式</p>
+<pre><code>                                     # turns forced synchronization on or off
+</code></pre>
+<p>#synchronous_commit = on          如果磁盘的IOPS一般，建议使用异步提交来提高性能，但是数据库crash或操作系统crash时，最多可能丢失2*wal_writer_delay时间段产生的事务日志（在wal buffer中）</p>
+<pre><code>                                     # synchronization level;
+
+                                    # off, local, remote_write, or on
+</code></pre>
+<p>#wal_sync_method = fsync        用来向磁盘强制更新wal数据的方法。如果fsync 是关闭的，那这个设置就是无关无效的。</p>
+<pre><code>                                    # the default is the first option
+
+                                    # supported by the operating system:
+
+                                    #   open_datasync（用O_DSYNC选项的open()打开WAL文件)
+
+                                    #   fdatasync (default on Linux) 每次提交的时候都调用fdatasync()
+
+                                    #   fsync 每次提交的时候都调用fsync
+
+                                    #   fsync_writethrough每次提交的时候都调用fsync(),强制写出任何磁盘写缓冲区
+
+                                    #   open_sync 用O_DSYNC选项的open()打开WAL文件
+</code></pre>
+<p>#wal_log_hints = off</p>
+<pre><code>                                    # also do full page writes of non-critical updates  (change requires restart)
+</code></pre>
+<p><strong>九、</strong></p>
+<p><strong>十、检查点Checkpoints</strong></p>
+<p>checkpoint_segments (integer) in logfile segments, min 1, 16MB each</p>
+<p>这个参数只能在postgresql.conf文件中被设置。默认值是3。它影响系统何时启动一个检查点操作。如果上次检查点操作结束以后，系统产生的事务日志文件的个数超过checkpoint_segments的值，系统就会自动启动一个检查点操作。增大这个参数会增加数据库崩溃以后恢复操作需要的时间。即 最大多少大小的段发生一次checkpoint,等于shared_buffers除以单个wal segment的大小。</p>
+<p>checkpoint_timeout (integer) range 30s-1h</p>
+<p>这个参数只能在postgresql.conf文件中被设置。单位是秒，默认值是300。它影响系统何时启动一个检查点操作。如果现在的时间减去上次检查点操作结束的时间超过了checkpoint_timeout的值，系统就会自动启动一个检查点操作。增大这个参数会增加数据库崩溃以后恢复操作需要的时间。即 最大多长时间发生一次checkpoint</p>
+<p>checkpoint_completion_target (floating point)</p>
+<p>这个参数控制检查点操作的执行时间。合法的取值在0到1之间，默认值是0.5。不要轻易地改变这个参数的值，使用默认值即可。 这个参数只能在postgresql.conf文件中被设置。</p>
+<p>#checkpoint_warning = 30s</p>
+<p><strong>十一、磁盘 Disk</strong></p>
+<p>#temp_file_limit = -1                   # limits per-session temp file space</p>
+<pre><code>                                                   # in kB, or -1 for no limit
+</code></pre>
+<p>每个会话的临时文件空间(kb),-1 表示无限制</p>
+<p><strong>十二、归档模式Archiving</strong></p>
+<p>archive_mode (boolean)</p>
+<p>这个参数只有在启动数据库时，才能被设置。默认值是off。它决定数据库是否打开归档模式。</p>
+<p>archive_dir (string)<br>
+这个参数只有在启动数据库时，才能被设置。默认值是空串。它设定存放归档事务日志文件的目录。</p>
+<p>archive_timeout (integer)</p>
+<p>这个参数只能在postgresql.conf文件中被设置。默认值是0。单位是秒。如果archive_timeout的值不是0，而且当前时间减去数据库上次进行事务日志文件切换的时间大于archive_timeout的值，数据库将进行一次事务日志文件切换。一般情况下，数据库只有在一个事务日志文件写满以后，才会切换到下一个事务日志文件，设定这个参数可以让数据库在一个事务日志文件尚未写满的情况下切换到下一个事务日志文件。</p>
+<p><strong>十三、优化器参数QUERY TUNING</strong></p>
+<p><strong>1、存取方法参数 Planner Method Configuration</strong></p>
+<p>下列参数控制查询优化器是否使用特定的存取方法。除非对优化器特别了解，一般情况下，使用它们默认值即可。</p>
+<p>enable_bitmapscan (boolean)</p>
+<p>打开或者关闭规划器对位图扫描规划类型的使用 。默认值是 on。</p>
+<p>enable_hashagg (boolean)</p>
+<p>打开或者关闭查询规划器对散列聚集规划类型的使用。默认值是 on。</p>
+<p>enable_hashjoin (boolean)</p>
+<p>打开或者关闭查询规划器对散列连接规划类型的使用。默认值是 on。</p>
+<p>enable_indexscan (boolean)</p>
+<p>打开或者关闭查询规划器对索引扫描规划类型的使用。默认值是 on。</p>
+<p>enable_mergejoin (boolean)</p>
+<p>打开或者关闭查询规划器对合并连接规划类型的使用。默认值是 on。</p>
+<p>enable_nestloop (boolean)</p>
+<p>打开或者关闭查询规划器对嵌套循环连接规划类型的使用。默认值是 on。</p>
+<p>enable_seqscan (boolean)</p>
+<p>打开或者关闭查询规划器对顺序扫描规划类型的使用。默认值是 on。</p>
+<p>enable_sort (boolean)</p>
+<p>打开或者关闭查询规划器使用明确的排序步骤。默认值是 on。</p>
+<p>enable_tidscan (boolean)</p>
+<p>打开或者关闭查询规划器对TID扫描规划类型的使用。默认值是 on。</p>
+<p><strong>2、 <strong>优化器成本常量 Planner Cost Constants</strong></strong></p>
+<p>优化器用一个正的浮点数来表示不同的查询计划的执行成本，每个基本的数据库操作都会被赋给一个确定的成本常量，优化器根据每个基本操作的执行成本来计算每个查询计划的执行成本。不要轻易地改变下面的参数的值，使用它们的默认值即可。</p>
+<p>seq_page_cost (floating point)</p>
+<p>设置从数据文件上顺序读取一个数据块的执行成本。默认值是1.0。</p>
+<p>random_page_cost (floating point)</p>
+<p>设置从数据文件上随机读取一个数据块的执行成本。默认值是4.0。</p>
+<p>cpu_tuple_cost (floating point)</p>
+<p>设置处理每一个数据行的执行成本。默认值是0.01。</p>
+<p>cpu_index_tuple_cost (floating point)</p>
+<p>设置在扫描索引的过程中处理每一个索引项的执行成本。默认值是0.005。</p>
+<p>cpu_operator_cost (floating point)</p>
+<p>设置处理每一个运算符或函数的执行成本。默认值是0.0025。</p>
+<p>effective_cache_size (integer)</p>
+<p>设置单个查询可以使用的数据缓冲区的大小。默认值是128MB。</p>
+<p><strong>3、查询优化 Genetic Query Optimizer</strong></p>
+<p>下列参数控制优化器使用的遗传算法。除非对遗传算法特别了解，一般情况下，使用它们默认值即可。</p>
+<p>geqo (boolean)</p>
+<p>打开或者关闭遗传优化器。默认值是on。</p>
+<p>geqo_threshold (integer)</p>
+<p>确定使用遗传优化器的查询类型。默认值是12。如果FROM子句中引用的的表的数目超过geqo_threshold的值，就会使用遗传优化器。对于简单的查询使用穷举优化器。</p>
+<p>geqo_effort (integer)</p>
+<p>控制遗传优化器在生成查询计划需要的时间和查询计划的有效性之间做一个折中。有效的取值范围是1到 10。默认值是5。值越大，优化器花在选择查询计划的上的时间越长，同时找到一个最优的查询计划的可能性就越大。系统通常不直接使用geqo_effort的值，而是使用它的值来计算参数geqo_pool_size和geqo_generations的默认。</p>
+<p>geqo_pool_size (integer)</p>
+<p>控制遗传优化器的池(pool)大小。默认值是0。池大小是遗传群体中的个体数目。至少是2，典型的取值在10和1000之间。如果参数的值是0，系统会自动根据geqo_effort的值和查询中引用的表的个数选择一个默认值。</p>
+<p>geqo_generations (integer)</p>
+<p>控制遗传优化器的代(generation)的大小。默认值是0。代是遗传算法的迭代次数。至少是1，典型的取值范围与池的取值范围相同。如果参数的值是0，系统会自动根据geqo_pool_size的值和选择一个默认值。</p>
+<p>geqo_selection_bias (floating point)</p>
+<p>控制遗传优化器的代选择偏差(selection bias)的大小。默认值是2。取值范围在1.50到2.00之间。</p>
+<p><strong>4、其它优化器参数 Other Planner Options</strong></p>
+<p>default_statistics_target (integer)</p>
+<p>设置默认的收集优化器统计数据的目标值。它的值越大，ANALYZE操作的执行的时间越长，扫描的数据行的个数也就越多，得到的优化器统计数据就越准确。也可以使用命令ALTER TABLE ... ALTER COLUMN ... SET STATISTICS来为表的每个列设置一个单独的统计数据目标值，这个值的作用与参数default_statistics_target是一样，它只影响相关的列的统计数据收集过程。默认值是10。</p>
+<p>constraint_exclusion (boolean)</p>
+<p>如果该参数的值是on，查询优化器将使用表上的约束条件来优化查询。如果它的值是off，查询优化器不会使用表上的约束条件来优化查询。默认值是off。</p>
+<p>#cursor_tuple_fraction = 0.1            # range 0.0-1.0</p>
+<p>#from_collapse_limit = 8</p>
+<p>#join_collapse_limit = 8                   # 1 disables collapsing of explicit</p>
+<pre><code>                                                        # JOIN clauses
+</code></pre>
+<p><strong>十四、数据库运行日志配置参数</strong></p>
+<p>1、<strong>Where to Log</strong></p>
+<p>log_destination = 'stderr'              # Valid values are combinations of</p>
+<pre><code>                                    # stderr, csvlog, syslog, and eventlog,
+
+                                    # depending on platform.  csvlog
+
+                                    # requires logging_collector to be on.
+</code></pre>
+<h1 id="toc_h1_6">This is used when logging to stderr:</h1>
+<p>logging_collector = on                  # Enable capturing of stderr and csvlog</p>
+<pre><code>                                    # into log files. Required to be on for
+
+                                    # csvlogs.
+
+                                    # (change requires restart)
+</code></pre>
+<h1 id="toc_h1_7">These are only used if logging_collector is on:</h1>
+<p>log_directory (string)</p>
+<p>这个参数只能在postgresql.conf文件中被设置。它决定存放数据库运行日志文件的目录。默认值是pg_log。可以是绝对路径，也可是相对路径（相对于数据库文件所在的路径）。</p>
+<p>log_filename (string)</p>
+<p>它决定数据库运行日志文件的名称。默认值是postgresql-%Y-%m-%d_%H%M%S.log。它的值可以包含%Y、%m、%d、%H、%M和%S这样的字符串，分别表示年、月、日、小时、分和秒。 如果参数的值中没有指定时间信息（没有出现%Y、%m、%d、%H、%M和%S中的任何一个），系统会自动在log_filename值的末尾加上文件创建的时间作为文件名，例如，如果log_filename的值是 server_log，那么在Sun Aug 29 19:02:33 2004 MST被创建的日志文件的名称将是server_log.1093827753，1093827753是Sun Aug 29 19:02:33 2004 MST在数据库内部的表示形式。这个参数只能在postgresql.conf文件中被设置。</p>
+<p>log_rotation_age (integer)</p>
+<p>它决定何时创建一个新的数据库日志文件。单位是分钟。默认值是0。如果现在的时间减去上次创建一个数据库运行日志的时间超过了log_rotation_age的值，数据库将自动创建一个新的运行日志文件。如果它的值是0，该参数将不起任何作用。这个参数只能在postgresql.conf文件中被设置。</p>
+<p>log_rotation_size (integer)</p>
+<p>这个参数只能在postgresql.conf文件中被设置。它决定何时创建一个新的数据库日志文件。单位是KB。默认值是10240。如果一个日志文件写入的数据量超过log_rotation_size的值，数据库将创建一个新的日志文件。如果它的值被设为0，该参数将不起任何作用。</p>
+<p>log_truncate_on_rotation (boolean)</p>
+<p>系统在创建一个新的数据库运行日志文件时，如果发现存在一个同名的文件，当log_truncate_on_rotation的值是on时，系统覆盖这个同名文件。当log_truncate_on_rotation的值是off时，系统将重用这个同名文件，在它的末尾添加新的日志信息。另外要注意的是，只有在因为参数log_rotation_age起作用系统才创建新的日志文件的情况下，才会覆盖同名的日志文件。因为数据库重新启动或者因为参数log_rotation_size起作用而创建新的日志文件，不会覆盖同名的日志文件，而是在同名的日志文件末尾添加新的日志信息。这个参数只能在postgresql.conf文件中被设置。默认值是off。</p>
+<p>例如，将这个参数设为on，将log_rotation_age设为60，将同时将log_filename设为postgresql-%H.log，系统中一共将只有24个日志文件，它们会被不断地重用，任何时刻，系统中最多只有最近24小时的日志信息。</p>
+<h1 id="toc_h1_8">These are relevant when logging to syslog:</h1>
+<p>#syslog_facility = 'LOCAL0'</p>
+<p>#syslog_ident = 'postgres'</p>
+<h1 id="toc_h1_9">This is only relevant when logging to eventlog (win32):</h1>
+<p>#event_source = 'PostgreSQL</p>
+<p>2、<strong>When to Log</strong></p>
+<p>client_min_messages (string)</p>
+<p>控制发送给客户端的消息级别。合法的取值是DEBUG5、DEBUG4、DEBUG3、DEBUG2、DEBUG1、LOG、NOTICE、WARNING、ERROR、FATAL和PANIC，每个级别都包含排在它后面的所有级别中的信息。级别越低，发送给客户端的消息就越少。 默认值是NOTICE。这个参数可以在任何时候被设置。</p>
+<p>log_min_messages (string)</p>
+<p>控制写到数据库日志文件中的消息的级别。合法的取值是DEBUG5、DEBUG4、DEBUG3、DEBUG2、DEBUG1、INFO、NOTICE、WARNING、ERROR、 LOG、FATAL和PANIC，每个级别都包含排在它后面的所有级别中的信息。级别越低，数据库运行日志中记录的消息就越少。默认值是NOTICE。只有超级用户才能修改这个参数。只有超级用户才能设置这个参数。</p>
+<p>log_error_verbosity (string)</p>
+<p>控制每条日志信息的详细程度。合法的取值是TERSE、DEFAULT和VERBOSE（每个取值都比它前面的取值提供更详细的信息）。只有超级用户才能修改这个参数。默认值是DEFAULT。</p>
+<p>log_min_error_statement (string)</p>
+<p>控制日志中是否记录导致数据库出现错误的SQL语句。合法的取值是DEBUG5、DEBUG4、DEBUG3、DEBUG2、DEBUG1、INFO、NOTICE、WARNING、ERROR、 LOG、FATAL和PANIC，每个级别都包含排在它后面的所有级别。默认值是ERROR。只有超级用户才能修改这个参数。</p>
+<p>消息严重级别</p>
+<p>严重级别<br>
+用法</p>
+<p>DEBUG1..DEBUG5<br>
+报告详细的调试信息。</p>
+<p>INFO<br>
+报告用户可能需要的信息。</p>
+<p>NOTICE<br>
+报告对用户有用的信息。</p>
+<p>WARNING<br>
+报告警告信息。</p>
+<p>ERROR<br>
+报告错误信息。</p>
+<p>LOG<br>
+报告对数据库管理员有用的信息, 例如，检查点操作统计信息。</p>
+<p>FATAL<br>
+报告导致当前会话被终止的错误信息。</p>
+<p>PANIC</p>
+<p>报告导致整个数据库被关闭的错误信息。</p>
+<p><strong>3、What to Log</strong></p>
+<p>debug_print_parse (boolean)<br>
+debug_print_rewritten (boolean)<br>
+debug_print_plan (boolean)<br>
+debug_pretty_print (boolean)</p>
+<p>这些参数控制数据库是否输出运行时的调试信息。这些参数的默认值是off。这些参数可以被任何用户设置。</p>
+<p>log_checkpoints (boolean)</p>
+<p>控制是否及记录检查点操作信息。默认值是off。这个参数只能在postgresql.conf文件中被设置。必须重启数据库才能生效。</p>
+<p>log_connections (boolean)</p>
+<p>控制是否及记录客户端连接请求信息。默认值是off。这个参数只能在postgresql.conf文件中被设置。必须重启数据库才能生效。</p>
+<p>log_disconnections (boolean)</p>
+<p>控制是否记录客户端结束连接信息。默认值是off。这个参数只能在postgresql.conf文件中被设置。</p>
+<p>log_duration (boolean)</p>
+<p>控制是否记录每个完成的SQL语句的执行时间。只有超级用户才能修改这个参数。默认值是off。对于使用扩展协议与数据库通信的客户端，会记载Parse、Bind和Execute的执行时间。</p>
+<p>log_hostname (boolean)</p>
+<p>控制是否及记录客户端的主机名。默认值是off。如果设为on，可能会影响数据库的性能，因为解析主机名可能需要一定的时间。这个参数只能在postgresql.conf文件中被设置。这个参数只能在postgresql.conf文件中被设置。</p>
+<p>log_line_prefix (string)</p>
+<p>控制每条日志信息的前缀格式。默认值是空串。它的格式类似c语言中printf函数的format字符串。这个参数只能在postgresql.conf文件中被设置。</p>
+<p>log_line_prefix = '&lt; %m &gt;'                      # special values:</p>
+<p>转义序列</p>
+<h1 id="toc_h1_10">%a = application name</h1>
+<h1 id="toc_h1_11">%u = user name  用户名</h1>
+<h1 id="toc_h1_12">%d = database name  数据库名</h1>
+<h1 id="toc_h1_13">%r = remote host and port  客户端机器名或IP地址,还有客户端端口</h1>
+<h1 id="toc_h1_14">%h = remote host  客户端机器名或IP地址</h1>
+<h1 id="toc_h1_15">%p = process ID  进程ID</h1>
+<h1 id="toc_h1_16">%t = timestamp without milliseconds  带微秒的时间</h1>
+<h1 id="toc_h1_17">%m = timestamp with milliseconds  不带微秒的时间</h1>
+<h1 id="toc_h1_18">%i = command tag  命令标签: 会话当前执行的命令类型</h1>
+<h1 id="toc_h1_19">%e = SQL state</h1>
+<h1 id="toc_h1_20">%c = session ID 会话ID</h1>
+<h1 id="toc_h1_21">%l = session line number 每个会话的日志编号，从1开始</h1>
+<h1 id="toc_h1_22">%s = session start timestamp 进程启动时间</h1>
+<h1 id="toc_h1_23">%v = virtual transaction ID  虚拟事务ID (backendID/localXID)</h1>
+<h1 id="toc_h1_24">%x = transaction ID (0 if none) 事务ID (0表示没有分配事务ID)</h1>
+<h1 id="toc_h1_25">%q = stop here in non-session 不产生任何输出。如果当前进程是backend进程，忽略这个转义序列，继续处理后面的转义序列。如果当前进程不是backend进程，忽略这个转义序列和它后面的所有转义序列。</h1>
+<h1 id="toc_h1_26">processes</h1>
+<h1 id="toc_h1_27">%%     '%' 字符%</h1>
+<p>log_lock_waits (boolean)</p>
+<p>如果一个会话等待某个类型的锁的时间超过deadlock_timeout的值，该参数决定是否在数据库日志中记录这个信息。默认值是off。只有超级用户才能修改这个参数。</p>
+<p>log_statement (string)</p>
+<p>控制记录哪种SQL语句的执行信息。有效的取值是none、ddl、mod和all。默认值是none。ddl包括所有数据定义语句，如CREATE、ALTER和DROP语句。mod包括所有ddl语句和更新数据的语句，例如INSERT、UPDATE、DELETE、TRUNCATE、 COPY FROM、PREPARE和 EXECUTE。All包括所有的语句。只有超级用户才能修改这个参数。</p>
+<p>log_temp_files (integer)</p>
+<p>控制是否记录临时文件的删除信息。单位是KB。0表示记录所有临时文件的删除信息。正整数表示只记录大小比log_temp_files的值大的临时文件的删除信息。-1表示不记录任何临时文件删除信息。默认值是-1。这个参数可以在任何时候被设置。</p>
+<p>log_timezone (string)</p>
+<p>设置数据库日志文件在写日志文件时使用的时区。默认值是unknown，意识是使用操作系统的时区。这个参数只能在postgresql.conf文件中被设置</p>
+<p><strong>十五、数据库运行统计相关参数RUNTIME STATISTICS</strong></p>
+<p>下面的参数控制是否搜集特定的数据库运行统计数据：</p>
+<p><strong>---Query/Index Statistics Collector----</strong></p>
+<p>track_activities (boolean)</p>
+<p>是否收集每个会话的当前正在执行的命令的统计数据，包括命令开始执行的时间。默认值是on。只有超级用户才能修改这个参数。</p>
+<p>track_counts (boolean)</p>
+<p>是否收集数据库活动的统计数据。默认值是on。只有超级用户才能修改这个参数。</p>
+<p>#track_io_timing = off</p>
+<p>#track_functions = none                 # none, pl, all</p>
+<p>#track_activity_query_size = 1024       # (change requires restart)</p>
+<p>#update_process_title = on</p>
+<p>#stats_temp_directory = 'pg_stat_tmp'</p>
+<p><strong>---统计监测Statistics Monitoring--</strong></p>
+<p>log_statement_stats (boolean)<br>
+log_parser_stats (boolean)<br>
+log_planner_stats (boolean)<br>
+log_executor_stats (boolean)</p>
+<p>这些参数决定是否在数据库的运行日志里记载每个SQL语句执行的统计数据。如果log_statement_stats的值是on，其它的三个参数的值必须是off。所有的这些参数的默认值都是off。log_statement_stats报告整个语句的统计数据，log_parser_stats记载数据库解析器的统计数据，log_planner_stats报告数据库查询优化器的统计数据，log_executor_stats报告数据库执行器的统计数据。只有超级用户才能修改这些参数。</p>
+<p><strong>十六、自动垃圾收集相关参数AUTOVACUUM PARAMETERS</strong></p>
+<p>下面的参数控制自动垃圾收集的行为：</p>
+<p>autovacuum (boolean)</p>
+<p>控制是够打开数据库的自动垃圾收集功能。默认值是on。如果autovacuum被设为on，参数track_counts（参考本章10.9）也要被设为on，自动垃圾收集才能正常工作。注意，即使这个参数被设为off，如果事务ID回绕即将发生，数据库会自动启动一个垃圾收集操作。这个参数只能在文件postgresql.conf中被设置。</p>
+<p>log_autovacuum_min_duration (integer)</p>
+<p>单位是毫秒。如果它的值为0，所有的垃圾搜集操作都会被记录在数据库运行日志中，如果它的值是-1，所有的垃圾收集操作都不会被记录在数据库运行日志中。如果把它的值设为250毫秒，只要自动垃圾搜集发出的VACUUM和ANALYZE命令的执行时间超过250毫秒，VACUUM和ANALYZE命令的相关信息就会被记录在数据库运行日志中。默认值是-1。这个参数只能在 postgresql.conf中被设置。</p>
+<p>autovacuum_max_workers (integer)</p>
+<p>设置能同时运行的最大的自动垃圾收集工作进程的数目。默认值是3。这个参数只能在文件postgresql.conf中被设置。</p>
+<p>autovacuum_naptime (integer)</p>
+<p>设置自动垃圾收集控制进程的睡眠时间。单位是秒，默认值是60。这个参数只能在文件postgresql.conf中被设置。</p>
+<p>autovacuum_vacuum_threshold (integer)</p>
+<p>设置触发垃圾收集操作的阈值。默认值是50。这个参数只能在文件postgresql.conf中被设置。只有一个表上被删除或更新的记录的数目超过了autovacuum_vacuum_threshold的值，才会对这个表执行垃圾收集操作。</p>
+<p>autovacuum_analyze_threshold (integer)</p>
+<p>设置触发ANALYZE操作的阈值。默认值是50。这个参数只能在文件postgresql.conf中被设置。只有一个表上被删除、插入或更新的记录的数目超过了autovacuum_analyze_threshold的值，才会对这个表执行ANALYZE操作。</p>
+<p>autovacuum_vacuum_scale_factor (floating point)</p>
+<p>这个参数与何时对一个表进行垃圾收集操作相关。默认值是0.2。这个参数只能在文件postgresql.conf中被设置。</p>
+<p>autovacuum_analyze_scale_factor (floating point)</p>
+<p>这个参数与何时对一个表进行ANALYZE操作相关。默认值是0.1。这个参数只能在文件postgresql.conf中被设置。</p>
+<p>**autovacuum_freeze_max_age = 200000000 **</p>
+<h1 id="toc_h1_28">maximum XID age before forced vacuum # (change requires restart)</h1>
+<p>指定表上事务的最大年龄，默认2亿，达到这个阀值将触发 autovacuum进程，从而避免 wraparound. 表上的事务年龄可通过 pg_class.relfrozenxid查询</p>
+<p><strong>autovacuum_multixact_freeze_max_age = 400000000</strong></p>
+<h1 id="toc_h1_29">maximum multixact age</h1>
+<h1 id="toc_h1_30">before forced vacuum</h1>
+<h1 id="toc_h1_31">(change requires restart)</h1>
+<p>**autovacuum_vacuum_cost_delay = 20ms   **</p>
+<h1 id="toc_h1_32">default vacuum cost delay for</h1>
+<h1 id="toc_h1_33">autovacuum, in milliseconds;</h1>
+<h1 id="toc_h1_34">-1 means use vacuum_cost_delay</h1>
+<p>当 autovacuum进程即将执行时，对vacuum执行cost进行评估，如果超过 autovacuum_vacuum_cost_limit的值时，则延迟，这个延迟的时间值即为改成的值.</p>
+<p><strong>autovacuum_vacuum_cost_limit = -1</strong></p>
+<h1 id="toc_h1_35">default vacuum cost limit for</h1>
+<h1 id="toc_h1_36">autovacuum, -1 means use</h1>
+<h1 id="toc_h1_37">vacuum_cost_limit</h1>
+<p>这个值 为 autovacuum进程的评估阀值，默认值为-1，表使用 vacuum_cost_limit值，如果在执行 autovacuum进程期间评估的 cost 超过 autovacuum_vacuum_cost_limit,则 autovacuum进程则会休眠</p>
+<p><strong>十七、锁管理LOCK MANAGEMENT</strong></p>
+<p>deadlock_timeout(integer)</p>
+<p>设置死锁超时检测时间。单位是微秒，默认值是1000。死锁检测是一个消耗许多 CPU资源的操作。这个参数的值不能太小。在数据库负载比较大的情况下，应当增大这个参数的值。</p>
+<p>max_locks_per_transaction(integer)</p>
+<p>这个参数控制每个事务能够得到的平均的对象锁的个数。默认值是64。数据库在启动以后创建的共享锁表的最大可以保存max_locks_per_transaction * (max_connections + max_prepared_transactions)个对象锁。单个事务可以同时获得的对象锁的数目可以超过max_locks_per_transaction的值，只要共享锁表中还有剩余空间。每个锁占用270个字节的共享内存</p>
+<h1 id="toc_h1_38">lock table slots.</h1>
+<p>#max_pred_locks_per_transaction = 64    # min 10</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p><strong>十八、客户端连接管理CLIENT CONNECTION DEFAULTS</strong></p>
+<h1 id="toc_h1_39">- Statement Behavior -</h1>
+<p>#search_path = '"$user",public'         # schema names</p>
+<p>#default_tablespace = ''                # a tablespace name, '' uses the default</p>
+<p>#temp_tablespaces = ''                  # a list of tablespace names, '' uses</p>
+<pre><code>                                    # only default tablespace
+</code></pre>
+<p>#check_function_bodies = on</p>
+<p>#default_transaction_isolation = 'read committed'</p>
+<p>#default_transaction_read_only = off</p>
+<p>#default_transaction_deferrable = off</p>
+<p>#session_replication_role = 'origin'</p>
+<p>#statement_timeout = 0                  # in milliseconds, 0 is disabled</p>
+<p>#lock_timeout = 0                       # in milliseconds, 0 is disabled</p>
+<p>#vacuum_freeze_min_age = 50000000</p>
+<p>#vacuum_freeze_table_age = 150000000</p>
+<p>#vacuum_multixact_freeze_min_age = 5000000</p>
+<p>#vacuum_multixact_freeze_table_age = 150000000</p>
+<p>#bytea_output = 'hex'                   # hex, escape</p>
+<p>#xmlbinary = 'base64'</p>
+<p>#xmloption = 'content'</p>
+<p>#gin_fuzzy_search_limit = 0</p>
+<h1 id="toc_h1_40">- Locale and Formatting -</h1>
+<p>datestyle = 'iso, mdy'</p>
+<p>#intervalstyle = 'postgres'</p>
+<p>timezone = 'PRC'</p>
+<p>#timezone_abbreviations = 'Default'     # Select the set of available time zone</p>
+<pre><code>                                    # abbreviations.  Currently, there are
+
+                                    #   Default
+
+                                    #   Australia (historical usage)
+
+                                    #   India
+
+                                    # You can create your own file in
+
+                                    # share/timezonesets/.
+</code></pre>
+<p>#extra_float_digits = 0                 # min -15, max 3</p>
+<p>#client_encoding = sql_ascii            # actually, defaults to database</p>
+<pre><code>                                    # encoding
+</code></pre>
+<h1 id="toc_h1_41">These settings are initialized by initdb, but they can be changed.</h1>
+<p>lc_messages = 'en_US.UTF-8'                     # locale for system error message</p>
+<pre><code>                                    # strings
+</code></pre>
+<p>lc_monetary = 'en_US.UTF-8'                     # locale for monetary formatting</p>
+<p>lc_numeric = 'en_US.UTF-8'                      # locale for number formatting</p>
+<p>lc_time = 'en_US.UTF-8'                         # locale for time formatting</p>
+<h1 id="toc_h1_42">default configuration for text search</h1>
+<p>default_text_search_config = 'pg_catalog.english'</p>
+<h1 id="toc_h1_43">- Other Defaults -</h1>
+<p>#dynamic_library_path = '$libdir'</p>
+<p>#local_preload_libraries = ''</p>
+<p>#session_preload_libraries = ''</p>
+<p><strong>十九、错误处理ERROR HANDLING</strong></p>
+<p>#exit_on_error = off                    # terminate session on any error?</p>
+<p>#restart_after_crash = on               # reinitialize after backend crash?</p>
+<p><strong>二十、配置文件包括 CONFIG FILE INCLUDES</strong></p>
+<p>一个配置文件也可以包含其他配置文件，使用include 指令能够达到这个目的。</p>
+<p>比如 在postgresql.conf文件中 有如下一行：</p>
+<p>include 'my.confg'</p>
+<p>这样的话 my.confg文件中的配置信息也会被数据库读入。</p>
+<p>include 指令指定的配置文件也可以用include指令再包含其他配置文件。如果include指令中指定的文件名不是绝对路径，数据库会在postgresql.conf文件所在的目录下查找这个文件。</p>
+<p>#include_dir = 'conf.d'                 # include files ending in '.conf' from</p>
+<pre><code>                                    # directory 'conf.d'
+</code></pre>
+<p>#include_if_exists = 'exists.conf'      # include file only if it exists</p>
+<p>#include = 'special.conf'               # include file</p>
+<p><strong>二十一、版本\平台兼容VERSION/PLATFORM COMPATIBILITY</strong></p>
+<h1 id="toc_h1_44">- Previous PostgreSQL Versions -</h1>
+<p>#array_nulls = on</p>
+<p>#backslash_quote = safe_encoding        # on, off, or safe_encoding</p>
+<p>#default_with_oids = off</p>
+<p>#escape_string_warning = on</p>
+<p>#lo_compat_privileges = off</p>
+<p>#quote_all_identifiers = off</p>
+<p>#sql_inheritance = on</p>
+<p>#standard_conforming_strings = on</p>
+<p>#synchronize_seqscans = on</p>
+<h1 id="toc_h1_45">- Other Platforms and Clients -</h1>
+<p>#transform_null_equals = off</p>
+<p><strong>二十二、复制REPLICATION</strong></p>
+<h1 id="toc_h1_46">- Sending Server(s) -</h1>
+<h1 id="toc_h1_47">Set these on the master and on any standby that will send replication data.</h1>
+<p>#max_wal_senders = 0            # max number of walsender processes</p>
+<pre><code>                            # (change requires restart)
+</code></pre>
+<p>#wal_keep_segments = 0          # in logfile segments, 16MB each; 0 disables</p>
+<p>#wal_sender_timeout = 60s       # in milliseconds; 0 disables</p>
+<p>#max_replication_slots = 0      # max number of replication slots</p>
+<pre><code>                            # (change requires restart)
+</code></pre>
+<h1 id="toc_h1_48">- Master Server -</h1>
+<h1 id="toc_h1_49">These settings are ignored on a standby server.</h1>
+<p>#synchronous_standby_names = '' # standby servers that provide sync rep</p>
+<pre><code>                            # comma-separated list of application_name
+
+                            # from standby(s); '*' = all
+</code></pre>
+<p>#vacuum_defer_cleanup_age = 0   # number of xacts by which cleanup is delayed</p>
+<h1 id="toc_h1_50">- Standby Servers -</h1>
+<h1 id="toc_h1_51">These settings are ignored on a master server.</h1>
+<p>#hot_standby = off                      # "on" allows queries during recovery</p>
+<pre><code>                                    # (change requires restart)
+</code></pre>
+<p>#max_standby_archive_delay = 30s        # max delay before canceling queries</p>
+<pre><code>                                    # when reading WAL from archive;
+
+                                    # -1 allows indefinite delay
+</code></pre>
+<p>#max_standby_streaming_delay = 30s      # max delay before canceling queries</p>
+<pre><code>                                    # when reading streaming WAL;
+
+                                    # -1 allows indefinite delay
+</code></pre>
+<p>#wal_receiver_status_interval = 10s     # send replies at least this often</p>
+<pre><code>                                    # 0 disables
+</code></pre>
+<p>#hot_standby_feedback = off             # send info from standby to prevent</p>
+<pre><code>                                    # query conflicts
+</code></pre>
+<p>#wal_receiver_timeout = 60s             # time that receiver waits for</p>
+<pre><code>                                    # communication from master
+
+                                    # in milliseconds; 0 disables
+</code></pre>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h1">
+            <a href="#toc_h1_0">GSSAPI using Kerberos</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_1">- TCP Keepalives -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_2">The default values of these variables are driven from the -D command-line</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_3">option or PGDATA environment variable, represented here as ConfigDir.</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_4">If external_pid_file is not explicitly set, no extra PID file is written.</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_5">min 1MB, or -1 to use maintenance_work_mem</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_6">This is used when logging to stderr:</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_7">These are only used if logging_collector is on:</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_8">These are relevant when logging to syslog:</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_9">This is only relevant when logging to eventlog (win32):</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_10">%a = application name</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_11">%u = user name 用户名</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_12">%d = database name 数据库名</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_13">%r = remote host and port 客户端机器名或IP地址,还有客户端端口</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_14">%h = remote host 客户端机器名或IP地址</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_15">%p = process ID 进程ID</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_16">%t = timestamp without milliseconds 带微秒的时间</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_17">%m = timestamp with milliseconds 不带微秒的时间</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_18">%i = command tag 命令标签: 会话当前执行的命令类型</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_19">%e = SQL state</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_20">%c = session ID 会话ID</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_21">%l = session line number 每个会话的日志编号，从1开始</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_22">%s = session start timestamp 进程启动时间</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_23">%v = virtual transaction ID 虚拟事务ID (backendID/localXID)</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_24">%x = transaction ID (0 if none) 事务ID (0表示没有分配事务ID)</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_25">%q = stop here in non-session 不产生任何输出。如果当前进程是backend进程，忽略这个转义序列，继续处理后面的转义序列。如果当前进程不是backend进程，忽略这个转义序列和它后面的所有转义序列。</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_26">processes</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_27">%% '%' 字符%</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_28">maximum XID age before forced vacuum # (change requires restart)</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_29">maximum multixact age</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_30">before forced vacuum</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_31">(change requires restart)</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_32">default vacuum cost delay for</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_33">autovacuum, in milliseconds;</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_34">-1 means use vacuum_cost_delay</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_35">default vacuum cost limit for</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_36">autovacuum, -1 means use</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_37">vacuum_cost_limit</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_38">lock table slots.</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_39">- Statement Behavior -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_40">- Locale and Formatting -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_41">These settings are initialized by initdb, but they can be changed.</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_42">default configuration for text search</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_43">- Other Defaults -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_44">- Previous PostgreSQL Versions -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_45">- Other Platforms and Clients -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_46">- Sending Server(s) -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_47">Set these on the master and on any standby that will send replication data.</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_48">- Master Server -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_49">These settings are ignored on a standby server.</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_50">- Standby Servers -</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_51">These settings are ignored on a master server.</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1525921678752"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1525921678752",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1525921678752",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Postgresql",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1525921678752', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 346ms, 2021/03/15 13:05:18 -->

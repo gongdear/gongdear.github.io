@@ -1,0 +1,5634 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>Java中的23种设计模式详解 - gongdear</title><meta name="description" content="Java中的23种设计模式详解"/><meta property="og:description" content="Java中的23种设计模式详解"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="Java中的23种设计模式详解 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2018/09/12/1536750662201.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="Java中的23种设计模式详解 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2018/09/12/1536750662201.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="计算机系为什么要学数据库原理和设计？" href="https://gongdear.github.io/articles/2018/08/15/1534311616993.html">
+            <link rel="next" title="Java中String类（字符串操作）的10个常见问题和解决方法" href="https://gongdear.github.io/articles/2018/10/24/1540365598203.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20180725.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20180725.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2018-09-12
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Java">Java</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                Java中的23种设计模式详解
+            </h2>
+<div class="article__share"
+     data-title="Java中的23种设计模式详解"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2018/09/12/1536750662201.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h1 id="toc_h1_0">设计模式介绍及Java描述</h1>
+<h2 id="toc_h2_1">概述</h2>
+<pre><code>设计模式是针对某一类问题的最优解决方案，是从许多优秀的软件系统中总结出的。
+
+Java中设计模式（java design patterns）通常有23种。
+
+模式可以分成3类：创建型、行为型和结构型。
+</code></pre>
+<h3 id="toc_h3_2">创建型模式</h3>
+<pre><code>创建型模式涉及对象的实例化，特点是不让用户代码依赖于对象的创建或排列方式，避免用户直接使用new创建对象。
+
+创建型模式有以下5个：
+
+**工厂方法模式**、**抽象工厂方法模式**、**生成器模式**、**原型模式**和**单例模式**。
+</code></pre>
+<h3 id="toc_h3_3">行为型模式</h3>
+<p>行为型模式涉及怎样合理的设计对象之间的交互通信，以及怎样合理为对象分配职责，让设计富有弹性，易维护，易复用。</p>
+<pre><code>行为型模式有以下11个：
+
+**责任链模式**、**命令模式**、**解释器模式**、**迭代器模式**、**中介者模式**、**备忘录模式**、**观察者模式**、**状态模式**、**策略模式**、**模板方法模式**和**访问者模式**。
+</code></pre>
+<h3 id="toc_h3_4">结构型模式</h3>
+<pre><code>结构型模式涉及如何组合类和对象以形成更大的结构，和类有关的结构型模式涉及如何合理使用继承机制；和对象有关的结构型模式涉及如何合理的使用对象组合机制。
+
+结构型模式有以下7个：
+
+**适配器模式**、**组合模式**、**代理模式**、**享元模式**、**外观模式**、**桥接模式**和**装饰模式**。
+
+模式中涉及的重要角色，会在描述中（加粗字体）介绍出来。下面就逐一介绍。
+</code></pre>
+<h2 id="toc_h2_5">1、单例模式（Singleton Pattern）</h2>
+<pre><code>Ensure a class only has one instance,and provide a global point of access to it.
+
+保证一个类仅有一个实例，并提供一个访问它的全局访问点。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>当系统需要某个类只有一个实例的时候</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>单例模式的类唯一实例由其本身控制，可以很好的控制用户何时访问它。</p>
+<p>单例模式概念很简单，而且也比较常用。</p>
+<p>在使用这个模式的时候，我们要考虑是否会在多线程中使用，如果不会应用于多线程，那写法就足够简单：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>public  class  SimpleSingleton  {</p>
+</li>
+<li>
+<p>private  static  SimpleSingleton instance;</p>
+</li>
+<li>
+<p>private  SimpleSingleton(){}</p>
+</li>
+<li>
+<p>public  static  SimpleSingleton getIntance(){</p>
+</li>
+<li>
+<p>if(instance ==  null)</p>
+</li>
+<li>
+<p>instance =  new  SimpleSingleton();</p>
+</li>
+<li>
+<p>return instance;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>上例就是一个简单的单例模式实现，使用了懒加载模式。但是多线程中可能会创建多个实例。下面就介绍多线程中的使用。</p>
+<p>如果直接将上面例子应用到多线程中，可以直接把getInstance()设置为同步的(synchronized)，但是并不高效，任一之后，只能有一个线程可以调用这个方法，其余的会排队等待。</p>
+<p>所以整个方法做同步不是优解，那就只同步代码块就好了。这就引出了双重检验锁，即在同步块外检查一次null，然后再在同步块内检查一次。但是最终这种方式也是会有问题的，使用静态内部类是一种比较好的方式。</p>
+<p>单例模式使用很频繁，也很简单，但不一定都能写对，详细的写法请参考：<a href="http://anxpp.com/index.php/archives/476/" target="_blank">如何正确地写出单例模式</a>。里面详细的分析的单例模式的各种写法。</p>
+<p>这里给出一个推荐的实现方式(枚举)：</p>
+</li>
+<li>
+<p>public  enum  EasySingleton{</p>
+</li>
+<li>
+<p>INSTANCE;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<h2 id="toc_h2_6">2、工厂方法模式（Factory Method Pattern）</h2>
+<pre><code>别名：虚拟构造（Another Name：Virtual Constructor）。
+
+Define an interface for creating an object,but let subclasses decide which class to instantiate.Factory Method lets a class defer instantiation to subclassess.
+
+定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>用户需要一个类的子类的实例，但不希望与该类的子类形成耦合</p>
+</li>
+<li>
+<p>用户需要一个类的子类的实例，但用户不知道该类有哪些子类可用</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>使用工厂方法可以让用户的代码和某个特定类的子类的代码解耦</p>
+</li>
+<li>
+<p>工厂方法使用户不必知道它所使用的对象是怎样被创建的，只需知道该对象有哪些方法即可。</p>
+<p><strong>简单工厂模式</strong></p>
+<p>介绍工厂方法模式前，先介绍一下简单工厂模式，简单工厂模式也是一种工厂方法模式。</p>
+<p>简单工厂模式又称静态工厂方法模式。从命名上就可以看出这个模式一定很简单。它存在的目的很简单：定义一个用于创建对象的接口。</p>
+<p>如果一个一些对象（产品），已经确定了并不易改变和添加新的产品，那么久可以使用简单工厂模式。下面就是简单工厂的例子：</p>
+</li>
+</ul>
+<ol>
+<li>//演示简单工厂</li>
+<li>public  class  SimpleFactory  {</li>
+<li>public  static  void main(String args[])  throws  Exception{</li>
+<li>Factory factory =  new  Factory();</li>
+<li>factory.produce("PRO5").run();</li>
+<li>factory.produce("PRO6").run();</li>
+<li>}</li>
+<li>}</li>
+<li>//抽象产品</li>
+<li>interface  MeizuPhone{</li>
+<li>void run();</li>
+<li>}</li>
+<li>//具体产品X2</li>
+<li>class PRO5 implements  MeizuPhone{</li>
+<li>@Override</li>
+<li>public  void run()  {</li>
+<li>System.out.println("我是一台PRO5");</li>
+<li>}</li>
+<li>}</li>
+<li>class PRO6 implements  MeizuPhone{</li>
+<li>@Override</li>
+<li>public  void run()  {</li>
+<li>System.out.println("我是一台PRO6");</li>
+<li>}</li>
+<li>}</li>
+<li>//工厂</li>
+<li>class  Factory{</li>
+<li>MeizuPhone produce(String product)  throws  Exception{</li>
+<li>if(product.equals("PRO5"))</li>
+<li>return  new PRO5();</li>
+<li>else  if(product.equals("PRO6"))</li>
+<li>return  new PRO6();</li>
+<li>throw  new  Exception("No Such Class");</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>很容易看出，简单工厂模式是不易维护的，如果需要添加新的产品，则整个系统都需要修改。如果我们需要添加诸如PRO7、PRO8等产品，直接在工程类中添加即可。但是如果这时候根部不知道还有什么产品，只有到子类实现时才知道，这时候就需要工厂方法模式。
+
+而在实际应用中，很可能产品是一个多层次的树状结构。由于简单工厂模式中只有一个工厂类来对应这些产品，所以实现起来是比较麻烦的，那么工厂方法模式正式解决这个问题的，下面就介绍工厂方法模式。
+
+**工厂方法模式**
+
+工厂方法模式去掉了简单工厂模式中工厂方法的静态属性，使得它可以被子类继承。这样在简单工厂模式里集中在工厂方法上的压力可以由工厂方法模式里不同的工厂子类来分担。
+
+针对上面的例子，如果使用工厂方法模式，即将工厂定义为一个接口，然后由具体的工厂来确定需要生成什么样的产品，为了与简单工厂比较，这里还是贴上代码：
+</code></pre>
+<ol>
+<li>//工厂方法模式</li>
+<li>public  class  FactoryMethod  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>IFactory bigfactory;</li>
+<li>bigfactory =  new  SmallFactory();</li>
+<li>bigfactory.produce().run();</li>
+<li>bigfactory =  new  BigFactory();</li>
+<li>bigfactory.produce().run();</li>
+<li>}</li>
+<li>}</li>
+<li>//抽象产品</li>
+<li>interface  MeizuPhone{</li>
+<li>void run();</li>
+<li>}</li>
+<li>//具体产品*2</li>
+<li>class PRO5 implements  MeizuPhone{</li>
+<li>@Override</li>
+<li>public  void run()  {</li>
+<li>System.out.println("我是一台PRO5");</li>
+<li>}</li>
+<li>}</li>
+<li>class MX5 implements  MeizuPhone{</li>
+<li>@Override</li>
+<li>public  void run()  {</li>
+<li>System.out.println("我是一台MX5");</li>
+<li>}</li>
+<li>}</li>
+<li>interface  IFactory{//抽象的工厂</li>
+<li>MeizuPhone produce();</li>
+<li>}</li>
+<li>//工厂*2</li>
+<li>class  BigFactory  implements  IFactory{</li>
+<li>@Override</li>
+<li>public  MeizuPhone produce()  {</li>
+<li>return  new PRO5();</li>
+<li>}</li>
+<li>}</li>
+<li>class  SmallFactory  implements  IFactory{</li>
+<li>@Override</li>
+<li>public  MeizuPhone produce()  {</li>
+<li>return  new MX5();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>如果了解[Java的集合框架](http://anxpp.com/index.php/archives/656/)，那么它就是一个很好的例子：
+
+Java中的Collection接口的实现都能通过iterator()方法返回一个迭代器，而不同的实现的迭代器都在该实现中以内部类的方式对Iterator接口实现的，然后通过iterator()方法返回。那么，这个iterator()方法就是一种工厂方法。
+
+可以看到，在这里**抽象产品**是Iterator接口，**具体产品**就是Collection接口的实现中对Iterator接口的实现，**构造者**是Collection接口，其提供的工厂方法就是Iterator iterator();，**具体构造者**就是Collection的实现。而工厂方法模式的结构，也就是由前面加粗的4部分组成。
+
+如果对Java容器不熟悉，下面再提供一个例子(模仿Iterator，其实顺便也介绍了Iterator)：
+
+如果有多种数据结构要遍历，我们就需要一种用于遍历不同结构的工具，首先我们就需要为这个工具定义一个接口（**抽象产品**），用于描述如何来遍历：
+</code></pre>
+<ol>
+<li>
+<p>//只是需要遍历一堆数据，那么只需要2个方法就可以了</p>
+</li>
+<li>
+<p>public  interface  Iterator<t>  {</t></p>
+</li>
+<li>
+<p>boolean hasNext();  //是否还有下一个元素</p>
+</li>
+<li>
+<p>T next();  //得到下一个元素</p>
+</li>
+<li>
+<p>}</p>
+<p>然后就是我们要遍历的目标，而这些目标此处我们暂定为列表，这就是<strong>构造者</strong>：</p>
+</li>
+<li>
+<p>//便于介绍，不做多的操作</p>
+</li>
+<li>
+<p>public  interface  List<t>  {</t></p>
+</li>
+<li>
+<p>Iterator<t> iterator();  //返回一个遍历器</t></p>
+</li>
+<li>
+<p>boolean add(T t);  //添加元素到列表</p>
+</li>
+<li>
+<p>}</p>
+<p>对于List可能有多种实现方式，比如数组和链表，此处就简陋的介绍一下，而这些就是<strong>具体构造者</strong>，而里面有遍历器的具体实现（<strong>具体产品</strong>），此处以内部类的形式放到了List的实现（具体构造者）里面，也完全可以修改代码将遍历器的实现（具体产品）独立出来：</p>
+<p>数组的实现：</p>
+</li>
+<li>
+<p>package com.anxpp.designpattern.factorymethod;</p>
+</li>
+<li>
+<p>//方便演示而实现的简陋的数组list</p>
+</li>
+<li>
+<p>public  class  ArrayList<t>  implements  List<t>{</t></t></p>
+</li>
+<li>
+<p>private  int size;  //存放的元素个数,会默认初始化为0</p>
+</li>
+<li>
+<p>private  Object[] defaultList;  //使用数组存放元素</p>
+</li>
+<li>
+<p>private  static  final  int defaultLength =  10;//默认长度</p>
+</li>
+<li>
+<p>public  ArrayList(){  //默认构造函数</p>
+</li>
+<li>
+<p>defaultList =  new  Object[defaultLength];</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  Iterator<t> iterator()  {</t></p>
+</li>
+<li>
+<p>return  new  MyIterator();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//添加元素</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  boolean add(T t)  {</p>
+</li>
+<li>
+<p>if(size&lt;=defaultLength){</p>
+</li>
+<li>
+<p>defaultList[size++]  = t;</p>
+</li>
+<li>
+<p>return  true;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>return  false;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//遍历器（具体产品）</p>
+</li>
+<li>
+<p>private  class  MyIterator  implements  Iterator<t>{</t></p>
+</li>
+<li>
+<p>private  int  next;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  boolean hasNext()  {</p>
+</li>
+<li>
+<p>return  next&lt;size;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@SuppressWarnings("unchecked")</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public T next()  {</p>
+</li>
+<li>
+<p>return  (T) defaultList[next++];</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>链表实现：
+</code></pre>
+<ol>
+<li>//方便演示而实现的简陋的单向链表list</li>
+<li>public  class  LinkList<t>  implements  List<t>{</t></t></li>
+<li>private  int size;  //存放的元素个数,会默认初始化为0</li>
+<li>private  Node<t> first;  //首节点，默认初始化为null</t></li>
+<li>@Override</li>
+<li>public  Iterator<t> iterator()  {</t></li>
+<li>return  new  MyIterator();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean add(T t)  {</li>
+<li>if(size==0){</li>
+<li>first =  new  Node<t>(t,null);</t></li>
+<li>size++;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>Node<t> node = first;</t></li>
+<li>while(node.next!=null)</li>
+<li>node = node.next;</li>
+<li>node.next  =  new  Node<t>(t,null);</t></li>
+<li>size++;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>//链表节点</li>
+<li>private  static  class  Node<t>{</t></li>
+<li>T data;</li>
+<li>Node<t>  next;</t></li>
+<li>Node(T data,Node<t>  next){</t></li>
+<li>this.data = data;</li>
+<li>this.next  =  next;</li>
+<li>}</li>
+<li>}</li>
+<li>//遍历器</li>
+<li>private  class  MyIterator  implements  Iterator<t>{</t></li>
+<li>private  Node<t>  next;  //下一个节点</t></li>
+<li>MyIterator(){</li>
+<li>next  = first;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean hasNext()  {</li>
+<li>return  next  !=  null;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T next()  {</li>
+<li>T data =  next.data;</li>
+<li>next  =  next.next;</li>
+<li>return data;</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>使用上述代码（模式的使用）：
+</code></pre>
+<ol>
+<li>package com.anxpp.designpattern.factorymethod;</li>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>//分别定义两种结构</li>
+<li>List<integer> array =  new  ArrayList<integer>();</integer></integer></li>
+<li>List<integer> link =  new  LinkList<integer>();</integer></integer></li>
+<li>//添加数据</li>
+<li>for(int i =  1;i &lt;  8; i++){</li>
+<li>array.add(i);</li>
+<li>link.add(i);</li>
+<li>}</li>
+<li>//获得迭代器</li>
+<li>Iterator<integer> ai = array.iterator();</integer></li>
+<li>Iterator<integer> li = link.iterator();</integer></li>
+<li>//遍历并输出</li>
+<li>while(ai.hasNext())</li>
+<li>System.out.print(ai.next());</li>
+<li>System.out.println();</li>
+<li>while(li.hasNext())</li>
+<li>System.out.print(li.next());</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>控制台会输出：
+</code></pre>
+<ol>
+<li>
+<p>1234567</p>
+</li>
+<li>
+<p>1234567</p>
+<p>这就是工厂方法模式，其中遍历器也算是一种迭代器设计模式，后面会介绍。我不会跟你讲什么造车，造轮船，造人，我会给出实际应用。这里只是其中一种应用的举例，当一个接口的一系列实现需要另外的对象对其进行相同操作时，我们就可以这样用：在这个接口中定义返回另外一个对象的方法（工厂方法），然后再在这个接口的实现中，返回对其操作的对象。</p>
+<p>上面这个例子会在迭代器模式中给出完整的实现代码。</p>
+<p>一抽象产品类派生出多个具体产品类；一抽象工厂类派生出多个具体工厂类；每个具体工厂类只能创建一个具体产品类的实例。 即定义一个创建对象的接口（即抽象工厂类），让其子类（具体工厂类）决定实例化哪一个类（具体产品类）。“一对一”的关系。</p>
+<p>与简单工厂间的取舍：工厂方法模式和简单工厂模式在定义上的不同是很明显的。工厂方法模式的核心是一个抽象工厂类,而不像简单工厂模式, 把核心放在一个实类上。工厂方法模式可以允许很多实的工厂类从抽象工厂类继承下来, 从而可以在实际上成为多个简单工厂模式的综合,从而推广了简单工厂模式。 反过来讲,简单工厂模式是由工厂方法模式退化而来。设想如果我们非常确定一个系统只需要一个实的工厂类, 那么就不妨把抽象工厂类合并到实的工厂类中去。而这样一来,我们就退化到简单工厂模式了。</p>
+<p>可以看出工厂方法的加入，使得对象的数量成倍增长。当产品种类非常多时，会出现大量的与之对应的工厂对象，这不是我们所希望的。</p>
+<p>如果再分得详细一点，一个工厂可能不只是生产手机（如小米除了手机，连电饭锅都有），但有得工厂智能生成低端的产品，而大一点的工厂可能通常是生成更高端的产品。所以一个工厂是不够用了，这时，就应该使用抽象工厂来解决这个问题。</p>
+</li>
+</ol>
+<h2 id="toc_h2_7">3、抽象工厂方法模式（Abstract Factory Pattern）</h2>
+<pre><code>别名：配套（Another Name：Kit）
+
+Provide an interface for creating families of related or dependent objects without specifying their concrete classess.
+
+提供一个创建一系列或相互依赖对象的接口，而无须指定他们的具体的类。
+
+何时使用：
+
+优点： 
+
+上述生成魅族产品的例子中，我们只生产了手机，但是它不止有手机一种产品，可能还有其他的，比如耳机，为了还可以生成耳机，我们需要对上例进行扩展。
+
+我们先给出上面生成手机的例子的扩展后的抽象工厂模式代码，以比较这几种模式：
+</code></pre>
+<ol>
+<li>//抽象工厂模式</li>
+<li>public  class  AbstractFactory  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>IFactory bigfactory =  new  BigFactory();</li>
+<li>IFactory smallfactory =  new  BigFactory();</li>
+<li>bigfactory.producePhone().run();</li>
+<li>bigfactory.produceHeadset().play();</li>
+<li>smallfactory.producePhone().run();</li>
+<li>smallfactory.produceHeadset().play();</li>
+<li>}</li>
+<li>}</li>
+<li>//抽象产品*2</li>
+<li>interface  Headset{</li>
+<li>void play();</li>
+<li>}</li>
+<li>//抽象产品</li>
+<li>interface  MeizuPhone{</li>
+<li>void run();</li>
+<li>}</li>
+<li>//具体产品<em>2</em>2</li>
+<li>class PRO5 implements  MeizuPhone{</li>
+<li>@Override</li>
+<li>public  void run()  {</li>
+<li>System.out.println("我是一台PRO5");</li>
+<li>}</li>
+<li>}</li>
+<li>class MX5 implements  MeizuPhone{</li>
+<li>@Override</li>
+<li>public  void run()  {</li>
+<li>System.out.println("我是一台MX5");</li>
+<li>}</li>
+<li>}</li>
+<li>class EP21 implements  Headset{</li>
+<li>@Override</li>
+<li>public  void play()  {</li>
+<li>System.out.println("我是一副EP21");</li>
+<li>}</li>
+<li>}</li>
+<li>class EP30 implements  Headset{</li>
+<li>@Override</li>
+<li>public  void play()  {</li>
+<li>System.out.println("我是一台EP30");</li>
+<li>}</li>
+<li>}</li>
+<li>//抽象工厂</li>
+<li>interface  IFactory{</li>
+<li>MeizuPhone producePhone();</li>
+<li>Headset produceHeadset();</li>
+<li>}</li>
+<li>//具体工厂*2</li>
+<li>class  BigFactory  implements  IFactory{</li>
+<li>@Override</li>
+<li>public  MeizuPhone producePhone()  {</li>
+<li>return  new PRO5();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  Headset produceHeadset()  {</li>
+<li>return  new EP30();</li>
+<li>}</li>
+<li>}</li>
+<li>//具体工厂*2</li>
+<li>class  SmallFactory  implements  IFactory{</li>
+<li>@Override</li>
+<li>public  MeizuPhone producePhone()  {</li>
+<li>return  new MX5();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  Headset produceHeadset()  {</li>
+<li>return  new EP21();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>在抽象工厂模式中，抽象产品 (AbstractProduct) 可能是一个或多个，从而构成一个或多个产品族(Product Family)。 在只有一个产品族的情况下，抽象工厂模式实际上退化到工厂方法模式（不如上例减去耳机这种产品，就回到工厂方法模式了）。
+
+这样举例子其实很空洞，这里只是为了比较三种模式，给出抽象的例子才更容易看出区别。
+
+那么上例中实际应用就是生产迭代器的例子，这里也对齐扩展来介绍抽象工厂模式。Iterator迭代器是Collection专属的，但是现在我们希望能生产Map的迭代器，我们都知道，Map不是继承自Collection的，遍历的方式是不一样的，这就相当于2个产品族，接下来我们就要来实现它。
+
+为了演示我们如果实现这个同时能生产Map和Collection的迭代器，我会将例子一步步贴出来：
+
+首先是抽象产品，用来描述迭代器的公共接口：
+</code></pre>
+<ol>
+<li>
+<p>//抽象产品</p>
+</li>
+<li>
+<p>public  interface  IIterator<t>  {</t></p>
+</li>
+<li>
+<p>boolean hasNext();</p>
+</li>
+<li>
+<p>Object  next();</p>
+</li>
+<li>
+<p>}</p>
+<p>然后是抽象工厂，用来返回不同迭代器：</p>
+</li>
+<li>
+<p>//抽象工厂</p>
+</li>
+<li>
+<p>public  interface  IIteratorFactory<t>  {</t></p>
+</li>
+<li>
+<p>IIterator<t> iteratorMap(Map&lt;T,Object&gt; m);</t></p>
+</li>
+<li>
+<p>IIterator<t> iteratorCollection(Collection<t> c);</t></t></p>
+</li>
+<li>
+<p>}</p>
+<p>接下来是具体产品。</p>
+<p>Collection的迭代器（具体产品）：</p>
+</li>
+<li>
+<p>//具体产品，Collection迭代器(用到了代理模式)</p>
+</li>
+<li>
+<p>public  class  IteratorCollection<t>  implements  IIterator<t>{</t></t></p>
+</li>
+<li>
+<p>Iterator<t> iterator;</t></p>
+</li>
+<li>
+<p>public  IteratorCollection(Collection<t> c){</t></p>
+</li>
+<li>
+<p>iterator = c.iterator();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  boolean hasNext()  {</p>
+</li>
+<li>
+<p>return iterator.hasNext();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public T next()  {</p>
+</li>
+<li>
+<p>return iterator.next();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>Map的迭代器（具体产品）：
+</code></pre>
+<ol>
+<li>//具体产品，Map迭代器(用到了代理模式)</li>
+<li>public  class  IteratorMap<t>  implements  IIterator<t>{</t></t></li>
+<li>Iterator&lt;Map.Entry&lt;T,  Object&gt;&gt; iterator;</li>
+<li>public  IteratorMap(Map&lt;T,Object&gt; m){</li>
+<li>iterator = m.entrySet().iterator();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean hasNext()  {</li>
+<li>return iterator.hasNext();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  Object  next()  {</li>
+<li>return iterator.next().getValue();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>完成具体产品设计后，我们就要实现具体的工厂了：
+</code></pre>
+<ol>
+<li>//具体工厂</li>
+<li>public  class  IteratorFactory<t>  implements  IIteratorFactory<t>{</t></t></li>
+<li>@Override</li>
+<li>public  IteratorMap<t> iteratorMap(Map&lt;T,Object&gt; m)  {</t></li>
+<li>return  new  IteratorMap<t>(m);</t></li>
+<li>}</li>
+<li>@Override</li>
+<li>public  IteratorCollection<t> iteratorCollection(Collection<t> c)  {</t></t></li>
+<li>return  new  IteratorCollection<t>(c);</t></li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>至此，这个小框架就完成了，我们可以使用它来遍历Collection（List，Set，Queue都是集成自它）和Map： 
+</code></pre>
+<ol>
+<li>//测试使用</li>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>IIteratorFactory<integer> factory =  new  IteratorFactory&lt;&gt;();</integer></li>
+<li>Collection<integer> collection =  new  ArrayList<integer>();</integer></integer></li>
+<li>Map&lt;Integer,  Object&gt; map =  new  LinkedHashMap&lt;&gt;();</li>
+<li>for(int i=0;i&lt;10;i++){</li>
+<li>collection.add(i);</li>
+<li>map.put(i, i);</li>
+<li>}</li>
+<li>IIterator<integer> iteratorCollection = factory.iteratorCollection(collection);</integer></li>
+<li>IIterator<integer> iteratorMap = factory.iteratorMap(map);</integer></li>
+<li>while(iteratorCollection.hasNext())</li>
+<li>System.out.print(iteratorCollection.next());</li>
+<li>System.out.println();</li>
+<li>while(iteratorMap.hasNext())</li>
+<li>System.out.print(iteratorMap.next());</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>输出：
+</code></pre>
+<ol>
+<li>
+<p>0123456789</p>
+</li>
+<li>
+<p>0123456789</p>
+<p>实际情况下，我们可能不应该这么做，以为Collection面向一种对象的容器，Map是面向两种对象的关联容器，但是此例使用抽象工厂模式确实实现了不同容器的 统一遍历方式。</p>
+<p>如果一个容器持有的大量对象，他们都直接或间接集成自某一个类，使用访问者模式遍历也是一种很好的方式，具体在后面的访问者模式中会详细介绍。</p>
+<p>工厂模式主要就涉及上面介绍的三种：</p>
+</li>
+</ol>
+<ul>
+<li>简单工厂模式是由一个具体的类去创建其他类的实例，父类是相同的，父类是具体的。</li>
+<li>工厂方法模式是有一个抽象的父类定义公共接口，子类负责生成具体的对象，这样做的目的是将类的实例化操作延迟到子类中完成。</li>
+<li>抽象工厂模式提供一个创建一系列相关或相互依赖对象的接口，而无须指定他们具体的类。它针对的是有多个产品的等级结构。而工厂方法模式针对的是一个产品的等级结构。</li>
+</ul>
+<h2 id="toc_h2_8">4、生成器模式（Builder Pattern）</h2>
+<pre><code>Separate the construction of a complex object from its representation so that the same construction process can create different representations.
+
+将一个复杂对象的构建与它的表示分离，使同样的构建过程可以创建不同的表示。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>当系统准备为用户提供一个内部结构复杂的对象，而且在构造方法中编写创建该对象的代码无法满足用户需求时，就可以使用生成器模式老构造这样的对象。</p>
+</li>
+<li>
+<p>当某些系统要求对象的构造过程必须独立于创建该对象的类时。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>生成器模式将对象的构造过程封装在具体的生成器中，用户使用不同的具体生成器就可以得到该对象的不同表示。</p>
+</li>
+<li>
+<p>生成器模式将对象的构造过程从创建该对象的类中分离出来，使用户无须了解该对象的具体组件。</p>
+</li>
+<li>
+<p>可以更加精细有效的控制对象的构造过程。生成器将对象的构造过程分解成若干步骤，这就是程序可以更加精细，有效的控制整个对象的构造。</p>
+</li>
+<li>
+<p>生成器模式将对象的构造过程与创建该对象类解耦，是对象的创建更加灵活有弹性。</p>
+</li>
+<li>
+<p>当增加新的具体的生成器是，不必修改指挥者的代码，即该模式满足开-闭原则。</p>
+<p>模式的重心在于分离构建算法和具体的构造实现，从而使构建算法可以重用。</p>
+<p>比如我们要得到一个日期，可以有不同的格式，然后我们就使用不同的生成器来实现。</p>
+<p>首先是这个类（产品）：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>//产品</p>
+</li>
+<li>
+<p>public  class  MyDate  {</p>
+</li>
+<li>
+<p>String date;</p>
+</li>
+<li>
+<p>}</p>
+<p>然后就是抽象生成器，描述生成器的行为：</p>
+</li>
+<li>
+<p>//抽象生成器</p>
+</li>
+<li>
+<p>public  interface  IDateBuilder  {</p>
+</li>
+<li>
+<p>IDateBuilder buildDate(int y,int m,int d);</p>
+</li>
+<li>
+<p>String date();</p>
+</li>
+<li>
+<p>}</p>
+<p>接下来是具体生成器，一个以“-”分割年月日，另一个使用空格：</p>
+</li>
+<li>
+<p>//具体生成器</p>
+</li>
+<li>
+<p>public  class  DateBuilder1  implements  IDateBuilder{</p>
+</li>
+<li>
+<p>private  MyDate myDate;</p>
+</li>
+<li>
+<p>public  DateBuilder1(MyDate myDate){</p>
+</li>
+<li>
+<p>this.myDate = myDate;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  IDateBuilder buildDate(int y,  int m,  int d)  {</p>
+</li>
+<li>
+<p>myDate.date = y+"-"+m+"-"+d;</p>
+</li>
+<li>
+<p>return  this;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  String date()  {</p>
+</li>
+<li>
+<p>return myDate.date;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//具体生成器</p>
+</li>
+<li>
+<p>public  class  DateBuilder2  implements  IDateBuilder{</p>
+</li>
+<li>
+<p>private  MyDate myDate;</p>
+</li>
+<li>
+<p>public  DateBuilder2(MyDate myDate){</p>
+</li>
+<li>
+<p>this.myDate = myDate;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  IDateBuilder buildDate(int y,  int m,  int d)  {</p>
+</li>
+<li>
+<p>myDate.date = y+" "+m+" "+d;</p>
+</li>
+<li>
+<p>return  this;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  String date()  {</p>
+</li>
+<li>
+<p>return myDate.date;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>接下来是指挥官，向用户提供具体的生成器：
+</code></pre>
+<ol>
+<li>//指挥者</li>
+<li>public  class  Derector  {</li>
+<li>private  IDateBuilder builder;</li>
+<li>public  Derector(IDateBuilder builder){</li>
+<li>this.builder = builder;</li>
+<li>}</li>
+<li>public  String getDate(int y,int m,int d){</li>
+<li>builder.buildDate(y, m, d);</li>
+<li>return builder.date();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>使用如下： 
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>MyDate date =  new  MyDate();</li>
+<li>IDateBuilder builder;</li>
+<li>builder =  new  DateBuilder1(date).buildDate(2066,  3,  5);</li>
+<li>System.out.println(builder.date());</li>
+<li>builder =  new  DateBuilder2(date).buildDate(2066,  3,  5);</li>
+<li>System.out.println(builder.date());</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>输出：
+</code></pre>
+<ol>
+<li>
+<p>2066-3-5</p>
+</li>
+<li>
+<p>2066  3  5</p>
+<p>使用不同生成器，可以使原有产品表现得有点不一样。</p>
+<p>往往在实际的应用中，生成器要做的工作不会这么简单，而是相对复杂的（因为其产品一般是比较复杂的），原有构建的维护会转移到生成器的维护上。</p>
+</li>
+</ol>
+<h2 id="toc_h2_9">5、原型模式（Prototype Pattern）</h2>
+<pre><code>Specify the kinds of objects to create using a prototypical instance,and create new objects by copying this prototype.
+
+用原型实例指定创建对象的种类，并且通过复制这些原型创建新的对象。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>程序需要从一个对象出发，得到若干个和其状态相同，并可独立变化其状态的对象时。</p>
+</li>
+<li>
+<p>当对象的创建需要独立于它的构造过程和表示时。</p>
+</li>
+<li>
+<p>一个类创建实例状态不是很多，那么就可以将这个类的一个实例定义为原型，那么通过该实例复制该原型得到新的实例可能比重新使用类的构造方法创建新实例更方便</p>
+<p><strong>优点</strong>:</p>
+</li>
+<li>
+<p>当创建类的新实例的代价更大时，使用原型模式复制一个已有的实例可以提高创建新实例的效率。</p>
+</li>
+<li>
+<p>可以动态的保存当前对象的状态。在运行时，可以随时使用对象流保存当前对象的一个复制品。</p>
+</li>
+<li>
+<p>可以在运行时创建新的对象，而无须创建一系列类和集成结构。</p>
+</li>
+<li>
+<p>可以动态的添加、删除原型的复制品。</p>
+<p>原型模式要求对象实现一个可以“克隆”自身的接口，这样就可以通过复制一个实例对象本身来创建一个新的实例。这样一来，通过原型实例创建新的对象，就不再需要关心这个实例本身的类型，只要实现了克隆自身的方法，就可以通过这个方法来获取新的对象，而无须再去通过new来创建。</p>
+<p>例子中的抽象原型没有使用方法名clone()，其原因下面会介绍。</p>
+<p>简单形式的原型模式：</p>
+</li>
+</ul>
+<ol>
+<li>//具体原型</li>
+<li>public  class  SimplePrototype  implements  Prototype,Cloneable  {</li>
+<li>int value;</li>
+<li>//clone()实现</li>
+<li>@Override</li>
+<li>public  Object cloneSelf()  {</li>
+<li>SimplePrototype  self  =  new  SimplePrototype();</li>
+<li>self.value = value;</li>
+<li>return  self;</li>
+<li>}</li>
+<li>//使用</li>
+<li>public  static  void main(String args[]){</li>
+<li>SimplePrototype simplePrototype =  new  SimplePrototype();</li>
+<li>simplePrototype.value =  500;</li>
+<li>SimplePrototype simplePrototypeClone =  (SimplePrototype) simplePrototype.cloneSelf();</li>
+<li>System.out.println(simplePrototypeClone.value);</li>
+<li>}</li>
+<li>}</li>
+<li>//抽象原型</li>
+<li>interface  Prototype{</li>
+<li>Object cloneSelf();//克隆自身的方法</li>
+<li>}</li>
+<li>//客户端使用</li>
+<li>class  Client{</li>
+<li>SimplePrototype prototype;</li>
+<li>public  Client(SimplePrototype prototype){</li>
+<li>this.prototype = prototype;</li>
+<li>}</li>
+<li>public  Object getPrototype(){</li>
+<li>return prototype.cloneSelf();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>简单的原型模式就是在clone()实现时，new一个新的实例，然后为成员变量赋值后返回。
+
+**Java的原生支持**
+
+Java中所有类都直接或间接继承自Object类，Object类中已有clone()方法：”protected native Object clone() throws CloneNotSupportedException;“，可以看到权限是protected的，所以仅有子类可以访问这个方法，但我们可以在子类中重写这个方法，将访问权限上调到public，然后方法体里面return super.clone()。
+
+我们能看到这个Object方法是可能会抛出异常的，我们**必须实现Cloneable接口**，才可以使用这个方法，否则会抛出“java.lang.CloneNotSupportedException”的异常。这个Cloneable接口其实是空的，实现它的目的在于让JVM知道这个对象是可以可复制的，否则clone()时就会发生异常。下面看演示代码：
+</code></pre>
+<ol>
+<li>//使用 java 自带的支持</li>
+<li>public  class  APITestUse  {</li>
+<li>public  static  void main(String args[])  throws  CloneNotSupportedException{</li>
+<li>MyObject myObject =  new  MyObject();</li>
+<li>myObject.i =  500;</li>
+<li>MyObject myObjectClone =  (MyObject) myObject.clone();</li>
+<li>System.out.println(myObjectClone.i);</li>
+<li>}</li>
+<li>}</li>
+<li>//一个可以复制的对象</li>
+<li>class  MyObject  implements  Cloneable{</li>
+<li>int i;</li>
+<li>public  Object clone()  throws  CloneNotSupportedException{</li>
+<li>return  super.clone();</li>
+<li>}</li>
+<li>}//结果会输出 500</li>
+</ol>
+<pre><code>调用这个方法时，成员变量会自动被复制。所以如果需要使用原型模式，Java原生支持就已经很好用了。
+
+除了以上的原生支持，java中还有一种序列化，只需要对象实现Serializable接口。这样，我们可以将对象写入到流中，可以保存到文件，也可以通过网络发送到其他地方：
+</code></pre>
+<ol>
+<li>//使用Serializable支持克隆</li>
+<li>public  class  SerializablePrototype  implements  Serializable{</li>
+<li>private  static  final  long serialVersionUID =  1L;</li>
+<li>private  int i;</li>
+<li>private  transient  int notClone;//transient关键字的成员不会被序列化</li>
+<li>public  int getI()  {</li>
+<li>return i;</li>
+<li>}</li>
+<li>public  void setI(int i)  {</li>
+<li>this.i = i;</li>
+<li>}</li>
+<li>public  int getNotClone()  {</li>
+<li>return notClone;</li>
+<li>}</li>
+<li>public  void setNotClone(int notClone)  {</li>
+<li>this.notClone = notClone;</li>
+<li>}</li>
+<li>public  void writeToFile(String path)  throws  Exception{</li>
+<li>FileOutputStream outStream =  new  FileOutputStream(path);</li>
+<li>ObjectOutputStream objectOutputStream =  new  ObjectOutputStream(outStream);</li>
+<li>objectOutputStream.writeObject(this);</li>
+<li>outStream.close();</li>
+<li>}</li>
+<li>public  SerializablePrototype  ReadFromFile(String path)  throws  Exception{</li>
+<li>File file =  new  File(path);</li>
+<li>if(!file.exists())</li>
+<li>file.createNewFile();</li>
+<li>FileInputStream inStream =  new  FileInputStream(path);</li>
+<li>ObjectInputStream objectOutputStream =  new  ObjectInputStream(inStream);</li>
+<li>Object o= objectOutputStream.readObject();</li>
+<li>inStream.close();</li>
+<li>return  (SerializablePrototype) o;</li>
+<li>}</li>
+<li>public  static  void main(String args[])  throws  Exception{</li>
+<li>String path =  "D:/SerializablePrototype.instance";</li>
+<li>SerializablePrototype prototype =  new  SerializablePrototype();</li>
+<li>prototype.setI(123);</li>
+<li>prototype.setNotClone(456);</li>
+<li>prototype.writeToFile(path);</li>
+<li>SerializablePrototype prototypeClone =  new  SerializablePrototype();</li>
+<li>prototypeClone = prototype.ReadFromFile(path);</li>
+<li>System.out.println(prototypeClone.getI()  +  " "  + prototypeClone.getNotClone());</li>
+<li>}</li>
+<li>}//输出：123 0</li>
+</ol>
+<pre><code>我们来分析上例：这个对象有3个成员变量，而其中一个是有transient关键字申明的，一个是序列化id，一个是普通变量，在main方法中，想创建了对象，并设置值，然后写入到文件，再从文件读出来，最后输出读出来的对象的变量，普通变量是可以正常输出的（序列化id也可以，只是此处没有输出来而已），而transient申明的变量为0了，那就证明这个变量没有被保存到文件中，因为这个关键字声明的变量在序列化时会被忽略，而是后来创建时被自动初始化为0了（java中类的成员变量是基本数据类型时，如果没有初值，就会被自动初始化为0）。
+
+额...这里是介绍模式，好像说得多了点，那原型模式就介绍到这儿了。
+</code></pre>
+<h2 id="toc_h2_10">6、责任链模式（Chain of Responsibility Pattern）</h2>
+<pre><code>使很多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系。将这些对象连成一条链，并沿着这条链传递该请求，直到有一个对象处理它为止。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>有许多对象可以处理用户请求，希望程序在运行期间自动确定处理用户的那个对象。</p>
+</li>
+<li>
+<p>希望用户不必明确指定接收者的情况下，想多个接受者的一个提交请求</p>
+</li>
+<li>
+<p>程序希望动态的指定可处理用户请求的对象集合</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>低耦合</p>
+</li>
+<li>
+<p>可以动态的添加删除处理者或重新指派处理者的职责</p>
+</li>
+<li>
+<p>可以动态改变处理者之间的先后顺序</p>
+<p>通常来说，一个纯粹的责任链是先传给第一个处理，如果处理过了，这个请求处理就此结束，如果没有处理，再传给下一个处理者。</p>
+<p>比如我们有一个数学公式，有一个整数输入，要求小于0时返回绝对值，其次，小于10的时候返回他的二次幂，否则，返回他本身：</p>
+<p>首先我们要定义一个接口（<strong>处理者</strong>），来描述他们共有的行为：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>//处理者</p>
+</li>
+<li>
+<p>public  interface  Handler  {</p>
+</li>
+<li>
+<p>int handleRequest(int n);</p>
+</li>
+<li>
+<p>void setNextHandler(Handler  next);</p>
+</li>
+<li>
+<p>}</p>
+<p>然后是<strong>具体的处理者</strong>（3个）：</p>
+</li>
+<li>
+<p>//第一个具体处理者，处理小于0的</p>
+</li>
+<li>
+<p>public  class  Handler1  implements  Handler  {</p>
+</li>
+<li>
+<p>private  Handler  next;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  int handleRequest(int n)  {</p>
+</li>
+<li>
+<p>if(n&lt;0)  return  -n;</p>
+</li>
+<li>
+<p>else{</p>
+</li>
+<li>
+<p>if(next==null)</p>
+</li>
+<li>
+<p>throw  new  NullPointerException("next 不能为空");</p>
+</li>
+<li>
+<p>return  next.handleRequest(n);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void setNextHandler(Handler  next)  {</p>
+</li>
+<li>
+<p>this.next  =  next;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//第二个具体处理者，处理&gt;=0但小于10的</p>
+</li>
+<li>
+<p>public  class  Handler2  implements  Handler  {</p>
+</li>
+<li>
+<p>private  Handler  next;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  int handleRequest(int n)  {</p>
+</li>
+<li>
+<p>if(n&lt;10)  return n*n;</p>
+</li>
+<li>
+<p>else{</p>
+</li>
+<li>
+<p>if(next==null)</p>
+</li>
+<li>
+<p>throw  new  NullPointerException("next 不能为空");</p>
+</li>
+<li>
+<p>return  next.handleRequest(n);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void setNextHandler(Handler  next)  {</p>
+</li>
+<li>
+<p>this.next  =  next;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//第三个具体处理者，处理&gt;=0但小于10的</p>
+</li>
+<li>
+<p>public  class  Handler3  implements  Handler  {</p>
+</li>
+<li>
+<p>private  Handler  next;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  int handleRequest(int n)  {</p>
+</li>
+<li>
+<p>if(n&lt;=Integer.MAX_VALUE)  return n;</p>
+</li>
+<li>
+<p>else{</p>
+</li>
+<li>
+<p>if(next==null)</p>
+</li>
+<li>
+<p>throw  new  NullPointerException("next 不能为空");</p>
+</li>
+<li>
+<p>return  next.handleRequest(n);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void setNextHandler(Handler  next)  {</p>
+</li>
+<li>
+<p>this.next  =  next;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>使用：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Handler h1,h2,h3;</li>
+<li>h1 =  new  Handler1();</li>
+<li>h2 =  new  Handler2();</li>
+<li>h3 =  new  Handler3();</li>
+<li>h1.setNextHandler(h2);</li>
+<li>h2.setNextHandler(h3);</li>
+<li>System.out.println(h1.handleRequest(-1));</li>
+<li>System.out.println(h1.handleRequest(5));</li>
+<li>System.out.println(h1.handleRequest(9999));</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>此处责任链中的具体处理者的顺序是不能重设的，否则可能会引发错误，但更多的情况是完全可以随意更改他们的位置的，就上例中，只要把if中的条件重新设置（各自独立，不相互依赖），就可以了。
+
+我们写java web程序的时候，通常会编写一些过滤器（Filter），然后配置到web.xml中，这其实就是责任链模式的一种实践。而使用Log4j记录日志，配置级别的时候，也同样用到了责任链模式。
+
+我们使用责任链模式的时候，不一定非得某一处理者处理后就得终止请求的传递，如果有其他需求，我们依然可以继续传递这个请求到下一个具体的处理者。
+</code></pre>
+<h2 id="toc_h2_11">7、命令模式(Command Pattern)</h2>
+<pre><code>别名：动作，事物（Another Name：Action，Transaction）  
+
+Encapsulate a request as an object,thereby letting you parameterize clients with different reauests,queue or log requests,and support undoable operations.
+
+将一个请求封装为一个对象，从而使用户可用不同的请求对客户进行参数化；对请求排队或记录请求日志，以及支持可撤销的操作。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>程序需要在不同的时刻指定、排列和执行请求。</p>
+</li>
+<li>
+<p>程序需要提供撤销操作。</p>
+</li>
+<li>
+<p>程序需要支持宏操作。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>在命令模式中，请求者（Invoker）不直接与接受者（Receiver）交互，及请求者（Invoker）不包含接受者（Receiver）的引用，因此彻底消除了彼此间的耦合。</p>
+</li>
+<li>
+<p>命令模式满足“开-闭原则”。如果增加新的具体命令和该命令的接受者，不必修改调用者的代码，调用者就可以使用新的命令对象；反之，如果增加新的调用者，不必修改现有具体命令和接收者，新增加的调用者就可以使用已有的具体命令。</p>
+</li>
+<li>
+<p>由于请求者的请求被封装到具体的命令中，那么就可以将具体命令保存到持久化的媒介中，在需要的时候，重新执行这个具体命令。因此，使用命令模式可以记录日志。</p>
+</li>
+<li>
+<p>使用命令模式可以对请求者的“请求”进行排队。每个请求都各自对应一个具体命令，因此可以按一定顺序执行这些具体命令。</p>
+<p>一个对象有多种操作，但是我们不希望调用者（请求者）直接使用，我们就额外添加一个对象，然后让调用者通过这个对象来使用那些操作。</p>
+<p>比如，我们有一个类可以在磁盘上新建或是删除文件（<strong>接收者</strong>），但是我们不希望直接提供给别人（<strong>请求者</strong>）使用，所以我们就为它的各种操作创建对应的命令，下面我们用代码来实现这个需求：</p>
+<p>接收者，可以在磁盘删除或新建文件：</p>
+</li>
+</ul>
+<ol>
+<li>//接收者</li>
+<li>public  class  MakeFile  {</li>
+<li>//新建文件</li>
+<li>public  void createFile(String name)  throws  IOException{</li>
+<li>File file =  new  File(name);</li>
+<li>file.createNewFile();</li>
+<li>}</li>
+<li>//删除文件</li>
+<li>public  boolean deleteFile(String name){</li>
+<li>File file =  new  File(name);</li>
+<li>if(file.exists()&amp;&amp;file.isFile()){</li>
+<li>file.delete();</li>
+<li>return  true;</li>
+<li>}</li>
+<li>return  false;</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>然后就是执行操作的接口：
+</code></pre>
+<ol>
+<li>
+<p>//命令接口</p>
+</li>
+<li>
+<p>public  interface  Command  {</p>
+</li>
+<li>
+<p>void execute(String name)  throws  Exception;</p>
+</li>
+<li>
+<p>}</p>
+<p>我们需要创建具体的命令，这里就是2个，新建和删除：</p>
+</li>
+<li>
+<p>//新建文件命令</p>
+</li>
+<li>
+<p>public  class  CommandCreate  implements  Command  {</p>
+</li>
+<li>
+<p>MakeFile makeFile;</p>
+</li>
+<li>
+<p>public  CommandCreate(MakeFile makeFile)  {</p>
+</li>
+<li>
+<p>this.makeFile = makeFile;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void execute(String name)  throws  Exception  {</p>
+</li>
+<li>
+<p>makeFile.createFile(name);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//删文件命令</p>
+</li>
+<li>
+<p>public  class  CommandDelete  implements  Command{</p>
+</li>
+<li>
+<p>MakeFile makeFile;</p>
+</li>
+<li>
+<p>public  CommandDelete(MakeFile makeFile)  {</p>
+</li>
+<li>
+<p>this.makeFile = makeFile;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void execute(String name)  throws  Exception  {</p>
+</li>
+<li>
+<p>makeFile.deleteFile(name);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>最后就是请求者了：
+</code></pre>
+<ol>
+<li>//请求者</li>
+<li>public  class  Client  {</li>
+<li>Command command;</li>
+<li>public  Client setCommand(Command command){</li>
+<li>this.command = command;</li>
+<li>return  this;</li>
+<li>}</li>
+<li>public  void executeCommand(String name)  throws  Exception{</li>
+<li>if(command==null)</li>
+<li>throw  new  Exception("命令不能为空！");</li>
+<li>command.execute(name);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>这样，我们就可以使用了，方式如下：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[])  throws  Exception{</li>
+<li>//接收者</li>
+<li>MakeFile makeFile =  new  MakeFile();</li>
+<li>//命令</li>
+<li>CommandCreate create =  new  CommandCreate(makeFile);</li>
+<li>CommandDelete  delete  =  new  CommandDelete(makeFile);</li>
+<li>//请求者</li>
+<li>Client client =  new  Client();</li>
+<li>//执行命令</li>
+<li>client.setCommand(create).executeCommand("<a href="d://test1.txt" target="_blank">d://test1.txt</a>");</li>
+<li>client.setCommand(create).executeCommand("<a href="d://test2.txt" target="_blank">d://test2.txt</a>");</li>
+<li>client.setCommand(delete).executeCommand("<a href="d://test2.txt" target="_blank">d://test2.txt</a>");</li>
+<li>}</li>
+<li>}//执行完后在D盘会有一个test1.txt的文件，test2.txt本页创建了，不过又被删除了。。</li>
+</ol>
+<pre><code>这里只是简单的实现，诸如CommandCreate命令的操作，如果我们需要undo的，那么就需要在命令接口中添加undo()方法并在具体命令中实现即可（将操作保存到栈里即可，undo的时候出栈并撤销操作）。
+
+命令模式不宜滥用，比如：使用这种模式，会多出来很多对象（命令）。
+
+命令模式中还有一种具体命令叫宏命令，它会包含一些其他具体命令的引用，执行宏命令可以执行这个宏命令所包含的引用的命令，概念清楚后实现起来也是容易的：
+
+比如输出文章的命令，有中文输出命令、英文输出命令和宏命令，宏命令包含了其他两个命令的引用（可以使用列表保存这些命令），如果执行宏命令，宏命令会一次执行它所包含引用的其他命令（迭代命令列表并执行即可）。
+</code></pre>
+<h2 id="toc_h2_12">8、解释器模式（Interpreter Patterm）</h2>
+<pre><code>Given a language,define a representation for its grammar along with an interpreter that uses the representation to interpret sentences in the language.
+
+给定一个语言，定义它的文法的一种表示，并定义一个解释器，这个解释器使用该表示来解释语言中的句子。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>当有一个简单的语言需要解释执行，并且可以将该语言的每一个规则表示为一个类时，就可以使用解释器模式。</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>将每一个语法规则表示成一个类，方便与实现简单的语言。</p>
+</li>
+<li>
+<p>由于使用类表示语法的规则，可以较容易改变或扩展语言的行为。</p>
+</li>
+<li>
+<p>通过在类结构中加入新的方法，可以在解释的同时增加新的行为。</p>
+<p>概念其实很简单。在有些问题上，我们可能希望自定定义简单的语言来描述，然后我们自己能解释它。</p>
+<p>解释器模式一般包括四种角色：</p>
+</li>
+<li>
+<p>抽象表达式：该角色为一个接口，负责定义抽象的解释操作。</p>
+</li>
+<li>
+<p>终结符表达式：实现抽象表达式接口的类。</p>
+</li>
+<li>
+<p>非终结表达式：也是实现抽象表达式的类。</p>
+</li>
+<li>
+<p>上下文（Context）：包含解释器之外的一些全局信息。</p>
+<p>使用该模式设计程序一般需要三个步骤：</p>
+</li>
+<li>
+<p>解析语句中的动作标记。</p>
+</li>
+<li>
+<p>将标记规约为动作。</p>
+</li>
+<li>
+<p>执行动作。</p>
+<p>这种模式一般会应用到一些特殊的问题上，使用这种模式一般需要了解形式语言中的基本知识。js内核就是一个强大的解释器。</p>
+<p>简单的解释器模式，我们需要解释出来表达式的信息即可；而更深一层的，我们需要把表达式中的内容，翻译成我们程序运行的一部分来执行。</p>
+<p>本初不提供例子，理解概念即可。有需求的时候再深入学习。如果确实需要举例，请在回复中说明，我会更新文章并添加一些内容。</p>
+</li>
+</ul>
+<h2 id="toc_h2_13">9、迭代器模式</h2>
+<pre><code>别名：游标（Another Name：Cursor）
+
+提供一种方法顺序访问一个聚合对象中的各个元素，而由不需要暴露该对象的内部细节。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>让用户访问集合汇总的对象而不想暴露这个集合的实现时</p>
+</li>
+<li>
+<p>对不同集合提供一个统一的遍历接口时</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>用户使用迭代器访问集合中的对象而不需要知道这个集合的具体实现</p>
+</li>
+<li>
+<p>可以同时使用多个迭代器遍历一个集合</p>
+<p>通常容器提供的迭代器时可以高速遍历它本身的，而使用其本身的机制（如LinkedList中使用get(i)方法遍历）遍历性能可能并不好。</p>
+<p>其实这个在<strong>工厂方法模式</strong>给出的例子就足够解释这个模式的使用了，如需看具体代码实现，请移步工厂方法模式中的例子查看。</p>
+<p>其中主要的角色是<strong>集合</strong>、<strong>具体集合</strong>、<strong>迭代器</strong>、<strong>具体迭代器</strong>。</p>
+<p>迭代器其实很简单，下面我们就继续工厂方法模式中的例子，将它完善一下：</p>
+<p>稍微增强的集合接口：</p>
+</li>
+</ul>
+<ol>
+<li>//集合接口</li>
+<li>public  interface  MyList<t>  {</t></li>
+<li>MyIterator<t> iterator();  //返回一个遍历器</t></li>
+<li>boolean add(T t);  //添加元素到列表</li>
+<li>T get(int index);  //得到元素</li>
+<li>T remove();  //删除最后一个元素</li>
+<li>boolean remove(T element);  //删除指定元素</li>
+<li>T remove(int index);  //删除指定位置元素</li>
+<li>boolean  set(int index,T element);  //修改指定位置值</li>
+<li>int size();</li>
+<li>}</li>
+</ol>
+<pre><code>容量可以自动增长的数组实现的集合：
+</code></pre>
+<ol>
+<li>public  class  MyArrayList<t>  implements  MyList<t>{</t></t></li>
+<li>private  int size;  //存放的元素个数,会默认初始化为0</li>
+<li>private  Object[] defaultList;  //使用数组存放元素</li>
+<li>private  static  final  int defaultLength =  10;//默认长度</li>
+<li>public  MyArrayList(){  //默认构造函数</li>
+<li>defaultList =  new  Object[defaultLength];</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  MyIterator<t> iterator()  {</t></li>
+<li>return  new  Iterator();</li>
+<li>}</li>
+<li>//大小自动增长</li>
+<li>private  void ensureCapacity(int capacity){</li>
+<li>int nowLength = defaultList.length;</li>
+<li>if(capacity &gt;= nowLength){</li>
+<li>nowLength = nowLength +  (nowLength&gt;&gt;1);</li>
+<li>if(nowLength&lt;0)//溢出</li>
+<li>nowLength =  Integer.MAX_VALUE;</li>
+<li>defaultList =  Arrays.copyOf(defaultList, nowLength);</li>
+<li>}</li>
+<li>}</li>
+<li>//添加元素</li>
+<li>@Override</li>
+<li>public  boolean add(T t)  {</li>
+<li>ensureCapacity(size+1);</li>
+<li>defaultList[size++]  = t;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>//获取元素</li>
+<li>@SuppressWarnings("unchecked")</li>
+<li>@Override</li>
+<li>public T get(int index)  {</li>
+<li>if(index&lt;0  || index&gt;=size)  return  null;</li>
+<li>return  (T) defaultList[index];</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T remove()  {</li>
+<li>return remove(size-1);</li>
+<li>}</li>
+<li>@SuppressWarnings("unchecked")</li>
+<li>@Override</li>
+<li>public T remove(int index)  {</li>
+<li>if(index&lt;0||index&gt;=size)  return  null;</li>
+<li>T element =  (T) defaultList[index];</li>
+<li>if(index != size-1)</li>
+<li>System.arraycopy(defaultList, index+1, defaultList, index,size-index-1);</li>
+<li>size--;</li>
+<li>return element;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean remove(T element)  {</li>
+<li>if(element==null){</li>
+<li>for(int i =  0  ; i&lt;size;i++)</li>
+<li>if(defaultList[i]==null){</li>
+<li>System.arraycopy(defaultList, i+1, defaultList, i,size-i-1);</li>
+<li>size--;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>}</li>
+<li>else{</li>
+<li>for(int i =  0  ; i&lt;size;i++)</li>
+<li>if(defaultList[i].equals(element)){</li>
+<li>System.arraycopy(defaultList, i+1, defaultList, i,size-i-1);</li>
+<li>size--;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>}</li>
+<li>return  false;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean  set(int index,T element)  {</li>
+<li>if(index&lt;0||index&gt;=size)  return  false;</li>
+<li>defaultList[index]  = element;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  int size()  {</li>
+<li>return size;</li>
+<li>}</li>
+<li>//迭代器</li>
+<li>private  class  Iterator  implements  MyIterator<t>{</t></li>
+<li>private  int  next;</li>
+<li>@Override</li>
+<li>public  boolean hasNext()  {</li>
+<li>return  next&lt;size;</li>
+<li>}</li>
+<li>@SuppressWarnings("unchecked")</li>
+<li>@Override</li>
+<li>public T next()  {</li>
+<li>return  (T) defaultList[next++];</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T remove()  {</li>
+<li>// TODO Auto-generated method stub</li>
+<li>return  null;</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>链表实现的集合：
+</code></pre>
+<ol>
+<li>public  class  MyLinkedList<t>  implements  MyList<t>{</t></t></li>
+<li>private  int size;  //存放的元素个数,会默认初始化为0</li>
+<li>private  Node<t> first;  //首节点，默认初始化为null</t></li>
+<li>@Override</li>
+<li>public  MyIterator<t> iterator()  {</t></li>
+<li>return  new  Iterator();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean add(T t)  {</li>
+<li>if(size==0){</li>
+<li>first =  new  Node<t>(t,null);</t></li>
+<li>size++;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>Node<t> node = first;</t></li>
+<li>while(node.next!=null)</li>
+<li>node = node.next;</li>
+<li>node.next  =  new  Node<t>(t,null);</t></li>
+<li>size++;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T get(int index)  {</li>
+<li>Node<t> node = first;</t></li>
+<li>while(--index&gt;=0)</li>
+<li>node = node.next;</li>
+<li>return node.data;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T remove()  {</li>
+<li>return remove(size-1);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T remove(int index)  {</li>
+<li>if(index&lt;0||index&gt;=size)  return  null;</li>
+<li>Node<t> node = first;</t></li>
+<li>while(--index&gt;0)</li>
+<li>node = node.next;</li>
+<li>T element = node.next.data;</li>
+<li>node.next  = node.next.next;</li>
+<li>size--;</li>
+<li>return element;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean remove(T element)  {</li>
+<li>if(element ==  null){</li>
+<li>if(first.data==null){</li>
+<li>first = first.next;</li>
+<li>size--;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>Node<t> node = first;</t></li>
+<li>do{</li>
+<li>if(node.next.data==null){</li>
+<li>node.next  = node.next.next;</li>
+<li>size--;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>node = node.next;</li>
+<li>}</li>
+<li>while(node.next!=null);</li>
+<li>}</li>
+<li>else{</li>
+<li>if(first.data.equals(element)){</li>
+<li>first = first.next;</li>
+<li>size--;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>Node<t> node = first;</t></li>
+<li>do{</li>
+<li>if(node.next.data.equals(element)){</li>
+<li>node.next  = node.next.next;</li>
+<li>size--;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>node = node.next;</li>
+<li>}</li>
+<li>while(node.next!=null);</li>
+<li>}</li>
+<li>return  false;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean  set(int index, T element)  {</li>
+<li>if(index&lt;0||index&gt;=size)  return  false;</li>
+<li>Node<t> node = first;</t></li>
+<li>while(--index&gt;0)</li>
+<li>node = node.next;</li>
+<li>node.data = element;</li>
+<li>return  true;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  int size()  {</li>
+<li>return size;</li>
+<li>}</li>
+<li>//链表节点</li>
+<li>private  static  class  Node<t>{</t></li>
+<li>T data;</li>
+<li>Node<t>  next;</t></li>
+<li>Node(T data,Node<t>  next){</t></li>
+<li>this.data = data;</li>
+<li>this.next  =  next;</li>
+<li>}</li>
+<li>}</li>
+<li>//遍历器</li>
+<li>private  class  Iterator  implements  MyIterator<t>{</t></li>
+<li>private  Node<t>  next;  //下一个节点</t></li>
+<li>Iterator(){</li>
+<li>next  = first;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean hasNext()  {</li>
+<li>return  next!=null;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T next()  {</li>
+<li>T data =  next.data;</li>
+<li>next  =  next.next;</li>
+<li>return data;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public T remove()  {</li>
+<li>// TODO Auto-generated method stub</li>
+<li>return  null;</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>迭代器接口：
+</code></pre>
+<ol>
+<li>
+<p>public  interface  MyIterator<t>  {</t></p>
+</li>
+<li>
+<p>boolean hasNext();  //是否还有下一个元素</p>
+</li>
+<li>
+<p>T next();  //得到下一个元素</p>
+</li>
+<li>
+<p>T remove();</p>
+</li>
+<li>
+<p>}</p>
+<p>具体的迭代器就是集合具体实现里面的迭代器内部类，下面是使用 ：</p>
+</li>
+<li>
+<p>public  class  TestUse  {</p>
+</li>
+<li>
+<p>public  static  void main(String args[]){</p>
+</li>
+<li>
+<p>//分别定义两种结构</p>
+</li>
+<li>
+<p>MyList<string> array =  new  MyArrayList<string>();</string></string></p>
+</li>
+<li>
+<p>MyList<string> link =  new  MyLinkedList<string>();</string></string></p>
+</li>
+<li>
+<p>//添加数据</p>
+</li>
+<li>
+<p>for(int i =  1;i &lt;  15; i++){</p>
+</li>
+<li>
+<p>array.add(i+"");</p>
+</li>
+<li>
+<p>link.add(i+"");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//数组操作</p>
+</li>
+<li>
+<p>System.out.println(array.remove());</p>
+</li>
+<li>
+<p>System.out.println(array.get(5));</p>
+</li>
+<li>
+<p>System.out.println(array.remove(5));</p>
+</li>
+<li>
+<p>System.out.println(array.get(5));</p>
+</li>
+<li>
+<p>System.out.println(array.remove("7"));</p>
+</li>
+<li>
+<p>System.out.println(array.set(0,  "00"));</p>
+</li>
+<li>
+<p>//使用迭代器</p>
+</li>
+<li>
+<p>MyIterator<string> ai = array.iterator();</string></p>
+</li>
+<li>
+<p>while(ai.hasNext())</p>
+</li>
+<li>
+<p>System.out.print(ai.next()+" ");</p>
+</li>
+<li>
+<p>System.out.println();</p>
+</li>
+<li>
+<p>System.out.println(link.remove());</p>
+</li>
+<li>
+<p>System.out.println(link.get(5));</p>
+</li>
+<li>
+<p>System.out.println(link.remove(5));</p>
+</li>
+<li>
+<p>System.out.println(link.get(5));</p>
+</li>
+<li>
+<p>System.out.println(link.remove("7"));</p>
+</li>
+<li>
+<p>System.out.println(link.set(0,  "00"));</p>
+</li>
+<li>
+<p>//使用迭代器</p>
+</li>
+<li>
+<p>MyIterator<string> li = link.iterator();</string></p>
+</li>
+<li>
+<p>while(li.hasNext())</p>
+</li>
+<li>
+<p>System.out.print(li.next()+" ");</p>
+</li>
+<li>
+<p>System.out.println();</p>
+</li>
+<li>
+<p>System.out.println("a size="  + array.size());</p>
+</li>
+<li>
+<p>System.out.println("l size="  + link.size());</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>输出：
+</code></pre>
+<ol>
+<li>14</li>
+<li>6</li>
+<li>6</li>
+<li>7</li>
+<li>true</li>
+<li>true</li>
+<li>00  2  3  4  5  8  9  10  11  12  13</li>
+<li>14</li>
+<li>6</li>
+<li>6</li>
+<li>7</li>
+<li>true</li>
+<li>true</li>
+<li>00  2  3  4  5  8  9  10  11  12  13</li>
+<li>a size=11</li>
+<li>l size=11</li>
+</ol>
+<pre><code>这里的迭代器就是典型的迭代器模式的实现（不过此处的迭代器没有实现remove()方法，查找集合的remove()方法实现也简单），介绍得有点多了，把集合都给介绍了...
+</code></pre>
+<h2 id="toc_h2_14">10、中介者模式（Mediator Pattern）</h2>
+<pre><code>用一个中介对象来封装一系列的对象交互。中介者使各对象不需要显示的相互引用，从而使其耦合松散，而且可以独立的改变他们之前的交互。
+
+何时使用
+
+优点
+
+两个类直接关联，是很好实现的，但如果不希望两个类直接发生交互，那么就需要使用中介者模式了。
+
+比如有两个类，他们都是做持久化的，一个负责将数据写入文件，一个负责将数据写入数据库。他们谁先接收到数据是不确定的，但是要确保其中一个接收到数据后，另外一个也必须完成这些数据的持久化。如果我们直接将两个类关联在一起，互相调用是可以实现的，但不利于后期扩展或维护（比如再添加一个持久化组建，则原有的组建可能都需要修改），此时，若添加一个中介者，来协调他们，事儿就好办多了：
+
+数据持久化的接口：
+</code></pre>
+<ol>
+<li>
+<p>//同事（接口）</p>
+</li>
+<li>
+<p>public  interface  IPersistent  {</p>
+</li>
+<li>
+<p>void getData(Object data);</p>
+</li>
+<li>
+<p>void getData(Object data,Midiator midiator);</p>
+</li>
+<li>
+<p>void saveData();</p>
+</li>
+<li>
+<p>}</p>
+<p>分别实现持久化到文件和持久化到数据库的组件（具体同事）：</p>
+</li>
+<li>
+<p>//具体同事</p>
+</li>
+<li>
+<p>public  class  PersistentFile  implements  IPersistent{</p>
+</li>
+<li>
+<p>private  Object data;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void getData(Object data,  Midiator midiator)  {</p>
+</li>
+<li>
+<p>getData(data);</p>
+</li>
+<li>
+<p>midiator.notifyOther(this, data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void saveData()  {</p>
+</li>
+<li>
+<p>System.out.println(data +  " 已保存到文件");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void getData(Object data)  {</p>
+</li>
+<li>
+<p>this.data = data;</p>
+</li>
+<li>
+<p>saveData();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//具体同事</p>
+</li>
+<li>
+<p>public  class  PersistentDB  implements  IPersistent{</p>
+</li>
+<li>
+<p>private  Object data;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void getData(Object data,  Midiator midiator)  {</p>
+</li>
+<li>
+<p>getData(data);</p>
+</li>
+<li>
+<p>midiator.notifyOther(this, data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void saveData()  {</p>
+</li>
+<li>
+<p>System.out.println(data +  " 已保存到数据库");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void getData(Object data)  {</p>
+</li>
+<li>
+<p>this.data = data;</p>
+</li>
+<li>
+<p>saveData();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>中介者：
+</code></pre>
+<ol>
+<li>//具体中介者</li>
+<li>public  class  Midiator  {</li>
+<li>PersistentDB persistentDB;//此处可以使用List来存放所有的同事</li>
+<li>PersistentFile persistentFile;</li>
+<li>public  Midiator setPersistentDB(PersistentDB persistentDB)  {</li>
+<li>this.persistentDB = persistentDB;</li>
+<li>return  this;</li>
+<li>}</li>
+<li>public  Midiator setPersistentFile(PersistentFile persistentFile)  {</li>
+<li>this.persistentFile = persistentFile;</li>
+<li>return  this;</li>
+<li>}</li>
+<li>public  void notifyOther(IPersistent persistent,Object data){</li>
+<li>if(persistent instanceof  PersistentDB)//如果同事都放在List中，此处遍历即可</li>
+<li>persistentFile.getData(data);</li>
+<li>if(persistent instanceof  PersistentFile)</li>
+<li>persistentDB.getData(data);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>使用：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Object data =  "数据";</li>
+<li>PersistentDB persistentDB =  new  PersistentDB();</li>
+<li>PersistentFile persistentFile =  new  PersistentFile();</li>
+<li>Midiator midiator =  new  Midiator();</li>
+<li>midiator.setPersistentDB(persistentDB).setPersistentFile(persistentFile);</li>
+<li>persistentDB.getData(data, midiator);</li>
+<li>persistentFile.getData(data, midiator);</li>
+<li>}</li>
+<li>}//输出（省略了换行符）：数据 已保存到数据库数据 已保存到文件数据 已保存到文件数据 已保存到数据库</li>
+</ol>
+<pre><code>就上例，如果还有许多的持久化组件（具体同事），可以在中介者中使用一个List来存放他们的引用，set的时候就添加。在通知其他同事时，遍历这个List，除了参数本身这个同事，其他的依次通知，即可实现。
+
+中介者消除了同事与同事间直接的关联。
+</code></pre>
+<h2 id="toc_h2_15">11、备忘录模式（Memento Pattern）</h2>
+<pre><code>别名：标记（Another Name：Token）
+
+Without violating encapsulation,captrue and externalize an object' orifianl state so that the object can be restored to this state later.
+
+在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存该状态，这样就可以将该对象恢复到之前保存的状态。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>必须保存一个对象在某一时刻的全部或部分状态，以便在需要时恢复该对象先前的状态。</p>
+</li>
+<li>
+<p>一个对象不想通过提供public权限的，诸如getXXX()的方法让其他对象得到自己IDE内部状态。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>备忘录模式使用备忘录可以吧原先者的内部状态全部保存起来，使是有很“亲密”的对象可以访问备忘录中的数据。</p>
+</li>
+<li>
+<p>备忘录模式强调了类设计单一责任的原则，即将状态的刻画和保存分开。</p>
+<p>备忘录模式又叫做快照模式(Snapshot Pattern)或Token模式，是对象的行为模式。 备忘录对象是一个用来存储另外一个对象内部状态的快照的对象。</p>
+<p>备忘录模式中有三种角色：</p>
+</li>
+<li>
+<p>备忘录(Memento)角色：将发起人（Originator）对象的内战状态存储起来。备忘录可以根据发起人对象的判断来决定存储多少发起人（Originator）对象的内部状态。备忘录可以保护其内容不被发起人（Originator）对象之外的任何对象所读取。</p>
+</li>
+<li>
+<p>发起人（Originator）角色：创建一个含有当前的内部状态的备忘录对象。使用备忘录对象存储其内部状态。</p>
+</li>
+<li>
+<p>负责人（Caretaker）角色：负责保存备忘录对象。不检查备忘录对象的内容。</p>
+<p>先看一个简单的实现方式：</p>
+</li>
+</ul>
+<ol>
+<li>//简单的备忘录模式</li>
+<li>public  class  SimpleMemento  {</li>
+<li>public  static  void main(String[] args)  throws  Exception  {</li>
+<li>Originator originator =  new  Originator();  //发起人，要被保存的对象,也是他创建要保存的信息的</li>
+<li>Caretaker caretaker =  new  Caretaker();  //辅助保存的对象</li>
+<li>originator.setState("stateOne");  //设置状态</li>
+<li>caretaker.saveMemento(originator.createMemento());  //保存状态</li>
+<li>originator.setState("stateTwo");  //修改状态</li>
+<li>originator.recoverMemento(caretaker.recoverMemento());  //恢复状态</li>
+<li>}</li>
+<li>}</li>
+<li>//发起人</li>
+<li>class  Originator  {</li>
+<li>private  String state;</li>
+<li>public  Memento createMemento(){</li>
+<li>return  new  Memento(state);</li>
+<li>}</li>
+<li>public  void recoverMemento(Memento memento){</li>
+<li>this.state = memento.getState();</li>
+<li>}</li>
+<li>public  String getState()  {</li>
+<li>return state;</li>
+<li>}</li>
+<li>public  void setState(String state)  {</li>
+<li>this.state = state;</li>
+<li>}</li>
+<li>}</li>
+<li>//备忘录</li>
+<li>class  Memento  {</li>
+<li>private  String state;</li>
+<li>public  Memento(String state){</li>
+<li>this.state = state;</li>
+<li>}</li>
+<li>public  String getState()  {</li>
+<li>return state;</li>
+<li>}</li>
+<li>public  void setState(String state)  {</li>
+<li>this.state = state;</li>
+<li>}</li>
+<li>}</li>
+<li>//负责人</li>
+<li>class  Caretaker  {</li>
+<li>private  Memento memento;</li>
+<li>public  Memento recoverMemento()  throws  Exception{</li>
+<li>if(memento==null)</li>
+<li>throw  new  Exception("没有保存的状态");</li>
+<li>return  this.memento;//恢复状态</li>
+<li>}</li>
+<li>public  void saveMemento(Memento memento){</li>
+<li>this.memento = memento;//保存状态</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>备忘录角色对任何对象都提供一个接口，备忘录角色的内部所存储的状态就对所有对象公开，因此是破坏封装性的。
+
+按照定义中的要求，备忘录角色要保持完整的封装。最好的情况便是：备忘录角色只应该暴露操作内部存储属性的的接口给“备忘发起角色”。
+
+如果上例中，我们把备忘录以发起人的私有内部类的方式实现的话，那它就只能被发起人访问了，这正好就符合备忘录模式的要求，但是我们的负责人是需要存放备忘录的引用的，于是，我们提供一个公共的接口，他是空的，我们用备忘录实现它，主要就是利用其中的类型信息，具体实现如下：
+</code></pre>
+<ol>
+<li>//备忘录模式</li>
+<li>public  class  BlackMemento  {</li>
+<li>public  static  void main(String[] args)  {</li>
+<li>BlankOriginator originator =  new  BlankOriginator();  //发起人</li>
+<li>BlackCaretaker caretaker =  new  BlackCaretaker();  //负责人</li>
+<li>originator.setState("stateOne");  //设置状态</li>
+<li>caretaker.saveMemento(originator.createMemento());  //保存信息</li>
+<li>originator.setState("stateTwo");  //修改状态</li>
+<li>originator.recoverMemento(caretaker.recoverMemento());//恢复状态</li>
+<li>}</li>
+<li>}</li>
+<li>interface  MementoIF  {}</li>
+<li>//发起人</li>
+<li>class  BlankOriginator  {</li>
+<li>private  String state;</li>
+<li>public  String getState()  {</li>
+<li>return state;</li>
+<li>}</li>
+<li>public  void setState(String state)  {</li>
+<li>this.state = state;</li>
+<li>}</li>
+<li>public  MementoIF createMemento(){</li>
+<li>return  new  Memento(state);</li>
+<li>}</li>
+<li>public  void recoverMemento(MementoIF memento){</li>
+<li>this.setState(((Memento)memento).getState());</li>
+<li>}</li>
+<li>//以内部类实现备忘录角色</li>
+<li>private  class  Memento  implements  MementoIF{</li>
+<li>private  String state;</li>
+<li>private  Memento(String state){</li>
+<li>this.state = state;</li>
+<li>}</li>
+<li>private  String getState()  {</li>
+<li>return state;</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+<li>//负责人</li>
+<li>class  BlackCaretaker  {</li>
+<li>private  MementoIF memento;</li>
+<li>public  MementoIF recoverMemento(){</li>
+<li>return memento;</li>
+<li>}</li>
+<li>public  void saveMemento(MementoIF memento){</li>
+<li>this.memento = memento;</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>上面两个例子，演示的都是保存一个状态（不是指一个成员，而是只存了最近一次状态），即一个检查点，但是实际应用中，状态往往不止存储一次，我们将上面储存状态的变量改为一个栈（或队列，主要看需求）即可。比如：BlackCaretaker中的private MementoIF memento；改为LinkedList mementos 实现，保存的时候压栈（入队），恢复的时候出栈（出队）。具体实现都已经描述很清楚了，代码就不贴了（文章本来就太长了）。
+
+针对上例，如果发起人和负责人我们并不介意他们必须是独立的，就可以把他们融合到一起，实现就会更佳简单，代码也简洁：
+</code></pre>
+<ol>
+<li>//自述历史备忘录</li>
+<li>public  class  MementoSelf  {</li>
+<li>public  static  void main(String[] args)  {</li>
+<li>OriginatorCaretaker originatorCaretaker =  new  OriginatorCaretaker();//发起人，同时为负责人</li>
+<li>originatorCaretaker.changeState("stateOne");  //改变状态</li>
+<li>IMemento memento = originatorCaretaker.createMemento();  //保存状态</li>
+<li>originatorCaretaker.changeState("stateTwo");  //改变状态</li>
+<li>originatorCaretaker.recoverMemento(memento);  //恢复状态</li>
+<li>}</li>
+<li>}</li>
+<li>interface  IMemento  {}</li>
+<li>//发起人兼负责人</li>
+<li>class  OriginatorCaretaker  {</li>
+<li>public  String state;</li>
+<li>public  void changeState(String state){</li>
+<li>this.state = state;</li>
+<li>}</li>
+<li>//创造快照</li>
+<li>public  Memento createMemento(){</li>
+<li>return  new  Memento(this);</li>
+<li>}</li>
+<li>//恢复状态</li>
+<li>public  void recoverMemento(IMemento memento){</li>
+<li>Memento m =  (Memento)memento;</li>
+<li>changeState(m.state);</li>
+<li>}</li>
+<li>//内部类实现备忘录</li>
+<li>private  class  Memento  implements  IMemento{</li>
+<li>private  String state;</li>
+<li>private  Memento(OriginatorCaretaker originatorCaretaker){</li>
+<li>this.state = originatorCaretaker.state;</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>上例演示仅保存一个检查点。下面再给出一个实际的例子：
+
+我们有个程序，供用户编辑文本，用户做出修改后，可以保存文本，保存修改后，可以依次恢复到保存前的多个状态中的一个，如果恢复后用户没有修改，还可以取消恢复（重做），下面就演示整个程序。
+
+这个程序为了保证功能相对完整，写作演示可能有点长了：
+</code></pre>
+<ol>
+<li>//文本编辑器</li>
+<li>public  class  TextEditor  {</li>
+<li>public  static  void main(String[] args)  {</li>
+<li>//使用这个文本编辑器</li>
+<li>MyTextEditor editor =  new  MyTextEditor("这里是初始文本，可能为文件中读取的值。");</li>
+<li>System.out.println("开始修改文本：");</li>
+<li>editor.append("添加文字1");</li>
+<li>editor.delWords();  //删除最后一个</li>
+<li>//      editor.delWords(2);     //删除最后2个    这两个方法是没有问题的，这里避免控制台输出太多，取消这两次修改</li>
+<li>//      editor.delWords(1,5);   //删除前面5个</li>
+<li>System.out.println("开始恢复：");</li>
+<li>for(int i=0;i&lt;10;i++) editor.recoverMemento();//恢复大于实际修改的次数不会出错，只会将文本设为o初始化状态</li>
+<li>System.out.println("开始重做：");</li>
+<li>for(int i=0;i&lt;10;i++) editor.redo();  //重做大于实际恢复的次数不会出错，只会将文本设为最后状态</li>
+<li>System.out.println("再次恢复：");</li>
+<li>for(int i=0;i&lt;10;i++) editor.recoverMemento();//恢复大于实际修改的次数不会出错，只会将文本设为o初始化状态</li>
+<li>System.out.println("再次重做：");</li>
+<li>for(int i=0;i&lt;10;i++) editor.redo();  //重做大于实际恢复的次数不会出错，只会将文本设为最后状态</li>
+<li>System.out.println("再次恢复：");</li>
+<li>for(int i=0;i&lt;10;i++) editor.recoverMemento();//恢复大于实际修改的次数不会出错，只会将文本设为o初始化状态</li>
+<li>editor.append("添加文字2");</li>
+<li>System.out.println("再次重做：");</li>
+<li>for(int i=0;i&lt;10;i++) editor.redo();  //重做大于实际恢复的次数不会出错，只会将文本设为最后状态</li>
+<li>}</li>
+<li>}</li>
+<li>interface  IMemento  {}</li>
+<li>//发起人兼负责人</li>
+<li>class  MyTextEditor  {</li>
+<li>public  StringBuffer text;</li>
+<li>private  LinkedList<imemento> mementos;  //保存快照</imemento></li>
+<li>private  LinkedList<imemento> undos;  //保存撤销的操作</imemento></li>
+<li>public  MyTextEditor(){</li>
+<li>this("");</li>
+<li>}</li>
+<li>public  MyTextEditor(String defaultStr){</li>
+<li>text =  new  StringBuffer(defaultStr);</li>
+<li>mementos =  new  LinkedList<imemento>();</imemento></li>
+<li>undos =  new  LinkedList<imemento>();</imemento></li>
+<li>print();</li>
+<li>}</li>
+<li>public  void clearHistory(){</li>
+<li>mementos.clear();</li>
+<li>undos.clear();</li>
+<li>}</li>
+<li>public  void append(String appendStr){</li>
+<li>if(appendStr==null||appendStr.length()==0)  return;</li>
+<li>createMemento();</li>
+<li>text.append(appendStr);</li>
+<li>print();</li>
+<li>undos.clear();</li>
+<li>}</li>
+<li>//删除最后一个</li>
+<li>public  void delWords(){</li>
+<li>delWords(1);</li>
+<li>}</li>
+<li>//删除最后n个</li>
+<li>public  void delWords(int n){</li>
+<li>if(n&lt;1||n&gt;text.length())  return;</li>
+<li>delWords(text.length()-n+1,text.length());</li>
+<li>}</li>
+<li>//删除中间start到end的字符,第一个文字为第一个(而不是0)</li>
+<li>public  void delWords(int start,int  end){</li>
+<li>if(start&lt;1  ||  end&gt;text.length()+1)  return;</li>
+<li>createMemento();</li>
+<li>text = text.delete(start-1,  end);</li>
+<li>print();</li>
+<li>}</li>
+<li>public  void reset(String text){</li>
+<li>this.text =  new  StringBuffer(text);</li>
+<li>}</li>
+<li>//新的快照</li>
+<li>public  void createMemento(){</li>
+<li>mementos.push(new  Memento(this));</li>
+<li>}</li>
+<li>//恢复状态</li>
+<li>public  boolean recoverMemento(){</li>
+<li>Memento memento =  (Memento) mementos.poll();</li>
+<li>if(memento==null)  return  false;</li>
+<li>undos.push(new  Memento(this));</li>
+<li>reset(memento.state);</li>
+<li>print();</li>
+<li>return  true;</li>
+<li>}</li>
+<li>//redo,redo的操作也可以恢复！</li>
+<li>public  boolean  redo(){</li>
+<li>Memento memento =  (Memento) undos.poll();</li>
+<li>if(memento==null)  return  false;</li>
+<li>createMemento();</li>
+<li>reset(memento.state);</li>
+<li>print();</li>
+<li>return  true;</li>
+<li>}</li>
+<li>//内部类实现备忘录</li>
+<li>private  class  Memento  implements  IMemento{</li>
+<li>private  String state;</li>
+<li>private  Memento(MyTextEditor editor){</li>
+<li>this.state = editor.text.toString();</li>
+<li>}</li>
+<li>}</li>
+<li>void  print(){</li>
+<li>System.out.println("当前文本："  + text);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>控制台输出：
+</code></pre>
+<ol>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。</li>
+<li>开始修改文本：</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字1</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字</li>
+<li>开始恢复：</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字1</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。</li>
+<li>开始重做：</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字1</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字</li>
+<li>再次恢复：</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字1</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。</li>
+<li>再次重做：</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字1</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字</li>
+<li>再次恢复：</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字1</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。</li>
+<li>当前文本：这里是初始文本，可能为文件中读取的值。添加文字2</li>
+<li>再次重做：</li>
+</ol>
+<pre><code>可以看到功能都是正确的，最后的重做因为在恢复后有修改发生，所以重做是无效的（目前我们所用的编辑器都是这种策略）。多次的恢复和重做是没有问题的。
+
+该例子就是备忘录模式典型的例子。
+</code></pre>
+<h2 id="toc_h2_16">12、观察者模式（Observer Pattern）</h2>
+<pre><code>别名： 依赖，发布/订阅（Another Name: Dependents, Publish/Subscribe）
+
+定义对象间的一种一对多的依赖关系，当一个对象状态发生改变时，所有依赖它的对象都得到通知并被自动更新。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>当一个对象的数据更新时，需要通知其他对象，而又不希望和被通知的对象形成紧耦合时</p>
+<p><strong>优点</strong></p>
+<p>...</p>
+<p>比如我们有个天气服务（<strong>主题</strong>），然后有多个使用它的客户端（<strong>观察者</strong>），包括android和iphone端app的服务（观察者），那么就可以使用这么模式。</p>
+<p>我们需要一种结构存放天气信息（注意，省略了get、set方法！）：</p>
+</li>
+</ul>
+<ol>
+<li>//天气的消息实体</li>
+<li>public  class  WeatherInfo  {</li>
+<li>private  long time;</li>
+<li>private  String weather;</li>
+<li>public  WeatherInfo(long time,String weather){</li>
+<li>this.time = time;</li>
+<li>this.weather = weather;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean equals(Object obj)  {</li>
+<li>WeatherInfo info =  (WeatherInfo) obj;</li>
+<li>return info.time==this.time&amp;&amp;info.weather.equals(this.weather);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>然后我们定义天气服务的接口（主题），以表示它应实现哪些功能：
+</code></pre>
+<ol>
+<li>
+<p>//主题</p>
+</li>
+<li>
+<p>public  interface  IWeatherService  {</p>
+</li>
+<li>
+<p>void addClient(Client client);  //添加观察者</p>
+</li>
+<li>
+<p>boolean deleteClient(Client client);//删除观察者</p>
+</li>
+<li>
+<p>void notifyClients();  //通知</p>
+</li>
+<li>
+<p>void updateWeather(WeatherInfo info);//主题内容更新</p>
+</li>
+<li>
+<p>}</p>
+<p>接着就是客户端的接口描述：</p>
+</li>
+<li>
+<p>//观察者</p>
+</li>
+<li>
+<p>public  interface  Client  {</p>
+</li>
+<li>
+<p>void getWeather(WeatherInfo info);</p>
+</li>
+<li>
+<p>}</p>
+<p>然后实现具体的天气服务，这里同样用到了单例模式：</p>
+</li>
+<li>
+<p>//具体主题</p>
+</li>
+<li>
+<p>public  enum  WeatherService  implements  IWeatherService{</p>
+</li>
+<li>
+<p>instance;</p>
+</li>
+<li>
+<p>private  LinkedList<weatherinfo> weatherInfos =  new  LinkedList<weatherinfo>();</weatherinfo></weatherinfo></p>
+</li>
+<li>
+<p>private  LinkedHashSet<client> clients =  new  LinkedHashSet<client>();  //存放观察者</client></client></p>
+</li>
+<li>
+<p>//添加观察者</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void addClient(Client client)  {</p>
+</li>
+<li>
+<p>clients.add(client);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//删除观察者</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  boolean deleteClient(Client client)  {</p>
+</li>
+<li>
+<p>return clients.remove(client);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//通知观察者</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void notifyClients()  {</p>
+</li>
+<li>
+<p>Iterator<client> iterator = clients.iterator();</client></p>
+</li>
+<li>
+<p>while(iterator.hasNext()){</p>
+</li>
+<li>
+<p>iterator.next().getWeather(weatherInfos.peekFirst());</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//更新天气</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void updateWeather(WeatherInfo info)  {</p>
+</li>
+<li>
+<p>if(weatherInfos.size()&gt;0)</p>
+</li>
+<li>
+<p>if(weatherInfos.peekFirst().equals(info))  return;</p>
+</li>
+<li>
+<p>weatherInfos.push(info);</p>
+</li>
+<li>
+<p>if(clients.size()==0)  return;</p>
+</li>
+<li>
+<p>notifyClients();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>最后就是具体的客户端（观察者，此处给出两个）：
+</code></pre>
+<ol>
+<li>
+<p>public  class  ClientAndroidServer  implements  Client  {</p>
+</li>
+<li>
+<p>private  static  String name =  "安卓服务";</p>
+</li>
+<li>
+<p>private  WeatherInfo info;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void getWeather(WeatherInfo info)  {</p>
+</li>
+<li>
+<p>this.info = info;</p>
+</li>
+<li>
+<p>dealMsg();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>private  void dealMsg(){</p>
+</li>
+<li>
+<p>System.out.println(name +  "收到最新天气：time="+info.getTime()+"msg="+info.getWeather()+"。马上开始推送消息...");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  class  ClientIphoneServer  implements  Client  {</p>
+</li>
+<li>
+<p>private  static  String name =  "苹果服务";</p>
+</li>
+<li>
+<p>private  WeatherInfo info;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void getWeather(WeatherInfo info)  {</p>
+</li>
+<li>
+<p>this.info = info;</p>
+</li>
+<li>
+<p>dealMsg();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>private  void dealMsg(){</p>
+</li>
+<li>
+<p>System.out.println(name +  "收到最新天气：time="+info.getTime()+"msg="+info.getWeather()+"。马上开始推送消息...");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>好，现在就可以直接使用了：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>//创建主题</li>
+<li>WeatherService service =  WeatherService.instance;</li>
+<li>//添加观察者</li>
+<li>service.addClient(new  ClientAndroidServer());</li>
+<li>service.addClient(new  ClientIphoneServer());</li>
+<li>//更新主题</li>
+<li>service.updateWeather(new  WeatherInfo(System.currentTimeMillis(),  "多云"));</li>
+<li>service.updateWeather(new  WeatherInfo(System.currentTimeMillis()+1000<em>60</em>60*24,  "多云转晴"));</li>
+<li>service.updateWeather(new  WeatherInfo(System.currentTimeMillis()+1000<em>60</em>60<em>24</em>2,  "晴"));</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>运行后，控制台有如下输出：
+</code></pre>
+<ol>
+<li>
+<p>安卓服务收到最新天气：time=1461246047007msg=多云。马上开始推送消息...</p>
+</li>
+<li>
+<p>苹果服务收到最新天气：time=1461246047007msg=多云。马上开始推送消息...</p>
+</li>
+<li>
+<p>安卓服务收到最新天气：time=1461332447007msg=多云转晴。马上开始推送消息...</p>
+</li>
+<li>
+<p>苹果服务收到最新天气：time=1461332447007msg=多云转晴。马上开始推送消息...</p>
+</li>
+<li>
+<p>安卓服务收到最新天气：time=1461418847007msg=晴。马上开始推送消息...</p>
+</li>
+<li>
+<p>苹果服务收到最新天气：time=1461418847007msg=晴。马上开始推送消息...</p>
+<p>可以看出，观察者模式是一对多的。而本例是将更新的内容整个推给客户端。</p>
+<p>而观察者模式中的数据有推和拉的区别，上例是推。</p>
+<p>推的方式会将主题更改的内容全部直接推给客户端，拉的方式就是主题的数据更新后，不直接将数据推给客户端，而是先推送一个通知并提供对应的方法供客户端拉取数据。</p>
+<p>如果上例中，天气服务每半小时更新（半点和整点推消息），还有一个客户端，不需要特别即时的天气消息，只取整点的消息，那么我们就可以使用拉的方式，数据更新后，给客户端推送一个标志，客户端自己按需取得数据（天气服务需要提供这样一个接口）。这就是拉。</p>
+<p>java.util包中也提供了观察者模式的支持，因为java程序设计中使用比较广泛。有一个Observable类(相当于这里的具体主题)和一个Observer接口（相当于这里的主题接口）:</p>
+</li>
+<li>
+<p>public  interface  Observer  {</p>
+</li>
+<li>
+<p>void update(Observable o,  Object arg);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  class  Observable  {</p>
+</li>
+<li>
+<p>private  boolean changed =  false;</p>
+</li>
+<li>
+<p>private  Vector<observer> obs;</observer></p>
+</li>
+<li>
+<p>public  Observable()  { obs =  new  Vector&lt;&gt;();}</p>
+</li>
+<li>
+<p>public  synchronized  void addObserver(Observer o)  {</p>
+</li>
+<li>
+<p>if  (o ==  null)  throw  new  NullPointerException();</p>
+</li>
+<li>
+<p>if  (!obs.contains(o))  { obs.addElement(o);  }</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  synchronized  void deleteObserver(Observer o)  { obs.removeElement(o);  }</p>
+</li>
+<li>
+<p>public  void notifyObservers()  { notifyObservers(null);  }</p>
+</li>
+<li>
+<p>public  void notifyObservers(Object arg)  {</p>
+</li>
+<li>
+<p>Object[] arrLocal;</p>
+</li>
+<li>
+<p>synchronized  (this)  {</p>
+</li>
+<li>
+<p>if  (!changed)  return;</p>
+</li>
+<li>
+<p>arrLocal = obs.toArray();</p>
+</li>
+<li>
+<p>clearChanged();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>for  (int i = arrLocal.length-1; i&gt;=0; i--)  ((Observer)arrLocal[i]).update(this, arg);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  synchronized  void deleteObservers()  { obs.removeAllElements();  }</p>
+</li>
+<li>
+<p>protected  synchronized  void setChanged()  { changed =  true;  }</p>
+</li>
+<li>
+<p>protected  synchronized  void clearChanged()  { changed =  false;  }</p>
+</li>
+<li>
+<p>public  synchronized  boolean hasChanged()  {  return changed;  }</p>
+</li>
+<li>
+<p>public  synchronized  int countObservers()  {  return obs.size();  }</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>其实跟上面的例子大体差不多，如果有这方面的需求，也可以直接使用Java的API。 但可以看到里面还在使用Vector(已过时)，这其实是不推荐的，我们可以自己实现观察者模式，如果是多线程中，我们也可以自己实现同步。
+</code></pre>
+<h2 id="toc_h2_17">13、状态模式（State Pattern）</h2>
+<pre><code>别名:状态对象（Another Name:Objects for States）
+
+Allow an object to alter its behavior when its internal state changes.The object will appear to change its class.
+
+允许一个对象在其内部状态改变时改变它的行为，对象看起来似乎修改了它的类。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>一个对象的行为依赖于它的状态，并且它必须在运行时根据状态改变它的行为 。</p>
+</li>
+<li>
+<p>需要编写大量的条件分支语句来决定一个操作的行为，而且这些条件恰好表示对象的一种状态。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>使用一个类封装对象的一种状态，很容易增加新的状态</p>
+</li>
+<li>
+<p>在状态模式中，环境（Context）中不必出现大量的条件判断语句。环境（Context）实例所呈现的状态变得更加清晰、容易理解。</p>
+</li>
+<li>
+<p>使用状态模式可以让用户程序很方便地切换环境（Context）实例的状态。</p>
+</li>
+<li>
+<p>使用状态模式不会让环境（Context）中的实例中出现内部状态不一致的情况。</p>
+</li>
+<li>
+<p>当状态对象没有实例变量时，环境（Context）的各个实例可以共享一个状态对象。</p>
+<p>用一句话来表述，状态模式把所研究的对象的行为包装在不同的状态对象里，每一个状态对象都属于一个抽象状态类的一个子类。状态模式的意图是让一个对象在其内部状态改变的时候，其行为也随之改变。</p>
+<p>可能这段时间老是在想数据库相关的事儿，所以一想例子就就想到这方面来了...不过，这样大家也能更好的对比设计模式之间的差异，下本例还是与这方面相关的。</p>
+<p>设想我们有一个程序，要保存数据的，按照数据（这里以String举例）的大小，使用不同的方式保存。如果数据很小，我们将其保存到Redis（缓存数据库）中，如果数据库不太小也不太大，我们将其保存到mysql中，如果数据非常大，我们直接将其写入到文件中。数据的大小就是一种状态，很适合使用状态模式：</p>
+<p><strong>环境</strong>：</p>
+</li>
+</ul>
+<ol>
+<li>//环境（Context）</li>
+<li>public  class  SaveDataController  {</li>
+<li>private  ISaveData saveData;</li>
+<li>public  void save(String data){</li>
+<li>//为了演示，此处的大的数据其实也是很小的</li>
+<li>if(data.length()&lt;1&lt;&lt;2)</li>
+<li>saveData =  SaveSmallData.instance;</li>
+<li>else  if(data.length()&lt;1&lt;&lt;4)</li>
+<li>saveData =  SaveMiddleData.instance;</li>
+<li>else</li>
+<li>saveData =  SaveBigData.instance;</li>
+<li>saveData.save(data);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>**抽象状态**：
+</code></pre>
+<ol>
+<li>
+<p>//抽象状态</p>
+</li>
+<li>
+<p>public  interface  ISaveData  {</p>
+</li>
+<li>
+<p>void save(Object data);</p>
+</li>
+<li>
+<p>}</p>
+<p><strong>具体状态</strong>（每个具体状态都使用到了单例模式）：</p>
+</li>
+<li>
+<p>//具体状态</p>
+</li>
+<li>
+<p>public  enum  SaveSmallData  implements  ISaveData{</p>
+</li>
+<li>
+<p>instance;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println("保存到Redis:"  + data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//具体状态</p>
+</li>
+<li>
+<p>public  enum  SaveMiddleData  implements  ISaveData{</p>
+</li>
+<li>
+<p>instance;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println("保存到Mysql:"  + data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//具体状态</p>
+</li>
+<li>
+<p>public  enum  SaveBigData  implements  ISaveData{</p>
+</li>
+<li>
+<p>instance;</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println("保存到文件:"  + data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>使用：</p>
+</li>
+<li>
+<p>public  class  TestUse  {</p>
+</li>
+<li>
+<p>public  static  void main(String args[]){</p>
+</li>
+<li>
+<p>String smallData =  "小数据";</p>
+</li>
+<li>
+<p>String middleData =  "介于小数据和大数据之间的数据";</p>
+</li>
+<li>
+<p>String bifgData =  "这里就假定这是一个很大很大很大的数据";</p>
+</li>
+<li>
+<p>SaveDataController saveDataController =  new  SaveDataController();</p>
+</li>
+<li>
+<p>saveDataController.save(smallData);</p>
+</li>
+<li>
+<p>saveDataController.save(middleData);</p>
+</li>
+<li>
+<p>saveDataController.save(bifgData);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>输出：
+</code></pre>
+<ol>
+<li>
+<p>保存到Redis:小数据</p>
+</li>
+<li>
+<p>保存到Mysql:介于小数据和大数据之间的数据</p>
+</li>
+<li>
+<p>保存到文件:这里就假定这是一个很大很大很大的数据</p>
+<p>可以看到，我们对三种数据都使用了同一个对象的相同方法，但是行为是不同的，因为他们的状态不一样。</p>
+<p>上面例子的状态更改是自动的，也可以添加setState()方法，手动切换状态，并在执行的方法体中不在自动判断状态。不过自动判断的，更智能一些，而手动切换状态的，可控性更好。</p>
+</li>
+</ol>
+<h2 id="toc_h2_18">14、策略模式（Strategy Pattern）</h2>
+<pre><code>定义一系列算法，把他们一个个封装起来，并且使他们可相互替换。本模式使得算法可独立于其他客户端而变化。
+
+何时使用
+
+优点
+
+策略模式是对算法的包装，是把使用算法的责任和算法本身分割开来，委派给不同的对象管理。策略模式通常把一个系列的算法包装到一系列的策略类里面，作为一个抽象策略类的子类。用一句话来说，就是：“准备一组算法，并将每一个算法封装起来，使得它们可以互换”。下面就以一个示意性的实现讲解策略模式实例的结构。
+</code></pre>
+<p>策略模式中包括三种角色：</p>
+<ul>
+<li>
+<p>策略（Strategy）：一个接口，定义了若干个算法（抽象方法）。</p>
+</li>
+<li>
+<p>具体策略（ConcreteStrategy）：策略的实现。</p>
+</li>
+<li>
+<p>上下文/环境（Context）：依赖于策略接口的类。</p>
+<p>策略模式的重心不是如何实现算法，而是如何组织、调用这些算法，从而让程序结构更灵活，具有更好的维护性和扩展性。</p>
+<p>策略模式一个很大的特点就是各个策略算法的平等性。对于一系列具体的策略算法，大家的地位是完全一样的，正因为这个平等性，才能实现算法之间可以相互替换。所有的策略算法在实现上也是相互独立的，相互之间是没有依赖的。所以可以这样描述这一系列策略算法：策略算法是相同行为的不同实现。</p>
+<p>运行期间，策略模式在每一个时刻只能使用一个具体的策略实现对象，虽然可以动态地在不同的策略实现中切换，但是同时只能使用一个。</p>
+<p>经常见到的是，所有的具体策略类都有一些公有的行为。这时候，就应当把这些公有的行为放到共同的抽象策略角色Strategy类里面。当然这时候抽象策略角色必须要用Java抽象类实现，而不能使用接口。 这其实也是典型的将代码向继承等级结构的上方集中的标准做法。</p>
+<p>上次我们使用状态模式将数据按不同状态保存到不同地方，这里，我们使用策略模式来实现通过不同的策略来选择数据的保存方式。</p>
+<p>首先是抽象的数据保持类（策略）：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>//策略</p>
+</li>
+<li>
+<p>public  interface  ISaveData  {</p>
+</li>
+<li>
+<p>void save(Object data);</p>
+</li>
+<li>
+<p>}</p>
+<p>然后是具体的数据保存类，三个（具体策略）：</p>
+</li>
+<li>
+<p>public  class  SaveToRedis  implements  ISaveData  {</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println("数据："  + data +  " 保存到Redis");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//具体策略</p>
+</li>
+<li>
+<p>public  class  SaveToFile  implements  ISaveData  {</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println("数据："  + data +  " 保存到文件");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//具体策略</p>
+</li>
+<li>
+<p>public  class  SaveToMysql  implements  ISaveData  {</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println("数据："  + data +  " 保存到Mysql");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>最后是客户端（环境Context）：</p>
+</li>
+<li>
+<p>//环境</p>
+</li>
+<li>
+<p>public  class  SaveClient  {</p>
+</li>
+<li>
+<p>private  ISaveData saveData;</p>
+</li>
+<li>
+<p>public  SaveClient(ISaveData saveData){</p>
+</li>
+<li>
+<p>this.saveData = saveData;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  void setSaveData(ISaveData saveData){</p>
+</li>
+<li>
+<p>this.saveData = saveData;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  void save(Object data){</p>
+</li>
+<li>
+<p>saveData.save(data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>使用：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Object data =  "数据";</li>
+<li>ISaveData saveData =  new  SaveToRedis();</li>
+<li>SaveClient client =  new  SaveClient(saveData);</li>
+<li>client.save(data);</li>
+<li>client.setSaveData(new  SaveToFile());</li>
+<li>client.save(data);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>这里数据的保存就是根据使用的时候设置的策略来决定。
+
+使用策略模式可以避免使用多重条件(if-else)语句。多重条件语句不易维护，它把采取哪一种算法或采取哪一种行为的逻辑与算法或行为的逻辑混合在一起，统统列在一个多重条件语句里面，比使用继承的办法还要原始和落后。
+
+客户端必须知道所有的策略类，并自行决定使用哪一个策略类。这就意味着客户端必须理解这些算法的区别，以便适时选择恰当的算法类。换言之，策略模式只适用于客户端知道算法或行为的情况。由于策略模式把每个具体的策略实现都单独封装成为类，如果备选的策略很多的话，那么对象的数目就会很可观。
+</code></pre>
+<h2 id="toc_h2_19">15、模板方法模式（Template Method Pattern）</h2>
+<pre><code>Define the skeleton of an algorithm in an operation,deferring some steps to subclasses.Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.
+
+定义一个操作中算法的骨架，而将一些步骤延迟到子类中。模板方法使子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>设计者需要给出一个算法的固定步骤，并将某些步骤的具体实现留给子类来实现。</p>
+</li>
+<li>
+<p>需要对代码进行重构，将各个子类公共行为提取出来集中到一个共同的父类中以避免代码重复。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>可以通过在抽象摸吧能定义模板方法给出成熟的算法步骤，同时又不限制步骤的细节，具体模板实现算法细节不会改变整个算法的骨架。</p>
+</li>
+<li>
+<p>在抽象模板模式中，可以通过钩子方法对某些步骤进行挂钩，具体模板通过钩子可以选择算法骨架中的某些步骤。</p>
+<p>模板方法模式是所有模式中最为常见的几个模式之一，是基于继承的代码复用的基本技术。 模板方法模式需要开发抽象类和具体子类的设计师之间的协作。一个设计师负责给出一个算法的轮廓和骨架，另一些设计师则负责给出这个算法的各个逻辑步骤。代表这些具体逻辑步骤的方法称做基本方法(primitive method)；而将这些基本方法汇总起来的方法叫做模板方法(template method)，这个设计模式的名字就是从此而来。</p>
+<p>例如，我们有这样的操作：首先得到一些数据，然后计算这些数据，最后再输出数据，至于这些操作如何实现（当然，一些方法也可以提前实现），我们没有要求，但是这些操作的先后逻辑我们已经确定好了，子类不能改变：</p>
+<p><strong>抽象模板</strong>：</p>
+</li>
+</ul>
+<ol>
+<li>//抽象模板</li>
+<li>public  abstract  class  AbstractTemplate  {</li>
+<li>Object data;</li>
+<li>//这个就是模板方法</li>
+<li>void dealData(){</li>
+<li>getData();</li>
+<li>calcData();</li>
+<li>printData();</li>
+<li>}</li>
+<li>//下面是普通方法，可能已经实现，也可能需要子类实现</li>
+<li>abstract  void getData();</li>
+<li>abstract  void calcData();</li>
+<li>void printData(){</li>
+<li>System.out.println(data);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>**具体模板**：
+</code></pre>
+<ol>
+<li>//具体模板</li>
+<li>public  class  Template  extends  AbstractTemplate  {</li>
+<li>@Override</li>
+<li>void getData()  {</li>
+<li>data =  "data";</li>
+<li>}</li>
+<li>@Override</li>
+<li>void calcData()  {</li>
+<li>data =  (String)data+data;</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>使用：
+</code></pre>
+<ol>
+<li>
+<p>public  class  TestUse  {</p>
+</li>
+<li>
+<p>public  static  void main(String args[]){</p>
+</li>
+<li>
+<p>Template  template  =  new  Template();</p>
+</li>
+<li>
+<p>template.dealData();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>模板方法也比较简单，但是非常常用，如Android中Activity中生命周期的一些方法，都会被按序调用，也用到了这种设计模式。同样的，我们通常会使用一些封装好的http请求库，里面的实现要我们自己写，但是逻辑都已经规定好了，不也是模板方法模式么。总之，模板方法模式使用是非常广泛的。</p>
+</li>
+</ol>
+<h2 id="toc_h2_20">16、访问者模式（Visitor Pattern）</h2>
+<pre><code>Represent an opration to be performed on the elements of an object structure.Visitor lets you define a new operation without changing the classes of the elements on which it oprates.
+
+表示一个作用于某对象结构中的各个元素的操作。它可以在不改变各个元素的类的前提下定义作用于这些元素的新操作。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>一个对象结构中，比如某个集合中，包含很多对象，想对集合中的对象增加一些新的操作。</p>
+</li>
+<li>
+<p>需要对集合中的对象进行很多不同的并且不相关的操作，而不想修改对象的类，就可以使用访问者模式。访问者模式可以在Visitor类中集中定义一些关于集合中对象的操作。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>可以在不改变一个集合中的元素的类的情况下，增加新的施加于该元素上的新操作。</p>
+</li>
+<li>
+<p>可以将集合中各个元素的某些操作集中到访问者中，不仅便于集合的维护，也有利于集合中元素的复用。</p>
+<p>访问者模式的目的是封装一些施加于某种数据结构元素之上的操作。一旦这些操作需要修改的话，接受这个操作的数据结构则可以保持不变。</p>
+<p>这个模式可能稍微难理解一点，希望读者一点一点读下去，碰到不清楚的先跳过，看完例子再回过头来基本就清楚是怎么回事了。</p>
+<p>在介绍访问者模式前，先介绍一下分派的概念。</p>
+<p>变量被声明时的类型叫做变量的静态类型(Static Type)，而变量所引用的对象的真实类型又叫做变量的实际类型(Actual Type)，如：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>List<string> list =  new  ArrayList<string>();</string></string></p>
+<p>这个list变量的静态类型是List，而它的实际类型是ArrayList。根据对象的类型而对方法进行的选择，就是分派(Dispatch)。分派又分为两种：静态分派和动态分派。</p>
+<p>静态分派(Static Dispatch)发生在编译时期，分派根据静态类型信息发生。静态分派对于我们来说并不陌生，方法重载就是静态分派。</p>
+<p>动态分派(Dynamic Dispatch)发生在运行时期，动态分派动态地置换掉某个方法。</p>
+<p>看一个例子：</p>
+</li>
+<li>
+<p>public  class  Dispatch  {</p>
+</li>
+<li>
+<p>void  print(FatherClass c){</p>
+</li>
+<li>
+<p>System.out.print("父类");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>void  print(ChildClass c){</p>
+</li>
+<li>
+<p>System.out.print("子类");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  static  void main(String args[]){</p>
+</li>
+<li>
+<p>FatherClass child =  new  ChildClass();</p>
+</li>
+<li>
+<p>new  Dispatch().print(child);</p>
+</li>
+<li>
+<p>child.print();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>class  FatherClass{</p>
+</li>
+<li>
+<p>void  print(){</p>
+</li>
+<li>
+<p>System.out.println("父类");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>class  ChildClass  extends  FatherClass{</p>
+</li>
+<li>
+<p>void  print(){</p>
+</li>
+<li>
+<p>System.out.print("子类");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}//输出：父类子类</p>
+</li>
+</ol>
+<pre><code>可以看到，重载的分派是根据静态类型进行的。
+
+java的方法重写是根据实际类型来的（动态分派），编译器编译时并不知道其真实类型，而是运行时动态决定的。
+
+一个对象又叫做它所包含的方法的接收者，java中的动态分派，要调用哪一个方法，是由这个对象的真实类型决定的。
+
+如果能够根据参数和接收者来动态的决定调用某个方法，这就是**动态的多分派语言**，如果可以根据这两种方式来动态的决定方法调用，就是动态**双重分派**，但前面已经说了，java中重载是根据静态类型进行的，所以java只能动态的根据接收者来进行方法调用，即java是**动态单分派语言**，如果要实现双重分派，就必须通过设计模式来完成。
+
+OK，讲到重点了，访问者模式正是实现双重分派的模式。java中通过两次方法调用来实现两次分派。
+
+既然重载不能完成动态分派，我们就添加一个Visitor：
+</code></pre>
+<ol>
+<li>public  class  MultiDispatch  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Child child =  new  Child();</li>
+<li>child.print();</li>
+<li>child.print(new  Vistor());</li>
+<li>}</li>
+<li>}</li>
+<li>class  Father{</li>
+<li>void  print(){</li>
+<li>System.out.println("父类");</li>
+<li>}</li>
+<li>}</li>
+<li>class  Child  extends  Father{</li>
+<li>void  print(){</li>
+<li>System.out.print("子类");</li>
+<li>}</li>
+<li>void  print(Vistor c){</li>
+<li>c.print(this);</li>
+<li>}</li>
+<li>}</li>
+<li>class  Vistor  {</li>
+<li>public  void  print(Child child){</li>
+<li>child.print();</li>
+<li>}</li>
+<li>}//输出：子类子类</li>
+</ol>
+<pre><code>这样，动态双重分派也算是完成了(通过调用一个其它对象的方法，传入自己，在其他类的这个方法中再通过传入的这个参数调用自己。如果还是不清楚，请继续看下面的例子)。那么这个有什么用呢？下面继续解释。
+
+比如我们有个app需要接收用户的反馈，用户由会员和普通用户，因为反馈太多，并不是所有反馈都会被记录到有效反馈表中，是否记录为有效通常不是用户说了算，而是有我们自己定。
+
+本例中的用户就是**抽象元素**：
+</code></pre>
+<ol>
+<li>
+<p>//抽象元素</p>
+</li>
+<li>
+<p>public  interface  User  {</p>
+</li>
+<li>
+<p>void accept(Visitor visitor);</p>
+</li>
+<li>
+<p>}</p>
+<p>具体的用户就是<strong>具体元素</strong>，本例有两个：</p>
+</li>
+<li>
+<p>//普通用户，具体元素</p>
+</li>
+<li>
+<p>public  class  UserOrdinary  implements  User{</p>
+</li>
+<li>
+<p>String estimation;</p>
+</li>
+<li>
+<p>public  UserOrdinary(String estimation){</p>
+</li>
+<li>
+<p>this.estimation = estimation;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void accept(Visitor visitor)  {</p>
+</li>
+<li>
+<p>visitor.visit(this);//这个就是重点，第一次分派是调用accept()方法时根据接收者的实际类型来调用的，第二次分派就是通过visitor.visit(this)，传入静态类型，然后再visit()方法中反过来调用this本身的方法。</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>String getEstimation(){</p>
+</li>
+<li>
+<p>return estimation;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//VIP用户，具体元素</p>
+</li>
+<li>
+<p>public  class  UserVIP  implements  User{</p>
+</li>
+<li>
+<p>String estimation;</p>
+</li>
+<li>
+<p>public  UserVIP(String estimation){</p>
+</li>
+<li>
+<p>this.estimation = estimation;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void accept(Visitor visitor)  {</p>
+</li>
+<li>
+<p>visitor.visit(this);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>String getEstimation(){</p>
+</li>
+<li>
+<p>return estimation;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>**抽象访问者**：
+</code></pre>
+<ol>
+<li>
+<p>//抽象访问者</p>
+</li>
+<li>
+<p>public  interface  Visitor  {</p>
+</li>
+<li>
+<p>void visit(UserVIP user);</p>
+</li>
+<li>
+<p>void visit(UserOrdinary user);</p>
+</li>
+<li>
+<p>}</p>
+<p><strong>具体访问者</strong>，检查反馈是否记录到有效反馈中：</p>
+</li>
+<li>
+<p>//具体访问者</p>
+</li>
+<li>
+<p>public  class  APPOwner  implements  Visitor{</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void visit(UserVIP user)  {</p>
+</li>
+<li>
+<p>String estimation = user.getEstimation();</p>
+</li>
+<li>
+<p>if(estimation.length()&gt;5)</p>
+</li>
+<li>
+<p>System.out.println("记录一条有效反馈："  + estimation);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void visit(UserOrdinary user)  {</p>
+</li>
+<li>
+<p>String estimation = user.getEstimation();</p>
+</li>
+<li>
+<p>if(estimation.length()&gt;10)</p>
+</li>
+<li>
+<p>System.out.println("记录一条有效反馈："  + estimation);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>使用：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Visitor appOwner =  new  APPOwner();</li>
+<li>ArrayList<user> users =  new  ArrayList<user>();</user></user></li>
+<li>users.add(new  UserOrdinary("普通用户短反馈"));</li>
+<li>users.add(new  UserOrdinary("这是一个普通用户的比较长的反馈"));</li>
+<li>users.add(new  UserVIP("VIP用户的短反馈"));</li>
+<li>users.add(new  UserVIP("VIP用户的比较长的反馈反馈"));</li>
+<li>Iterator<user> iterator = users.iterator();</user></li>
+<li>while(iterator.hasNext()){</li>
+<li>iterator.next().accept(appOwner);</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>输出：
+</code></pre>
+<ol>
+<li>
+<p>记录一条有效反馈：这是一个普通用户的比较长的反馈</p>
+</li>
+<li>
+<p>记录一条有效反馈：VIP用户的短反馈</p>
+</li>
+<li>
+<p>记录一条有效反馈：VIP用户的比较长的反馈反馈</p>
+<p>其中ArrayList就是结构中的<strong>对象结构</strong>，我们在列表中存放了实际类型不同的元素，然后访问的时候，不需要“visitor instanceof SomeClass”这种语句一样能完成遍历，因为在具体元素中，我们通过visit()方法，以参数this传递给访问者，访问者中是多个方法的重载，是静态分派的，恰好此时编译器是很清楚这个this的类型的，它的静态类型就是这个具体元素本身，然后在访问者（Visitor）的对应的方法中，我们再通过传过来的这个参数（某一个具体元素）来调用这个元素中的方法得到数据。</p>
+<p>在回到前面的双重分派，我们知道，动态多分派的语言是很容易做到双重分派这一点的，可以通过接收者和参数（实际类型）来判断方法的调用，但是，Java是动态单分派的，只能通过接收者来动态分派，但是现在我们也清楚了，使用访问者模式，通过两次方法调用，我们依然实现了双重分派。</p>
+</li>
+</ol>
+<h2 id="toc_h2_21">17、适配器模式（Adapter Pattern）</h2>
+<pre><code>将一个类的接口转换成客户希望的另外一个接口。该模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>一个程序想使用已经存在的类，但是该类所实现的接口和当前程序所使用的接口不一致时。</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>目标与被适配者解耦</p>
+</li>
+<li>
+<p>满足开-闭原则</p>
+<p>原理就是保留现有的类所提供的服务，修改其接口，从而达到客户端的期望。</p>
+<p>再者，适配器也分对象适配器和类适配器，先看下面代码再来解释。</p>
+<p>举个例子，你有一个播放器，只能播放MP3格式的音乐，但是现在需要它能播放flac格式的，我们不能直接使用这个播放器，但可以添加一个适配器来解决这个问题：</p>
+<p>原来的播放器（<strong>被适配者</strong>）：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>//被适配者</p>
+</li>
+<li>
+<p>class  Adaptee{</p>
+</li>
+<li>
+<p>void playMp3(Object src){</p>
+</li>
+<li>
+<p>System.out.println("播放MP3："  + src);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>用户像使用的功能（<strong>目标</strong>）：</p>
+</li>
+<li>
+<p>//目标，也就是用户所希望使用的</p>
+</li>
+<li>
+<p>interface  Target{</p>
+</li>
+<li>
+<p>void playFlac(Object src);</p>
+</li>
+<li>
+<p>}</p>
+<p>对象<strong>适配器</strong>：</p>
+</li>
+<li>
+<p>//对象适配器</p>
+</li>
+<li>
+<p>public  class  ObjectAdapter  implements  Target{</p>
+</li>
+<li>
+<p>private  Adaptee adaptee;</p>
+</li>
+<li>
+<p>public  ObjectAdapter(){</p>
+</li>
+<li>
+<p>super();</p>
+</li>
+<li>
+<p>adaptee =  new  Adaptee();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void playFlac(Object src)  {</p>
+</li>
+<li>
+<p>//可能需要对src作处理</p>
+</li>
+<li>
+<p>adaptee.playMp3(src);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>类**适配器**：
+</code></pre>
+<ol>
+<li>
+<p>//类适配器</p>
+</li>
+<li>
+<p>public  class  ClassAdapter  extends  Adaptee  implements  Target  {</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void playFlac(Object src)  {</p>
+</li>
+<li>
+<p>//可能需要对src作处理</p>
+</li>
+<li>
+<p>playMp3(src);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>使用：</p>
+</li>
+<li>
+<p>public  class  TestUse  {</p>
+</li>
+<li>
+<p>public  static  void main(String args[]){</p>
+</li>
+<li>
+<p>Adaptee adaptee =  new  Adaptee();</p>
+</li>
+<li>
+<p>adaptee.playMp3("mp3");</p>
+</li>
+<li>
+<p>Target target =  new  ClassAdapter();</p>
+</li>
+<li>
+<p>target.playFlac("flac");</p>
+</li>
+<li>
+<p>target =  new  ObjectAdapter();</p>
+</li>
+<li>
+<p>target.playFlac("flac");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>可以看到，类适配器与对象适配器的区别就是类适配器需要继承被适配者，而Java的单继承的，所以通常情况下，使用对象适配器更好。
+
+如果目标接口中的方法数与被适配器者中的数目相同，就是完全适配，若目标接口中的方法更多，则是剩余适配，反之，为不完全适配。
+
+上面的被适配器是一个类，但也可以使用接口，这样，其实现会由子类决定。如果适配器同时实现目标接口和被适配者的接口，那么适配器就成为了一个双向适配器。
+
+下面再给个实际可能会碰到的例子：
+
+如果我们要扩展一个老系统：一个用于存放书名的类，这个系统采用的Vector作为容器，而且Vector使用Enumeration来遍历容器。但现在，我们其他模块没沟通清楚以为那个类使用的LinkedList来实现，使用的时候用的Iterator，这时，我们就需要适配器，具体描述见下面的代码：
+
+老的存放图书的代码：
+</code></pre>
+<ol>
+<li>//被适配者</li>
+<li>public  class  Book{</li>
+<li>private  Vector<string> books;</string></li>
+<li>public  Book(){</li>
+<li>books =  new  Vector<string>();</string></li>
+<li>}</li>
+<li>public  void add(String book){</li>
+<li>books.add(book);</li>
+<li>}</li>
+<li>public  Enumeration<string> getEnum(){</string></li>
+<li>return books.elements();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<p>而编写的客户端代码可能是这样的</p>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Book books =  new  BookAdapter();</li>
+<li>books.add("think in java");</li>
+<li>books.add("c++ primer");</li>
+<li>books.add("伊索寓言");</li>
+<li>Iterator<string> iterator = books.iterator();</string></li>
+<li>while(iterator.hasNext()){</li>
+<li>System.out.println(iterator.next());</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>那么这两者显然是冲突的，为了解决，我们需要添加适配器，首先要把Enumeration的行为转换为Iterator，然后还需要添加一个Book的适配器（所以，这里是用到了2次适配器的）：
+
+Iterator适配器（对象适配器）：
+</code></pre>
+<ol>
+<li>//适配器，目标就是Iterator，被适配者是Enumeration</li>
+<li>public  class  IteratorAdapter  implements  Iterator<string>  {</string></li>
+<li>Enumeration<string> myEnum;</string></li>
+<li>public  IteratorAdapter(Enumeration<string> myEnum){</string></li>
+<li>this.myEnum = myEnum;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  boolean hasNext()  {</li>
+<li>return myEnum.hasMoreElements();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  String  next()  {</li>
+<li>return myEnum.nextElement();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>Book适配器（类适配器）：
+</code></pre>
+<ol>
+<li>
+<p>//适配器</p>
+</li>
+<li>
+<p>public  class  BookAdapter  extends  Book  implements  Iterable<string>{</string></p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  Iterator<string> iterator()  {</string></p>
+</li>
+<li>
+<p>return  new  IteratorAdapter(getEnum());</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>那么客户端就能直接使用了，但Book books = new BookAdapter();需改为BookAdapter books = new BookAdapter();也就是不直接访问对象，而访问提供的适配器即可。</p>
+</li>
+</ol>
+<h2 id="toc_h2_22">18、组合模式（Composite Pattern）</h2>
+<pre><code>Compose objects into tree structures to represent part-whole hierarchies.Composite lets clients treat individual objects and compositions of objects uniformly.
+
+将对象组合成树形结构以表示“部分-整体”的层次结构。Composite使用户对单个对象和组合对象的使用具有一致性。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>当想表示对象的部分-整体层次结构。</p>
+</li>
+<li>
+<p>希望用户用一致的方式处理个体对象和组合对象。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>组合模式中包含个体对象和组合对象，并形成树形结构，使用户可以方便地处理个体对象和组合对象。</p>
+</li>
+<li>
+<p>组合对象和个体对象实现了相同的接口，用户一般无须区分个体对象和组合对象。</p>
+</li>
+<li>
+<p>当增加新的Composite节点和Leaf节点时，用户的重要代码不需要做出修改。</p>
+<p>组合模式有时候又叫做部分-整体模式，它使我们树型结构的问题中，模糊了简单元素和复杂元素的概念 ，客户程序可以向处理简单元素一样来处理复杂元素,从而使得客户程序与复杂元素的内部结构解耦。组合模式让你可以优化处理递 归或分级数据结构。有许多关于分级数据结构的例子，使得组合模式非常有用武之地。关于分级数据结构的一个普遍性的例子是电脑的文件系统。下面我们就以这个例子来介绍组合模式（虽然我们直接使用Tree这种数据结构也能直接描述）。</p>
+<p>一个文件系统中，有目录，目录下有文件和目录</p>
+<p>目录和文件的抽象接口（<strong>抽象组件</strong>）：</p>
+</li>
+</ul>
+<ol>
+<li>//抽象组件</li>
+<li>public  interface  Component  {</li>
+<li>void addFile(Component file);</li>
+<li>Component addFolder(Component folder);</li>
+<li>void removeFile(Component file);</li>
+<li>void removeFolder(Component folder);</li>
+<li>List<component> getFiles();</component></li>
+<li>List<component> getFolders();</component></li>
+<li>List<component> getAll();</component></li>
+<li>Iterator<component> iterator();</component></li>
+<li>void display();</li>
+<li>}</li>
+</ol>
+<pre><code>目录（**Composite节点**）：
+</code></pre>
+<ol>
+<li>public  class  Folder  implements  Component  {</li>
+<li>private  String name;</li>
+<li>private  List<component> files;</component></li>
+<li>private  List<component> folders;</component></li>
+<li>public  Folder(String name){</li>
+<li>this.name = name;</li>
+<li>files =  new  ArrayList<component>();</component></li>
+<li>folders =  new  ArrayList<component>();</component></li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void addFile(Component file)  {</li>
+<li>files.add(file);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  Component addFolder(Component folder)  {</li>
+<li>folders.add(folder);</li>
+<li>return  this;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void removeFile(Component file)  {</li>
+<li>files.remove(file);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void removeFolder(Component folder)  {</li>
+<li>folders.remove(folder);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  List<component> getFiles()  {</component></li>
+<li>return files;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  List<component> getFolders()  {</component></li>
+<li>return folders;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  List<component> getAll()  {</component></li>
+<li>List<component> all =  new  ArrayList<component>(folders);</component></component></li>
+<li>all.addAll(files);</li>
+<li>return all;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  Iterator<component> iterator()  {</component></li>
+<li>List<component> all =  new  ArrayList<component>();</component></component></li>
+<li>add(all,this);</li>
+<li>return all.iterator();</li>
+<li>}</li>
+<li>private  void add(List<component> all,Component component){</component></li>
+<li>if(component==null)  return;</li>
+<li>all.add(component);</li>
+<li>Iterator<component> iterator = component.getFolders().iterator();</component></li>
+<li>while(iterator.hasNext()){</li>
+<li>add(all,iterator.next());</li>
+<li>}</li>
+<li>all.addAll(component.getFiles());</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void display()  {</li>
+<li>System.out.println(name);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>文件（Leaf节点）：
+</code></pre>
+<ol>
+<li>//Leaf节点</li>
+<li>public  class  File  implements  Component{</li>
+<li>private  String name;</li>
+<li>public  File(String name){</li>
+<li>this.name = name;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void addFile(Component file)  {}</li>
+<li>@Override</li>
+<li>public  Component addFolder(Component folder)  {  return  null;  }</li>
+<li>@Override</li>
+<li>public  void removeFile(Component file)  {}</li>
+<li>@Override</li>
+<li>public  void removeFolder(Component folder)  {}</li>
+<li>@Override</li>
+<li>public  List<component> getFiles()  {  return  null;  }</component></li>
+<li>@Override</li>
+<li>public  List<component> getFolders()  {  return  null;  }</component></li>
+<li>@Override</li>
+<li>public  List<component> getAll()  {  return  null;  }</component></li>
+<li>@Override</li>
+<li>public  Iterator<component> iterator()  {  return  null;  }</component></li>
+<li>@Override</li>
+<li>public  void display()  {</li>
+<li>System.out.println(name);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>使用：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Component root =  new  Folder("root");//根目录</li>
+<li>Component folder1 =  new  Folder("java");</li>
+<li>Component folder2 =  new  Folder("c++");</li>
+<li>Component folder3 =  new  Folder("c#");</li>
+<li>Component file1 =  new  File("info.txt");</li>
+<li>root.addFolder(folder1).addFolder(folder2).addFolder(folder3).addFile(file1);//添加一级目录</li>
+<li>folder1.addFile(new  File("info.java"));</li>
+<li>Iterator<component> iterator = root.iterator();</component></li>
+<li>while(iterator.hasNext()){</li>
+<li>Component component = iterator.next();</li>
+<li>if(component instanceof  Folder)</li>
+<li>System.out.print("folder：");</li>
+<li>else</li>
+<li>System.out.print("file：");</li>
+<li>component.display();</li>
+<li>}</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>控制台输出：
+</code></pre>
+<ol>
+<li>
+<p>folder：root</p>
+</li>
+<li>
+<p>folder：java</p>
+</li>
+<li>
+<p>file：info.java</p>
+</li>
+<li>
+<p>folder：c++</p>
+</li>
+<li>
+<p>folder：c#</p>
+</li>
+<li>
+<p>file：info.txt</p>
+<p>输出与我们预期想得到的迭代器是一样的（从某一个目录开始，先输出目录名，然后如果有目录，就递归进入下一级目录，如果没有目录，就输出文件列表）。</p>
+<p>文件和目录（Composite和Leaf）实现了相同的接口，所以操作起来很方便，包括迭代。</p>
+</li>
+</ol>
+<h2 id="toc_h2_23">19、代理模式（Proxy Pattern）</h2>
+<pre><code>Provide a surrogate or placeholder for another object to control access to it.
+
+为其它对象提供一种代理以控制对这个对象的访问。
+
+**何时使用**:
+</code></pre>
+<ul>
+<li>
+<p>程序可能不希望用户直接访问该对象，而是提供一个特殊的对象以控制对当前对象的访问。</p>
+</li>
+<li>
+<p>如果一个对象（例如很大的图像）需要很长时间才能完成加载。</p>
+</li>
+<li>
+<p>如果对象位于远程主机上，需要为用户提供访问该远程对象的能力。</p>
+<p><strong>优点</strong>：</p>
+</li>
+<li>
+<p>代理模式可以屏蔽用户真正请求的对象，是用户程序和正在的对象解耦。</p>
+</li>
+<li>
+<p>使用代理来担当那些创建耗时的对象的替身。</p>
+<p>一个用户不想或者不能够直接引用一个对象（或者设计者不希望用户直接访问该对象），而代理对象可以在客户端和目标对象之间起到中介的作用。而且这个代理对象中，我们可以做更多的操作。</p>
+<p>代理模式实现其实很简单。下面直接用代码演示其实现：</p>
+<p><strong>抽象对象</strong>：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>//抽象对象</p>
+</li>
+<li>
+<p>public  interface  AbstractObject  {</p>
+</li>
+<li>
+<p>void method1();</p>
+</li>
+<li>
+<p>int method2();</p>
+</li>
+<li>
+<p>void method3();</p>
+</li>
+<li>
+<p>}</p>
+<p><strong>具体对象</strong>：</p>
+</li>
+<li>
+<p>//具体对象</p>
+</li>
+<li>
+<p>public  class  TargetObject  implements  AbstractObject  {</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void method1()  {</p>
+</li>
+<li>
+<p>System.out.println("具体对象的方法1");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  int method2()  {</p>
+</li>
+<li>
+<p>System.out.println("具体对象的方法2");</p>
+</li>
+<li>
+<p>return  0;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void method3()  {</p>
+</li>
+<li>
+<p>System.out.println("具体对象的方法3");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>**代理对象**：
+</code></pre>
+<ol>
+<li>//代理对象</li>
+<li>public  class  ProxyObject  implements  AbstractObject  {</li>
+<li>AbstractObject  object  =  new  TargetObject();</li>
+<li>@Override</li>
+<li>public  void method1()  {</li>
+<li>object.method1();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  int method2()  {</li>
+<li>return  object.method2();</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void method3()  {</li>
+<li>System.out.println("调用目标对象前的操作");</li>
+<li>object.method3();</li>
+<li>System.out.println("调用目标对象后的操作");</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>客户端（用户）使用：
+</code></pre>
+<ol>
+<li>
+<p>public  class  TestUse  {</p>
+</li>
+<li>
+<p>public  static  void main(String args[]){</p>
+</li>
+<li>
+<p>AbstractObject obj =  new  ProxyObject();</p>
+</li>
+<li>
+<p>obj.method1();</p>
+</li>
+<li>
+<p>obj.method2();</p>
+</li>
+<li>
+<p>obj.method3();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>控制台的输出就不放上来了，可以看到，代理模式实现确实比较简单，好处也显而易见，将目标对象与使用的用户隔离开，而且在调用目标对象的方法前后还能执行额外的操作（有点aop的概念）。</p>
+<p>LinkedList可以实现栈、队列等数据结构，但我们还是希望一个专一的队列或数据结构，下面就以代理（部分代理）实现栈和队列：</p>
+</li>
+<li>
+<p>//LinkedList的使用</p>
+</li>
+<li>
+<p>public  class  TestUse  {</p>
+</li>
+<li>
+<p>public  static  void main(String[] args)  {</p>
+</li>
+<li>
+<p>//栈</p>
+</li>
+<li>
+<p>Stack<integer> stack =  new  Stack<integer>();</integer></integer></p>
+</li>
+<li>
+<p>for(int i=0;i&lt;10;i++)</p>
+</li>
+<li>
+<p>stack.push(i);</p>
+</li>
+<li>
+<p>System.out.println(stack.peek());</p>
+</li>
+<li>
+<p>System.out.println(stack.peek());</p>
+</li>
+<li>
+<p>System.out.println(stack.pop());</p>
+</li>
+<li>
+<p>System.out.println(stack.pop());</p>
+</li>
+<li>
+<p>System.out.println(stack.pop());</p>
+</li>
+<li>
+<p>Iterator<integer> iterator = stack.iterator();</integer></p>
+</li>
+<li>
+<p>while(iterator.hasNext())</p>
+</li>
+<li>
+<p>System.out.print(iterator.next());</p>
+</li>
+<li>
+<p>System.out.println();</p>
+</li>
+<li>
+<p>//队列</p>
+</li>
+<li>
+<p>Queue<integer> queue =  new  Queue<integer>();</integer></integer></p>
+</li>
+<li>
+<p>for(int i=0;i&lt;10;i++)</p>
+</li>
+<li>
+<p>queue.enqueue(i);</p>
+</li>
+<li>
+<p>System.out.println(queue.peek());</p>
+</li>
+<li>
+<p>System.out.println(queue.peek());</p>
+</li>
+<li>
+<p>System.out.println(queue.dequeue());</p>
+</li>
+<li>
+<p>System.out.println(queue.dequeue());</p>
+</li>
+<li>
+<p>System.out.println(queue.dequeue());</p>
+</li>
+<li>
+<p>iterator = queue.iterator();</p>
+</li>
+<li>
+<p>while(iterator.hasNext())</p>
+</li>
+<li>
+<p>System.out.print(iterator.next());</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//很使用使用代理模式利用LinkedList实现一个栈</p>
+</li>
+<li>
+<p>class  Stack<t>  implements  Iterable<t>{</t></t></p>
+</li>
+<li>
+<p>private  LinkedList<t> stack =  new  LinkedList<t>();</t></t></p>
+</li>
+<li>
+<p>public T pop(){//出栈，会删除栈顶元素</p>
+</li>
+<li>
+<p>return stack.poll();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public T peek(){//出栈,但不删除栈顶元素</p>
+</li>
+<li>
+<p>return stack.peek();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  void push(T t){//入栈</p>
+</li>
+<li>
+<p>stack.push(t);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  Iterator<t> iterator()  {</t></p>
+</li>
+<li>
+<p>return stack.iterator();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//很使用使用代理模式利用LinkedList实现一个队列</p>
+</li>
+<li>
+<p>class  Queue<t>  implements  Iterable<t>{</t></t></p>
+</li>
+<li>
+<p>private  LinkedList<t> queue =  new  LinkedList<t>();</t></t></p>
+</li>
+<li>
+<p>public  void enqueue(T t){</p>
+</li>
+<li>
+<p>queue.offer(t);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public T dequeue(){</p>
+</li>
+<li>
+<p>return queue.poll();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public T peek(){</p>
+</li>
+<li>
+<p>return queue.peek();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  Iterator<t> iterator()  {</t></p>
+</li>
+<li>
+<p>return queue.iterator();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>这样一来，队列和栈的使用就更加明确。
+
+还有种代理叫远程代理，需要使用到RMI，然后在程序中可以调用网络上另外一个JVM上的对象方法。此处不多介绍，读者可以自行检索RMI相关资料。
+</code></pre>
+<h2 id="toc_h2_24">20、享元模式（Plyweight Pattern）</h2>
+<pre><code>Use sharing to support large numbers of fine-grained objects efficiently.
+
+运用共享技术有效地支持大量细粒度的对象。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>一个应用程序使用大量的对象，这些对象之间部分属性本质上是相同的，这时应使用享元来封装相同的部分。</p>
+</li>
+<li>
+<p>对象的多数状态都可变为外部状态，就可以考虑将这样的对象作为系统中发的享元来使用。</p>
+<p><strong>优点</strong>:</p>
+</li>
+<li>
+<p>使用享元可以节省内存的开销，特别适合处理大量细粒度对象，这些对象的许多属性值是相同的，而且一旦创建则不允许修改。</p>
+</li>
+<li>
+<p>享元模式中的享元可以使用方法的参数接收外部状态中的数据，但外部状态数据不会干扰到享元中的内部数据，这就使享元可以在不同的环境中被共享。</p>
+<p>在JAVA语言中，String类型就是使用了享元模式。String对象是final类型，对象一旦创建就不可改变。在JAVA中字符串常量都是存在常量池中的，JAVA会确保一个字符串常量在常量池中只有一个拷贝。String str="string"，其中"str"就是一个字符串常量。</p>
+<p>享元模式包括三种角色：</p>
+</li>
+<li>
+<p>享元接口（Plyweight）：定义了对外公开的获取其内部数据和接收外部数据的方法。</p>
+</li>
+<li>
+<p>具体享元（Concrete Plyweight）：享元接口的实现。</p>
+</li>
+<li>
+<p>享元工厂（Plyweight Factory）：该类的实例负责创建和管理享元对象，用户或其他对象必须请求他以获取一个享元对象。</p>
+<p>先看一个简单的享元模式实现：</p>
+</li>
+</ul>
+<ol>
+<li>//简单的享元模式</li>
+<li>public  class  SimpleFlyweight  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>FlyweightFactory factory =  new  FlyweightFactory();</li>
+<li>IFlyweight flyweight1,flyweight2,flyweight3,flyweight4;</li>
+<li>flyweight1 = factory.getFlyweight("value1");</li>
+<li>flyweight2 = factory.getFlyweight("value1");</li>
+<li>flyweight3 = factory.getFlyweight("value1");</li>
+<li>flyweight4 = factory.getFlyweight("value2");</li>
+<li>flyweight1.doSomething();</li>
+<li>flyweight2.doSomething();</li>
+<li>flyweight3.doSomething();</li>
+<li>flyweight4.doSomething();</li>
+<li>System.out.println(factory.size());</li>
+<li>}</li>
+<li>}</li>
+<li>//享元接口</li>
+<li>interface  IFlyweight{</li>
+<li>void doSomething();</li>
+<li>}</li>
+<li>//具体享元</li>
+<li>class  Flyweight  implements  IFlyweight{</li>
+<li>private  String value;</li>
+<li>public  Flyweight(String value){</li>
+<li>this.value = value;</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void doSomething()  {</li>
+<li>System.out.println(value);</li>
+<li>}</li>
+<li>}</li>
+<li>//享元工厂</li>
+<li>class  FlyweightFactory{</li>
+<li>HashMap&lt;String,  IFlyweight&gt; flyweights =  new  HashMap&lt;String,  IFlyweight&gt;();</li>
+<li>IFlyweight getFlyweight(String value){</li>
+<li>IFlyweight flyweight = flyweights.get(value);</li>
+<li>if(flyweight ==  null){</li>
+<li>flyweight =  new  Flyweight(value);</li>
+<li>flyweights.put(value, flyweight);</li>
+<li>}</li>
+<li>return flyweight;</li>
+<li>}</li>
+<li>public  int size(){</li>
+<li>return flyweights.size();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>上例中，具体的享元我们一共创建了4个，而我们输出的创建的对象个数是2个，这就是享元模式。可以减少对象创建的个数。
+
+刚刚的例子，因为具体享元对象仅以一个String作为成员，实现很方便。下面我们再讲一个实际的例子：我们要检查许多天气的数据，主要有天气情况和温度组成，但是天气和温度的组合实际上是很容易相同的，为了减少创建的对象数量，我们使用享元模式：
+
+首先是抽象的天气接口：
+</code></pre>
+<ol>
+<li>
+<p>//享元接口</p>
+</li>
+<li>
+<p>public  interface  IWeather  {</p>
+</li>
+<li>
+<p>void printWeather();</p>
+</li>
+<li>
+<p>}</p>
+<p>其次是天气的实现。注意！这里我们使用HashMap来持有享元的引用，以为天气由具体天气情况和温度共同确定他们是否相同，我们需要使用两个值做key，但key只能是一个对象，所以最终我们选择这个对象来当key。HashMap的Key是有限制的，必须正确提供hashCode()方法（HashMap以这个值为基础存取数据的）和equals()方法（HashMap通过key取值时判断Key是否相等会调用Key的这个方法）。下面的实现中就实现了这两个方法：</p>
+</li>
+<li>
+<p>//具体享元</p>
+</li>
+<li>
+<p>public  class  Weather  implements  IWeather{</p>
+</li>
+<li>
+<p>private  String weather;</p>
+</li>
+<li>
+<p>private  Integer temperature;</p>
+</li>
+<li>
+<p>public  Weather(String weather,int temperature){</p>
+</li>
+<li>
+<p>this.weather = weather;</p>
+</li>
+<li>
+<p>this.temperature = temperature;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void printWeather()  {</p>
+</li>
+<li>
+<p>System.out.print("天气:"  + weather);</p>
+</li>
+<li>
+<p>System.out.println("  温度:"  + temperature);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  boolean equals(Object obj)  {//两个值同时相等这个对象才相同</p>
+</li>
+<li>
+<p>Weather weather =  (Weather)obj;</p>
+</li>
+<li>
+<p>return weather.weather.equals(this.weather)&amp;&amp;weather.temperature==temperature;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  int hashCode()  {//Integer和String的hashCode()方法都是很合理的，这里取均值即可</p>
+</li>
+<li>
+<p>return  (weather.hashCode()+temperature.hashCode())/2;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>接下来就是享元工厂，为我们产生具体天气的工厂类：
+</code></pre>
+<ol>
+<li>//享元工厂</li>
+<li>public  class  WeatherFactory  {</li>
+<li>private  HashMap&lt;IWeather,  IWeather&gt; weathers;</li>
+<li>public  WeatherFactory(){</li>
+<li>weathers =  new  HashMap&lt;IWeather,  IWeather&gt;();</li>
+<li>}</li>
+<li>public  IWeather getFlyWeight(String weather,int temperature){</li>
+<li>Weather objectWeather =  new  Weather(weather, temperature);</li>
+<li>IWeather flyweight = weathers.get(objectWeather);</li>
+<li>if(flyweight ==  null){</li>
+<li>flyweight = objectWeather;</li>
+<li>weathers.put(objectWeather, flyweight);</li>
+<li>}</li>
+<li>else objectWeather =  null;//方便gc回收</li>
+<li>return flyweight;</li>
+<li>}</li>
+<li>public  int getFlyweightSize(){</li>
+<li>return weathers.size();</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>最后就是使用：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>WeatherFactory factory =  new  WeatherFactory();</li>
+<li>IWeather weather1,weather2,weather3,weather4,weather5,weather6,weather7,weather8;</li>
+<li>weather1 = factory.getFlyWeight("多云",15);</li>
+<li>weather2 = factory.getFlyWeight("晴",23);</li>
+<li>weather3 = factory.getFlyWeight("多云",16);</li>
+<li>weather4 = factory.getFlyWeight("阴",10);</li>
+<li>weather5 = factory.getFlyWeight("多云",15);</li>
+<li>weather6 = factory.getFlyWeight("多云",15);</li>
+<li>weather7 = factory.getFlyWeight("多云",15);</li>
+<li>weather8 = factory.getFlyWeight("多云",15);</li>
+<li>weather1.printWeather();</li>
+<li>weather2.printWeather();</li>
+<li>weather3.printWeather();</li>
+<li>weather4.printWeather();</li>
+<li>weather5.printWeather();</li>
+<li>weather6.printWeather();</li>
+<li>weather7.printWeather();</li>
+<li>weather8.printWeather();</li>
+<li>System.out.println("实际对象个数"  + factory.getFlyweightSize());</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>输出：
+</code></pre>
+<ol>
+<li>
+<p>天气:多云  温度:15</p>
+</li>
+<li>
+<p>天气:晴  温度:23</p>
+</li>
+<li>
+<p>天气:多云  温度:16</p>
+</li>
+<li>
+<p>天气:阴  温度:10</p>
+</li>
+<li>
+<p>天气:多云  温度:15</p>
+</li>
+<li>
+<p>天气:多云  温度:15</p>
+</li>
+<li>
+<p>天气:多云  温度:15</p>
+</li>
+<li>
+<p>天气:多云  温度:15</p>
+</li>
+<li>
+<p>实际对象个数4</p>
+<p>可以看到，确实是我们预期的那样，相同的对象并没有重复创建。</p>
+<p>享元模式的优点在于它大幅度地降低内存中对象的数量。但是，它做到这一点所付出的代价也是很高的：享元模式使得系统更加复杂。为了使对象可以共享，需要将一些状态外部化，这使得程序的逻辑复杂化。享元模式将享元对象的状态外部化，而读取外部状态使得运行时间变长。</p>
+</li>
+</ol>
+<h2 id="toc_h2_25">21、外观模式</h2>
+<pre><code>为系统中的一组接口提供一个一致的界面，Facade模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>需要的时候。需要的时候太多了</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>看了下面你的介绍，就知道外观模式可以让一个系统更加容易使用</p>
+<p>外观模式是一种很简单的模式，我们有意无意都在使用这种模式。</p>
+<p>我们提供给用户的某个功能，可能是包含很多个步骤的，但我们可以把这些步骤封装到一个统一的接口中，让用户感觉仅仅就是一个单一的操作，使用起来也就更加简单。</p>
+<p>比如说，我们往回一些年，那时候的相机不是每个人都会用的，按下快门前还需要调焦等操作，然而现在呢，我们拍照只需要按下快门就行了，中间的一系列操作都被自动执行了。外观模式也就是提供这样一种机制。</p>
+<p>我们在使用一个有代码的例子：用户要购买一件商品，系统首先会判断库存，然后要计算费用（商品价格，邮费和优惠等），最后才会生成一个订单。这其中就包含几个<strong>子系统</strong>，库存管理子系统和计费子系统，而计费子系统又分更小的子系统（此处两处使用到外观模式）。</p>
+<p>获取商品原价的子系统：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>//获取商品价格</p>
+</li>
+<li>
+<p>public  class  ProductPrice  {</p>
+</li>
+<li>
+<p>int getPrice(String product){</p>
+</li>
+<li>
+<p>return  Math.abs(product.hashCode());//模拟获取商品价格</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>获取邮费的子系统：</p>
+</li>
+<li>
+<p>//计算邮费</p>
+</li>
+<li>
+<p>public  class  Postage  {</p>
+</li>
+<li>
+<p>int getPostage(String addr){</p>
+</li>
+<li>
+<p>return  Math.abs(addr.hashCode())%20+6;//模拟邮费计算</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>计算优惠的子系统：</p>
+</li>
+<li>
+<p>//计算优惠</p>
+</li>
+<li>
+<p>public  class  Discount  {</p>
+</li>
+<li>
+<p>int getDiscount(String discountCode){</p>
+</li>
+<li>
+<p>return  Math.abs(discountCode.hashCode())%3;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>计算最终价格的子系统，同时他也是一个外观，因为它含有以上三个子系统的引用：</p>
+</li>
+<li>
+<p>//计费子系统</p>
+</li>
+<li>
+<p>public  class  FinalPrice  {</p>
+</li>
+<li>
+<p>ProductPrice productPrice;</p>
+</li>
+<li>
+<p>Postage postage;</p>
+</li>
+<li>
+<p>Discount discount;</p>
+</li>
+<li>
+<p>public  FinalPrice(){</p>
+</li>
+<li>
+<p>productPrice =  new  ProductPrice();</p>
+</li>
+<li>
+<p>postage =  new  Postage();</p>
+</li>
+<li>
+<p>discount =  new  Discount();</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>int getFinalPrice(String product,String addr,String discountCode){</p>
+</li>
+<li>
+<p>return productPrice.getPrice(product)+postage.getPostage(addr)-discount.getDiscount(discountCode);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>库存子系统：
+</code></pre>
+<ol>
+<li>
+<p>//库存子系统</p>
+</li>
+<li>
+<p>public  class  Stock  {</p>
+</li>
+<li>
+<p>boolean hasStock(String product){</p>
+</li>
+<li>
+<p>return  new  Random().nextInt(Math.abs(product.hashCode()))&gt;0;//模拟是否还有库存</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>最后是面向用户的购买接口，在这里也是一个<strong>外观</strong>，同时，这里使用了枚举实现的单例模式：</p>
+</li>
+<li>
+<p>//外观</p>
+</li>
+<li>
+<p>public  enum  ProductSalesman  {</p>
+</li>
+<li>
+<p>instance;</p>
+</li>
+<li>
+<p>Stock stock =  new  Stock();</p>
+</li>
+<li>
+<p>FinalPrice finalPrice =  new  FinalPrice();</p>
+</li>
+<li>
+<p>Object buySomething(String product,String addr,String discountCode){</p>
+</li>
+<li>
+<p>if(!stock.hasStock(product))</p>
+</li>
+<li>
+<p>return  "库存不足";</p>
+</li>
+<li>
+<p>int price = finalPrice.getFinalPrice(product, addr, discountCode);</p>
+</li>
+<li>
+<p>return  "订单信息:"  + product +  "-"  + addr +  "-"  + discountCode +  "-"  + price;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>使用很简单，用户无需关系内部是如何操作了，只需要使用这个购买接口即可：
+</code></pre>
+<ol>
+<li>
+<p>public  class  TestUse  {</p>
+</li>
+<li>
+<p>public  static  void main(String args[]){</p>
+</li>
+<li>
+<p>Object info =  ProductSalesman.instance.buySomething("银河飞船",  "地球",  "K1234523");</p>
+</li>
+<li>
+<p>System.out.println(info);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>上例中就有2处用到了外观模式，可见这种模式是很常用的。</p>
+<p>当然，如果要增加子系统，这里是比较麻烦的，但是我们若为子系统抽象一个接口，然后融合责任链模式的一种变体(处理失败时才终止请求的传递)，使用起来就会方便很多了。</p>
+</li>
+</ol>
+<h2 id="toc_h2_26">22、桥接模式（Bridge Pattern）</h2>
+<pre><code>别名：柄体模式（Another Name：Handle-Body）
+
+Decouple an abstraction from its implementation so that the two can vary independently.
+
+将抽象部分与它的实现部分分离，使它们都可以独立的变化。
+
+**何时使用**：
+</code></pre>
+<ul>
+<li>
+<p>不想让抽象和某些重要的实现代码是固定的绑定关系，这部分实现可运行时动态决定。</p>
+</li>
+<li>
+<p>抽象和实现者都可以继承当方式独立地扩充而互不影响，程序在运行期间可能需要动态的将一个抽象的子类的实例与一个实现者的子类的实例进行组合。</p>
+</li>
+<li>
+<p>希望对实现者层次代码的修改对抽象层不产生影响，即抽象层的代码不需要重新编译，反之亦然。</p>
+<p><strong>优点</strong>:</p>
+</li>
+<li>
+<p>桥接模式分离实现与抽象，使抽象可实现可以独立的扩展。当修改实现的代码时，不影响抽象的代码，反之也一样。</p>
+</li>
+<li>
+<p>满足开闭-原则，抽象和实现者处于同层次，使系统可独立的扩展这两个层次。增加新的具体实现者，不需要修改细化抽象，反之增加新的细化抽象也不需要修改具体实现。</p>
+<p>桥接模式是一种结构型模式，它主要应对的是：由于实际的需要，某个类具有两个或两个以上的维度变化，如果只是用继承将无法实现这种需要，或者使得设计变得相当臃肿。</p>
+<p>桥接模式的做法是把变化部分抽象出来，使变化部分与主类分离开来，从而将多个维度的变化彻底分离。最后，提供一个管理类来组合不同维度上的变化，通过这种组合来满足业务的需要。</p>
+<p>桥接模式中有4种角色：</p>
+</li>
+<li>
+<p>抽象</p>
+</li>
+<li>
+<p>细化抽象</p>
+</li>
+<li>
+<p>实现者</p>
+</li>
+<li>
+<p>具体实现者</p>
+<p>下面看一个例子（并不是黑联想和AMD，仅仅是一个例子而已...）：</p>
+</li>
+</ul>
+<ol>
+<li>//桥接模式</li>
+<li>public  class  SimpleBridge  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>new  LenevoComputer(new  Amd()).discribe();</li>
+<li>new  HaseeComputer(new  Intel()).discribe();</li>
+<li>}</li>
+<li>}</li>
+<li>//实现者</li>
+<li>interface  Cpu{</li>
+<li>String discribe();</li>
+<li>}</li>
+<li>//具体实现者*2</li>
+<li>class  Amd  implements  Cpu{</li>
+<li>public  String discribe()  {</li>
+<li>return  "just so so...";</li>
+<li>}</li>
+<li>}</li>
+<li>class  Intel  implements  Cpu{</li>
+<li>public  String discribe()  {</li>
+<li>return  "great !";</li>
+<li>}</li>
+<li>}</li>
+<li>//抽象</li>
+<li>abstract  class  AbstractComputer{</li>
+<li>Cpu cpu;</li>
+<li>public  AbstractComputer(Cpu cpu){</li>
+<li>this.cpu=cpu;</li>
+<li>}</li>
+<li>public  abstract  void discribe();</li>
+<li>}</li>
+<li>//细化抽象*2</li>
+<li>class  LenevoComputer  extends  AbstractComputer{</li>
+<li>public  LenevoComputer(Cpu cpu)  {</li>
+<li>super(cpu);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void discribe()  {</li>
+<li>System.out.println("联想笔记本cpu:"+super.cpu.discribe());</li>
+<li>}</li>
+<li>}</li>
+<li>class  HaseeComputer  extends  AbstractComputer{</li>
+<li>public  HaseeComputer(Cpu cpu)  {</li>
+<li>super(cpu);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void discribe()  {</li>
+<li>System.out.println("神舟笔记本cpu:"+super.cpu.discribe());</li>
+<li>}</li>
+<li>}//输出：联想笔记本cpu:just so so... 神舟笔记本cpu:great !</li>
+</ol>
+<pre><code>上面的抽象是多变的，实现也是多变的，就可以应用桥接模式。
+
+我们再次那数据存储举一个实际的例子。数据存储可以实现为存到文件或是存到数据库，而我们存储时可以选择是本地还是网络上的位置，下面一一道来：
+
+首先是定义数据存储的实现：
+</code></pre>
+<ol>
+<li>
+<p>//实现</p>
+</li>
+<li>
+<p>public  interface  ISaveData  {</p>
+</li>
+<li>
+<p>void save(Object data);</p>
+</li>
+<li>
+<p>}</p>
+<p>然后就是具体的实现：</p>
+</li>
+<li>
+<p>//具体实现</p>
+</li>
+<li>
+<p>public  class  SaveToFile  implements  ISaveData{</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println(data +  " 存储到文件");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//具体实现</p>
+</li>
+<li>
+<p>public  class  SaveToDB  implements  ISaveData{</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.println(data +  " 存储到数据库");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>然后是抽象，如何存储：</p>
+</li>
+<li>
+<p>//抽象</p>
+</li>
+<li>
+<p>public  abstract  class  AbstractSave  {</p>
+</li>
+<li>
+<p>ISaveData saveData;</p>
+</li>
+<li>
+<p>public  AbstractSave(ISaveData saveData){</p>
+</li>
+<li>
+<p>this.saveData = saveData;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>public  abstract  void save();</p>
+</li>
+<li>
+<p>}</p>
+<p>接下来是细化抽象：</p>
+</li>
+<li>
+<p>//细化抽象</p>
+</li>
+<li>
+<p>public  class  LocalSave  extends  AbstractSave{</p>
+</li>
+<li>
+<p>public  LocalSave(ISaveData saveData)  {</p>
+</li>
+<li>
+<p>super(saveData);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.print("本地存储：");</p>
+</li>
+<li>
+<p>saveData.save(data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>//细化抽象</p>
+</li>
+<li>
+<p>public  class  NetSave  extends  AbstractSave{</p>
+</li>
+<li>
+<p>public  NetSave(ISaveData saveData)  {</p>
+</li>
+<li>
+<p>super(saveData);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void save(Object data)  {</p>
+</li>
+<li>
+<p>System.out.print("网络存储：");</p>
+</li>
+<li>
+<p>saveData.save(data);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>使用：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>Object data =  "数据";</li>
+<li>ISaveData saveDataDb =  new  SaveToDB();</li>
+<li>ISaveData saveDataFile =  new  SaveToFile();</li>
+<li>AbstractSave save;</li>
+<li>save =  new  NetSave(saveDataDb);</li>
+<li>save.save(data);</li>
+<li>save =  new  NetSave(saveDataFile);</li>
+<li>save.save(data);</li>
+<li>save =  new  LocalSave(saveDataDb);</li>
+<li>save.save(data);</li>
+<li>save =  new  LocalSave(saveDataFile);</li>
+<li>save.save(data);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>输出： 
+</code></pre>
+<ol>
+<li>
+<p>网络存储：数据  存储到数据库</p>
+</li>
+<li>
+<p>网络存储：数据  存储到文件</p>
+</li>
+<li>
+<p>本地存储：数据  存储到数据库</p>
+</li>
+<li>
+<p>本地存储：数据  存储到文件</p>
+<p>而且这个程序是很容易扩展的，直接添加细化抽象和具体实现就可以了。</p>
+</li>
+</ol>
+<h2 id="toc_h2_27">23、装饰模式（Decorator Pattern）</h2>
+<pre><code>别名：包装器（Wrapper）
+
+动态的给对象添加额外的职责。就功能来说，装饰模式比生产子类更为灵活。
+
+**何时使用**
+</code></pre>
+<ul>
+<li>
+<p>程序希望动态的增强类的某对对象的功能，而不影响其他对象时</p>
+</li>
+<li>
+<p>采用继承来增强对象功能不利于系统的扩展和维护时</p>
+<p><strong>优点</strong></p>
+</li>
+<li>
+<p>被装饰者和装饰者是松耦合关系。</p>
+</li>
+<li>
+<p>满足开-闭原则</p>
+</li>
+<li>
+<p>可以使用多个具体装饰器装饰具体组件的实例</p>
+<p>装饰模式使用被装饰类的一个子类的实例，把客户端的调用委派到被装饰类，装饰模式的关键在于这种扩展是完全透明的。装饰者与被装饰者拥有共同的超类，继承的目的是继承类型，而不是行为。</p>
+<p>例如，我们有一个工具，用于持久化数据的，最开始设计的功能时是将数据持久化到本地文件，但现在部分数据需要同时持久化到数据库，再后来，又有数据需要同时持久化到网络上的位置，而我们是不能改之前的实现的，因为后面这些需求，只是针对部分数据的，所以我们理所当然就可以使用装饰器模式了。</p>
+<p>数据持久化接口（<strong>抽象组件</strong>）如下：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>//被装饰者接口</p>
+</li>
+<li>
+<p>public  interface  IPersistentUtil  {</p>
+</li>
+<li>
+<p>void persistentMsg(String msg);</p>
+</li>
+<li>
+<p>}</p>
+<p>其最初的实现（<strong>具体组件</strong>）如下：</p>
+</li>
+<li>
+<p>//具体的被装饰者</p>
+</li>
+<li>
+<p>public  class  PersistentUtil  implements  IPersistentUtil{</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void persistentMsg(String msg)  {</p>
+</li>
+<li>
+<p>System.out.println(msg +  " 存入文件");</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+<p>首先需要抽象一个装饰器，我们不能直接使用它(即使使用匿名内部类使用了它，也跟最初的实现效果一样，没有意义)，因为他是一个抽象类（<strong>装饰</strong>）：</p>
+</li>
+<li>
+<p>//装饰</p>
+</li>
+<li>
+<p>public  abstract  class  PersistentDecorator  implements  IPersistentUtil  {</p>
+</li>
+<li>
+<p>IPersistentUtil iPersistentUtil;</p>
+</li>
+<li>
+<p>public  PersistentDecorator(IPersistentUtil iPersistentUtil){</p>
+</li>
+<li>
+<p>this.iPersistentUtil = iPersistentUtil;</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>@Override</p>
+</li>
+<li>
+<p>public  void persistentMsg(String msg)  {</p>
+</li>
+<li>
+<p>iPersistentUtil.persistentMsg(msg);</p>
+</li>
+<li>
+<p>}</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ol>
+<pre><code>然后，我们添加一个装饰器，可以同时实现数据持久化到数据库（**具体装饰**）：
+</code></pre>
+<ol>
+<li>//装饰--存入数据库</li>
+<li>public  class  PersistentDbDecorator  extends  PersistentDecorator  {</li>
+<li>public  PersistentDbDecorator(IPersistentUtil iPersistentUtil){</li>
+<li>super(iPersistentUtil);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void persistentMsg(String msg)  {</li>
+<li>iPersistentUtil.persistentMsg(msg);</li>
+<li>persistentToDb(msg);</li>
+<li>}</li>
+<li>private  void persistentToDb(String msg){</li>
+<li>System.out.println(msg +  " 存入数据库");</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>在后来，我们添加一个可以同时在网络存储上持久化数据的装饰器（**具体装饰**）：
+</code></pre>
+<ol>
+<li>//装饰--存入网络其他地方</li>
+<li>public  class  PersistentNetDecorator  extends  PersistentDecorator  {</li>
+<li>public  PersistentNetDecorator(IPersistentUtil iPersistentUtil){</li>
+<li>super(iPersistentUtil);</li>
+<li>}</li>
+<li>@Override</li>
+<li>public  void persistentMsg(String msg)  {</li>
+<li>iPersistentUtil.persistentMsg(msg);</li>
+<li>persistentToNet(msg);</li>
+<li>}</li>
+<li>private  void persistentToNet(String msg){</li>
+<li>System.out.println(msg +  " 存入网络的其他地方");</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>接下来就是要使用并验证：
+</code></pre>
+<ol>
+<li>public  class  TestUse  {</li>
+<li>public  static  void main(String args[]){</li>
+<li>//被装饰者</li>
+<li>final  String data =  "数据";</li>
+<li>IPersistentUtil iPersistentUtil =  new  PersistentUtil();</li>
+<li>iPersistentUtil.persistentMsg(data);</li>
+<li>System.out.println("下面装饰数据库持久化：");</li>
+<li>iPersistentUtil =  new  PersistentDbDecorator(iPersistentUtil);</li>
+<li>iPersistentUtil.persistentMsg(data);</li>
+<li>System.out.println("下面继续装饰网络存储器持久化：");</li>
+<li>iPersistentUtil =  new  PersistentNetDecorator(iPersistentUtil);</li>
+<li>iPersistentUtil.persistentMsg(data);</li>
+<li>}</li>
+<li>}</li>
+</ol>
+<pre><code>控制台的输出：
+</code></pre>
+<ol>
+<li>
+<p>数据  存入文件</p>
+</li>
+<li>
+<p>下面装饰数据库持久化：</p>
+</li>
+<li>
+<p>数据  存入文件</p>
+</li>
+<li>
+<p>数据  存入数据库</p>
+</li>
+<li>
+<p>下面继续装饰网络存储器持久化：</p>
+</li>
+<li>
+<p>数据  存入文件</p>
+</li>
+<li>
+<p>数据  存入数据库</p>
+</li>
+<li>
+<p>数据  存入网络的其他地方</p>
+<p>可以看到，使用了装饰器的对象，功能已经增强了，而且可以使用多个装饰器。</p>
+<p>在Java.io包中，很多类的设计，都用到了装饰器模式（如Reader相当于抽象的被装饰者，FileReader相当于具体的被装饰者，BufferedReader相当于装饰），有兴趣的同学可以去看看源码。</p>
+<p>好了，至此，23种设计模式在Java中的应用就介绍完了。</p>
+<p>写代码不能太死板（这是必须的），就像上面的设计模式，我们也不能就非得完全按照其介绍的那么做，很多时候需要变通。比如单例模式，我们可以利用类似的原理，不让对象不受控制的创建，而是以我们预期的数量，也就是可控的多个实例，这显然是不符合单例模式的描述的，但这样做有时候确实是有好处。</p>
+<p>很多模式之间是有很多相似之处的，实现上稍作修改，就变成了另外一种模式。模式也不能滥用，只是在我们设计的时候，给出一种引导，以某种方式实现需求，可能会更加简单，方便，容易维护。<br>
+<img src="http://gongdear.com/upload/6ee080925c124fdbad7a585e3b5d709a_2068827634.png" alt=""></p>
+<p><a href="http://gongdear.com/scm/git/JavaDesignPattern" target="_blank">http://gongdear.com/scm/git/JavaDesignPattern</a></p>
+</li>
+</ol>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h1">
+            <a href="#toc_h1_0">设计模式介绍及Java描述</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_1">概述</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_2">创建型模式</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_3">行为型模式</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_4">结构型模式</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_5">1、单例模式（Singleton Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_6">2、工厂方法模式（Factory Method Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_7">3、抽象工厂方法模式（Abstract Factory Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_8">4、生成器模式（Builder Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_9">5、原型模式（Prototype Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_10">6、责任链模式（Chain of Responsibility Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_11">7、命令模式(Command Pattern)</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_12">8、解释器模式（Interpreter Patterm）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_13">9、迭代器模式</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_14">10、中介者模式（Mediator Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_15">11、备忘录模式（Memento Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_16">12、观察者模式（Observer Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_17">13、状态模式（State Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_18">14、策略模式（Strategy Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_19">15、模板方法模式（Template Method Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_20">16、访问者模式（Visitor Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_21">17、适配器模式（Adapter Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_22">18、组合模式（Composite Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_23">19、代理模式（Proxy Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_24">20、享元模式（Plyweight Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_25">21、外观模式</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_26">22、桥接模式（Bridge Pattern）</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_27">23、装饰模式（Decorator Pattern）</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1536750662201"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1536750662201",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1536750662201",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Java",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1536750662201', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 373ms, 2021/03/15 13:05:05 -->

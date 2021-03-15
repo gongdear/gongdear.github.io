@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>Helm安装和配置 - gongdear</title><meta name="description" content="Helm安装和配置"/><meta property="og:description" content="Helm安装和配置"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="Helm安装和配置 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2019/08/16/1565935481170.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="Helm安装和配置 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2019/08/16/1565935481170.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="使用kubeadm安装kubernetes1.15" href="https://gongdear.github.io/articles/2019/08/13/1565683985186.html">
+            <link rel="next" title="gitlab-runner 安装使用" href="https://gongdear.github.io/articles/2019/08/16/1565937022236.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/file/2019/08/cidi-2b6b0567.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/file/2019/08/cidi-2b6b0567.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2019-08-16
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Helm">Helm</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Kubernetes">Kubernetes</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                Helm安装和配置
+            </h2>
+<div class="article__share"
+     data-title="Helm安装和配置"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2019/08/16/1565935481170.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h1 id="toc_h1_0">Helm简介</h1>
+<p>很多人都使用过Ubuntu下的ap-get或者CentOS下的yum, 这两者都是Linux系统下的包管理工具。采用apt-get/yum,应用开发者可以管理应用包之间的依赖关系，发布应用；用户则可以以简单的方式查找、安装、升级、卸载应用程序。</p>
+<p>我们可以将Helm看作Kubernetes下的apt-get/yum。Helm是Deis (<a href="https://deis.com/" target="_blank">https://deis.com/</a>) 开发的一个用于kubernetes的包管理器。每个包称为一个Chart，一个Chart是一个目录（一般情况下会将目录进行打包压缩，形成name-version.tgz格式的单一文件，方便传输和存储）。</p>
+<p>对于应用发布者而言，可以通过Helm打包应用，管理应用依赖关系，管理应用版本并发布应用到软件仓库。</p>
+<p>对于使用者而言，使用Helm后不用需要了解Kubernetes的Yaml语法并编写应用部署文件，可以通过Helm下载并在kubernetes上安装需要的应用。</p>
+<p>除此以外，Helm还提供了kubernetes上的软件部署，删除，升级，回滚应用的强大功能。</p>
+<p>Helm 组件及相关术语<br>
+Helm<br>
+Helm 是一个命令行下的客户端工具。主要用于 Kubernetes 应用程序 Chart 的创建、打包、发布以及创建和管理本地和远程的 Chart 仓库。</p>
+<p>Tiller<br>
+Tiller 是 Helm 的服务端，部署在 Kubernetes 集群中。Tiller 用于接收 Helm 的请求，并根据 Chart 生成 Kubernetes 的部署文件（ Helm 称为 Release ），然后提交给 Kubernetes 创建应用。Tiller 还提供了 Release 的升级、删除、回滚等一系列功能。</p>
+<p>Chart<br>
+Helm 的软件包，采用 TAR 格式。类似于 APT 的 DEB 包或者 YUM 的 RPM 包，其包含了一组定义 Kubernetes 资源相关的 YAML 文件。</p>
+<p>Repoistory<br>
+Helm 的软件仓库，Repository 本质上是一个 Web 服务器，该服务器保存了一系列的 Chart 软件包以供用户下载，并且提供了一个该 Repository 的 Chart 包的清单文件以供查询。Helm 可以同时管理多个不同的 Repository。</p>
+<p>Release<br>
+使用 helm install 命令在 Kubernetes 集群中部署的 Chart 称为 Release。</p>
+<p>注：需要注意的是：Helm 中提到的 Release 和我们通常概念中的版本有所不同，这里的 Release 可以理解为 Helm 使用 Chart 包部署的一个应用实例。</p>
+<h2 id="toc_h2_1">Helm工作原理</h2>
+<p>Chart Install 过程：</p>
+<p>Helm从指定的目录或者tgz文件中解析出Chart结构信息<br>
+Helm将指定的Chart结构和Values信息通过gRPC传递给Tiller<br>
+Tiller根据Chart和Values生成一个Release<br>
+Tiller将Release发送给Kubernetes用于生成Release<br>
+Chart Update过程：</p>
+<p>Helm从指定的目录或者tgz文件中解析出Chart结构信息<br>
+Helm将要更新的Release的名称和Chart结构，Values信息传递给Tiller<br>
+Tiller生成Release并更新指定名称的Release的History<br>
+Tiller将Release发送给Kubernetes用于更新Release<br>
+Chart Rollback过程：</p>
+<p>Helm将要回滚的Release的名称传递给Tiller<br>
+Tiller根据Release的名称查找History<br>
+Tiller从History中获取上一个Release<br>
+Tiller将上一个Release发送给Kubernetes用于替换当前Release</p>
+<h1 id="toc_h1_2">helm部署</h1>
+<h2 id="toc_h2_3">一、Helm 客户端安装</h2>
+<p>Helm 的安装方式很多，这里采用二进制的方式安装。更多安装方法可以参考 Helm 的官方帮助文档。</p>
+<p>方式一：使用官方提供的脚本一键安装</p>
+<pre><code>curl https://raw.githubusercontent.com/helm/helm/master/scripts/get &gt; get_helm.sh
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+</code></pre>
+<p>方式二：手动下载安装</p>
+<pre><code>#从官网下载最新版本的二进制安装包到本地：https://github.com/kubernetes/helm/releases
+tar -zxvf helm-2.9.0.tar.gz # 解压压缩包
+# 把 helm 指令放到bin目录下
+mv helm-2.9.0/helm /usr/local/bin/helm
+helm help # 验证
+</code></pre>
+<h2 id="toc_h2_4">二、Helm 服务端安装Tiller</h2>
+<p>注意：先在 K8S 集群上每个节点安装 socat 软件(yum install -y socat )，不然会报如下错误：</p>
+<blockquote>
+<p>E0522 22:22:15.492436   24409 portforward.go:331] an error occurred forwarding 38398 -&gt; 44134: error forwarding port 44134 to pod dc6da4ab99ad9c497c0cef1776b9dd18e0a612d507e2746ed63d36ef40f30174, uid : unable to do port forwarding: socat not found.<br>
+Error: cannot connect to Tiller<br>
+Tiller 是以 Deployment 方式部署在 Kubernetes 集群中的，只需使用以下指令便可简单的完成安装。</p>
+</blockquote>
+<p>$ helm init<br>
+由于 Helm 默认会去 storage.googleapis.com 拉取镜像，如果你当前执行的机器不能访问该域名的话可以使用以下命令来安装：</p>
+<pre><code>helm init --client-only --stable-repo-url https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts/
+helm repo add incubator https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts-incubator/
+helm repo update
+</code></pre>
+<p>创建服务端</p>
+<pre><code>helm init --service-account tiller --upgrade -i registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.9.1  --stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+</code></pre>
+<p>创建TLS认证服务端，参考地址：<a href="https://github.com/gjmzj/kubeasz/blob/master/docs/guide/helm.md" target="_blank">https://github.com/gjmzj/kubeasz/blob/master/docs/guide/helm.md</a></p>
+<pre><code>helm init --service-account tiller --upgrade -i registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.9.1 --tiller-tls-cert /etc/kubernetes/ssl/tiller001.pem --tiller-tls-key /etc/kubernetes/ssl/tiller001-key.pem --tls-ca-cert /etc/kubernetes/ssl/ca.pem --tiller-namespace kube-system --stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+</code></pre>
+<p>在 Kubernetes 中安装 Tiller 服务，因为官方的镜像因为某些原因无法拉取，使用-i指定自己的镜像，可选镜像：registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.9.1（阿里云），该镜像的版本与helm客户端的版本相同，使用helm version可查看helm客户端版本。</p>
+<p>如果在用helm init安装tiller server时一直部署不成功,检查deployment，根据描述解决问题。</p>
+<h2 id="toc_h2_5">三、给 Tiller 授权</h2>
+<p>因为 Helm 的服务端 Tiller 是一个部署在 Kubernetes 中 Kube-System Namespace 下 的 Deployment，它会去连接 Kube-Api 在 Kubernetes 里创建和删除应用。</p>
+<p>而从 Kubernetes 1.6 版本开始，API Server 启用了 RBAC 授权。目前的 Tiller 部署时默认没有定义授权的 ServiceAccount，这会导致访问 API Server 时被拒绝。所以我们需要明确为 Tiller 部署添加授权。</p>
+<p>创建 Kubernetes 的服务帐号和绑定角色</p>
+<pre><code>$ kubectl create serviceaccount --namespace kube-system tiller
+$ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+</code></pre>
+<p>为 Tiller 设置帐号</p>
+<p>使用 kubectl patch 更新 API 对象</p>
+<pre><code>$ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+deployment.extensions "tiller-deploy" patched
+</code></pre>
+<p>查看是否授权成功</p>
+<pre><code>$ kubectl get deploy --namespace kube-system &nbsp; tiller-deploy &nbsp;--output yaml|grep &nbsp;serviceAccount
+serviceAccount: tiller
+serviceAccountName: tiller
+</code></pre>
+<h2 id="toc_h2_6">四、验证 Tiller 是否安装成功</h2>
+<pre><code>$ kubectl -n kube-system get pods|grep tiller
+tiller-deploy-6d68f5c78f-nql2z &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1/1 &nbsp; &nbsp; &nbsp; Running &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;5m
+</code></pre>
+<p>$ helm version</p>
+<pre><code>Client: &amp;version.Version{SemVer:"v2.9.1", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
+Server: &amp;version.Version{SemVer:"v2.9.1", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
+</code></pre>
+<h2 id="toc_h2_7">五、卸载 Helm 服务器端 Tiller</h2>
+<p>如果你需要在 Kubernetes 中卸载已部署的 Tiller，可使用以下命令完成卸载。</p>
+<pre><code>$ helm reset 或
+$ helm reset --force
+</code></pre>
+<h2 id="toc_h2_8">六、Helm 使用</h2>
+<p>1）更换仓库：</p>
+<p>若遇到Unable to get an update from the “stable” chart repository (<a href="https://kubernetes-charts.storage.googleapis.com" target="_blank">https://kubernetes-charts.storage.googleapis.com</a>) 错误<br>
+手动更换stable 存储库为阿里云的存储库</p>
+<p>先移除原先的仓库</p>
+<pre><code>helm repo remove stable
+</code></pre>
+<p>添加新的仓库地址</p>
+<pre><code>helm repo add stable https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+</code></pre>
+<p>更新仓库</p>
+<pre><code>helm repo update
+</code></pre>
+<p>2）查看在存储库中可用的所有 Helm charts：</p>
+<pre><code>helm search
+</code></pre>
+<pre><code>NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
+stable/acs-engine-autoscaler    2.1.3           2.1.1           Scales worker nodes within agent pools            
+stable/aerospike                0.1.7           v3.14.1.2       A Helm chart for Aerospike in Kubernetes          
+stable/anchore-engine           0.1.3           0.1.6           Anchore container analysis and policy evaluatio...
+stable/artifactory              7.0.3           5.8.4           Universal Repository Manager supporting all maj...
+stable/artifactory-ha           0.1.0           5.8.4           Universal Repository Manager supporting all maj...
+stable/aws-cluster-autoscaler   0.3.2                           Scales worker nodes within autoscaling groups.
+... ...
+</code></pre>
+<p>3）更新charts列表：</p>
+<pre><code>helm repo update
+</code></pre>
+<p>4）安装charts：</p>
+<p>Monocular是一个开源软件，用于管理kubernetes上以Helm Charts形式创建的服务，可以通过它的web页面来安装helm Charts</p>
+<p>安装Nginx Ingress controller，安装的k8s集群启用了RBAC，则一定要加rbac.create=true参数</p>
+<pre><code>helm install stable/nginx-ingress --set controller.hostNetwork=true，rbac.create=true
+</code></pre>
+<p>安装Monocular：</p>
+<p>添加新的源</p>
+<pre><code>helm repo add monocular https://kubernetes-helm.github.io/monocular
+</code></pre>
+<p>安装</p>
+<pre><code>helm install monocular/monocular -f custom-repos.yaml
+</code></pre>
+<p>custom-repos.yaml 内容</p>
+<pre><code>cat custom-repos.yaml
+ 
+api:
+  config:
+    repos:
+      - name: stable
+        url: https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts
+        source: https://github.com/kubernetes/charts/tree/master/stable
+      - name: incubator
+        url: https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts-incubator
+        source: https://github.com/kubernetes/charts/tree/master/incubator
+      - name: monocular
+        url: https://kubernetes-helm.github.io/monocular
+        source: https://github.com/kubernetes-helm/monocular/tree/master/charts
+</code></pre>
+<p>5）查看K8S中已安装的charts：</p>
+<pre><code>helm list
+</code></pre>
+<pre><code>NAME                REVISION    UPDATED                     STATUS      CHART               NAMESPACE
+amber-seal          1           Mon Jul  2 17:29:25 2018    DEPLOYED    nginx-ingress-0.9.5 default  
+my-release          1           Mon Jul  2 15:19:44 2018    DEPLOYED    spark-0.1.10        default  
+nonplussed-panther  1           Mon Jul  2 17:27:41 2018    FAILED      nginx-ingress-0.9.5 default  
+turbulent-tuatara   1           Mon Jul  2 17:31:33 2018    DEPLOYED    monocular-0.6.2     default
+</code></pre>
+<p>6）删除安装的charts：</p>
+<p>删除：helm delete xxx</p>
+<pre><code>helm delete amber-seal
+</code></pre>
+<p>Helm Chart 结构<br>
+Chart 目录结构</p>
+<pre><code>examples/
+  Chart.yaml          # Yaml文件，用于描述Chart的基本信息，包括名称版本等
+  LICENSE             # [可选] 协议
+  README.md           # [可选] 当前Chart的介绍
+  values.yaml         # Chart的默认配置文件
+  requirements.yaml   # [可选] 用于存放当前Chart依赖的其它Chart的说明文件
+  charts/             # [可选]: 该目录中放置当前Chart依赖的其它Chart
+  templates/          # [可选]: 部署文件模版目录，模版使用的值来自values.yaml和由Tiller提供的值
+  templates/NOTES.txt # [可选]: 放置Chart的使用指南
+</code></pre>
+<p>Chart.yaml 文件</p>
+<pre><code>name: [必须] Chart的名称
+version: [必须] Chart的版本号，版本号必须符合 SemVer 2：http://semver.org/
+description: [可选] Chart的简要描述
+keywords:
+  -  [可选] 关键字列表
+home: [可选] 项目地址
+sources:
+  - [可选] 当前Chart的下载地址列表
+maintainers: # [可选]
+  - name: [必须] 名字
+    email: [可选] 邮箱
+engine: gotpl # [可选] 模版引擎，默认值是gotpl
+icon: [可选] 一个SVG或PNG格式的图片地址
+</code></pre>
+<p>requirements.yaml 和 charts目录<br>
+requirements.yaml 文件内容：</p>
+<pre><code>dependencies:
+  - name: example
+    version: 1.2.3
+    repository: http://example.com/charts
+  - name: Chart名称
+    version: Chart版本
+    repository: 该Chart所在的仓库地址
+</code></pre>
+<p>Chart支持两种方式表示依赖关系，可以使用requirements.yaml或者直接将依赖的Chart放置到charts目录中。<br>
+templates 目录<br>
+templates目录中存放了Kubernetes部署文件的模版。<br>
+例如：</p>
+<pre><code># db.yaml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: deis-database
+  namespace: deis
+  labels:
+    heritage: deis
+spec:
+  replicas: 1
+  selector:
+    app: deis-database
+  template:
+    metadata:
+      labels:
+        app: deis-database
+    spec:
+      serviceAccount: deis-database
+      containers:
+        - name: deis-database
+          image: {{.Values.imageRegistry}}/postgres:{{.Values.dockerTag}}
+          imagePullPolicy: {{.Values.pullPolicy}}
+          ports:
+            - containerPort: 5432
+          env:
+            - name: DATABASE_STORAGE
+              value: {{default "minio" .Values.storage}}
+</code></pre>
+<p>&nbsp;</p>
+<p>模版语法扩展了 golang/text/template的语法：</p>
+<p>这种方式定义的模版，会去除test模版尾部所有的空行</p>
+<pre><code>{{- define "test"}}
+</code></pre>
+<p>模版内容</p>
+<pre><code>{{- end}}
+</code></pre>
+<p>去除test模版头部的第一个空行</p>
+<pre><code>{{- template "test" }}
+</code></pre>
+<p>用于yaml文件前置空格的语法：</p>
+<p>这种方式定义的模版，会去除test模版头部和尾部所有的空行</p>
+<pre><code>{{- define "test" -}}
+</code></pre>
+<p>模版内容</p>
+<pre><code>{{- end -}}
+</code></pre>
+<p>可以在test模版每一行的头部增加4个空格，用于yaml文件的对齐</p>
+<pre><code>{{ include "test" | indent 4}}
+</code></pre>
+<p>创建自己的chart<br>
+我们创建一个名为mongodb的chart，看一看chart的文件结构。</p>
+<pre><code>$ helm create mongodb
+$ tree mongodb
+mongodb
+├── Chart.yaml #Chart本身的版本和配置信息
+├── charts #依赖的chart
+├── templates #配置模板目录
+│   ├── NOTES.txt #helm提示信息
+│   ├── _helpers.tpl #用于修改kubernetes objcet配置的模板
+│   ├── deployment.yaml #kubernetes Deployment object
+│   └── service.yaml #kubernetes Serivce
+└── values.yaml #kubernetes object configuration
+
+2 directories, 6 files
+</code></pre>
+<p>模板<br>
+Templates目录下是yaml文件的模板，遵循Go template语法。使用过Hugo的静态网站生成工具的人应该对此很熟悉。</p>
+<p>我们查看下deployment.yaml文件的内容。</p>
+<pre><code>apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.service.internalPort }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.service.internalPort }}
+        resources:
+{{ toyaml .Values.resources | indent 12 }}
+</code></pre>
+<p>这是该应用的Deployment的yaml配置文件，其中的双大括号包扩起来的部分是Go template，其中的Values是在values.yaml文件中定义的：</p>
+<pre><code># Default values for mychart.
+# This is a yaml-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+service:
+  name: nginx
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 80
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+</code></pre>
+<p>比如在Deployment.yaml中定义的容器镜像image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"其中的：</p>
+<p>.Values.image.repository就是nginx<br>
+.Values.image.tag就是stable<br>
+以上两个变量值是在create chart的时候自动生成的默认值。</p>
+<p>我们将默认的镜像地址和tag改成我们自己的镜像harbor-001.jimmysong.io/library/nginx:1.9。</p>
+<p>检查配置和模板是否有效<br>
+当使用kubernetes部署应用的时候实际上讲templates渲染成最终的kubernetes能够识别的yaml格式。</p>
+<p>使用helm install --dry-run --debug &lt;chart_dir&gt;命令来验证chart配置。该输出中包含了模板的变量配置与最终渲染的yaml文件。</p>
+<pre><code>$ helm install --dry-run --debug mychart
+Created tunnel using local port: '58406'
+SERVER: "localhost:58406"
+CHART PATH: /Users/jimmy/Workspace/github/bitnami/charts/incubator/mean/charts/mychart
+NAME:   filled-seahorse
+REVISION: 1
+RELEASED: Tue Oct 24 18:57:13 2017
+CHART: mychart-0.1.0
+USER-SUPPLIED VALUES:
+{}
+ 
+COMPUTED VALUES:
+image:
+  pullPolicy: IfNotPresent
+  repository: harbor-001.jimmysong.io/library/nginx
+  tag: 1.9
+replicaCount: 1
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+service:
+  externalPort: 80
+  internalPort: 80
+  name: nginx
+  type: ClusterIP
+ 
+HOOKS:
+MANIFEST:
+ 
+---
+# Source: mychart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: filled-seahorse-mychart
+  labels:
+    chart: "mychart-0.1.0"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: nginx
+  selector:
+    app: filled-seahorse-mychart
+ 
+---
+# Source: mychart/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: filled-seahorse-mychart
+  labels:
+    chart: "mychart-0.1.0"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: filled-seahorse-mychart
+    spec:
+      containers:
+      - name: mychart
+        image: "harbor-001.jimmysong.io/library/nginx:1.9"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+        resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+</code></pre>
+<p>我们可以看到Deployment和Service的名字前半截由两个随机的单词组成，最后才是我们在values.yaml中配置的值。</p>
+<p>部署到kubernetes<br>
+在mychart目录下执行下面的命令将nginx部署到kubernetes集群上。</p>
+<pre><code>helm install .
+NAME:   eating-hound
+LAST DEPLOYED: Wed Oct 25 14:58:15 2017
+NAMESPACE: default
+STATUS: DEPLOYED
+ 
+RESOURCES:
+==&gt; v1/Service
+NAME                  CLUSTER-IP     EXTERNAL-IP  PORT(S)  AGE
+eating-hound-mychart  10.254.135.68  &lt;none&gt;       80/TCP   0s
+ 
+==&gt; extensions/v1beta1/Deployment
+NAME                  DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+eating-hound-mychart  1        1        1           0          0s
+ 
+ 
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app=eating-hound-mychart" -o jsonpath="{.items[0].metadata.name}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl port-forward $POD_NAME 8080:80
+</code></pre>
+<p>现在nginx已经部署到kubernetes集群上，本地执行提示中的命令在本地主机上访问到nginx实例。</p>
+<pre><code>export POD_NAME=$(kubectl get pods --namespace default -l "app=eating-hound-mychart" -o jsonpath="{.items[0].metadata.name}")
+echo "Visit http://127.0.0.1:8080 to use your application"
+kubectl port-forward $POD_NAME 8080:80
+</code></pre>
+<p>在本地访问<a href="http://127.0.0.1:8080即可访问到nginx。" target="_blank">http://127.0.0.1:8080即可访问到nginx。</a></p>
+<p>查看部署的relaese</p>
+<pre><code>$ helm list
+NAME            REVISION    UPDATED                     STATUS      CHART            NAMESPACE
+eating-hound    1           Wed Oct 25 14:58:15 2017    DEPLOYED    mychart-0.1.0    default
+</code></pre>
+<p>删除部署的release</p>
+<pre><code>$ helm delete eating-hound
+release "eating-hound" deleted
+</code></pre>
+<p>打包分享<br>
+我们可以修改Chart.yaml中的helm chart配置信息，然后使用下列命令将chart打包成一个压缩文件。</p>
+<pre><code>helm package .
+</code></pre>
+<p>打包出mychart-0.1.0.tgz文件。</p>
+<p>将应用发布到 Repository<br>
+虽然我们已经打包了 Chart 并发布到了 Helm 的本地目录中，但通过 helm search 命令查找，并不能找不到刚才生成的 mychart包。</p>
+<pre><code>$ helm search mychart
+No results found
+</code></pre>
+<p>这是因为 Repository 目录中的 Chart 包还没有被 Helm 管理。通过 helm repo list 命令可以看到目前 Helm 中已配置的 Repository 的信息。</p>
+<pre><code>$ helm repo list
+NAME &nbsp; &nbsp;URL
+stable &nbsp;https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+</code></pre>
+<p>注：新版本中执行 helm init 命令后默认会配置一个名为 local 的本地仓库。</p>
+<p>我们可以在本地启动一个 Repository Server，并将其加入到 Helm Repo 列表中。Helm Repository 必须以 Web 服务的方式提供，这里我们就使用 helm serve 命令启动一个 Repository Server，该 Server 缺省使用 $HOME/.helm/repository/local 目录作为 Chart 存储，并在 8879 端口上提供服务。</p>
+<pre><code>$ helm serve &amp;
+Now serving you on 127.0.0.1:8879
+</code></pre>
+<p>默认情况下该服务只监听 127.0.0.1，如果你要绑定到其它网络接口，可使用以下命令：</p>
+<pre><code>$ helm serve --address 192.168.100.211:8879 &amp;
+</code></pre>
+<p>如果你想使用指定目录来做为 Helm Repository 的存储目录，可以加上 --repo-path 参数：</p>
+<pre><code>$ helm serve --address 192.168.100.211:8879 --repo-path /data/helm/repository/ --url http://192.168.100.211:8879/charts/
+</code></pre>
+<p>通过 helm repo index 命令将 Chart 的 Metadata 记录更新在 index.yaml 文件中:</p>
+<pre><code># 更新 Helm Repository 的索引文件
+$ cd /home/k8s/.helm/repository/local
+$ helm repo index --url=http://192.168.100.211:8879 .
+</code></pre>
+<p>完成启动本地 Helm Repository Server 后，就可以将本地 Repository 加入 Helm 的 Repo 列表。</p>
+<pre><code>$ helm repo add local http://127.0.0.1:8879
+"local" has been added to your repositories
+</code></pre>
+<p>现在再次查找 mychart 包，就可以搜索到了。</p>
+<pre><code>$ helm repo update
+$ helm search mychart
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;CHART VERSION APP VERSION DESCRIPTION
+local/mychart 0.1.0 &nbsp; &nbsp; &nbsp; &nbsp; 1.0 &nbsp; &nbsp; &nbsp; &nbsp; A Helm chart for Kubernetes
+</code></pre>
+<p>依赖<br>
+我们可以在requirement.yaml中定义应用所依赖的chart，例如定义对mariadb的依赖：</p>
+<pre><code>dependencies:
+- name: mariadb
+  version: 0.6.0
+  repository: https://kubernetes-charts.storage.googleapis.com
+</code></pre>
+<p>使用helm lint .命令可以检查依赖和模板配置是否正确。</p>
+<p>helm升级和回退一个应用<br>
+从上面 helm list 输出的结果中我们可以看到有一个 Revision（更改历史）字段，该字段用于表示某一个 Release 被更新的次数，我们可以用该特性对已部署的 Release 进行回滚。</p>
+<p>修改 Chart.yaml 文件</p>
+<p>将版本号从 0.1.0 修改为 0.2.0, 然后使用 helm package 命令打包并发布到本地仓库。</p>
+<pre><code>$ cat mychart/Chart.yaml
+apiVersion: v1
+appVersion: "1.0"
+description: A Helm chart for Kubernetes
+name: mychart
+version: 0.2.0
+</code></pre>
+<pre><code>$ helm package mychart
+Successfully packaged chart and saved it to: /home/k8s/mychart-0.2.0.tgz
+</code></pre>
+<p>查询本地仓库中的 Chart 信息</p>
+<p>我们可以看到在本地仓库中 mychart 有两个版本。</p>
+<pre><code>$ helm search mychart -l
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;CHART VERSION APP VERSION DESCRIPTION
+local/mychart 0.2.0 &nbsp; &nbsp; &nbsp; &nbsp; 1.0 &nbsp; &nbsp; &nbsp; &nbsp; A Helm chart for Kubernetes
+local/mychart 0.1.0 &nbsp; &nbsp; &nbsp; &nbsp; 1.0 &nbsp; &nbsp; &nbsp; &nbsp; A Helm chart for Kubernetes
+</code></pre>
+<p>升级一个应用<br>
+现在用 helm upgrade 命令将已部署的 mike-test 升级到新版本。你可以通过 --version 参数指定需要升级的版本号，如果没有指定版本号，则缺省使用最新版本。</p>
+<pre><code>$ helm upgrade mike-test local/mychart
+Release "mike-test" has been upgraded. Happy Helming!
+LAST DEPLOYED: Mon Jul 23 10:50:25 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+ 
+RESOURCES:
+==&gt; v1/Pod(related)
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;READY &nbsp;STATUS &nbsp; RESTARTS &nbsp;AGE
+mike-test-mychart-6d56f8c8c9-d685v &nbsp;1/1 &nbsp; &nbsp;Running &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; 9m
+ 
+==&gt; v1/Service
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TYPE &nbsp; &nbsp; &nbsp; CLUSTER-IP &nbsp; &nbsp; &nbsp;EXTERNAL-IP &nbsp;PORT(S) &nbsp;AGE
+mike-test-mychart &nbsp;ClusterIP &nbsp;10.254.120.177 &nbsp;&lt;none&gt; &nbsp; &nbsp; &nbsp; 80/TCP &nbsp; 9m
+ 
+==&gt; v1beta2/Deployment
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DESIRED &nbsp;CURRENT &nbsp;UP-TO-DATE &nbsp;AVAILABLE &nbsp;AGE
+mike-test-mychart &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;9m
+ 
+NOTES:
+1. Get the application URL by running these commands:
+export POD_NAME=$(kubectl get pods --namespace default -l "app=mychart,release=mike-test" -o jsonpath="{.items[0].metadata.name}")
+echo "Visit http://127.0.0.1:8080 to use your application"
+kubectl port-forward $POD_NAME 8080:80
+</code></pre>
+<p>完成后，可以看到已部署的 mike-test 被升级到 0.2.0 版本。</p>
+<pre><code>$ helm list
+NAME &nbsp; &nbsp; &nbsp;REVISION &nbsp;UPDATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; STATUS &nbsp; &nbsp;CHART &nbsp; &nbsp; &nbsp; &nbsp; NAMESPACE
+mike-test 2 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:50:25 2018 &nbsp;DEPLOYED &nbsp;mychart-0.2.0 default
+</code></pre>
+<p>回退一个应用<br>
+如果更新后的程序由于某些原因运行有问题，需要回退到旧版本的应用。首先我们可以使用 helm history 命令查看一个 Release 的所有变更记录。</p>
+<pre><code>$ helm history mike-test
+REVISION &nbsp;UPDATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; STATUS &nbsp; &nbsp; &nbsp;CHART &nbsp; &nbsp; &nbsp; &nbsp; DESCRIPTION
+1 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:41:20 2018 &nbsp;SUPERSEDED &nbsp;mychart-0.1.0 Install complete
+2 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:50:25 2018 &nbsp;DEPLOYED &nbsp; &nbsp;mychart-0.2.0 Upgrade complete
+</code></pre>
+<p>其次，我们可以使用下面的命令对指定的应用进行回退。</p>
+<pre><code>$ helm rollback mike-test 1
+Rollback was a success! Happy Helming!
+</code></pre>
+<p>注：其中的参数 1 是 helm history 查看到 Release 的历史记录中 REVISION 对应的值。</p>
+<p>最后，我们使用 helm list 和 helm history 命令都可以看到 mychart 的版本已经回退到 0.1.0 版本。</p>
+<pre><code>$ helm list
+NAME &nbsp; &nbsp; &nbsp;REVISION &nbsp;UPDATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; STATUS &nbsp; &nbsp;CHART &nbsp; &nbsp; &nbsp; &nbsp; NAMESPACE
+mike-test 3 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:53:42 2018 &nbsp;DEPLOYED &nbsp;mychart-0.1.0 default
+ 
+$ helm history mike-test
+REVISION &nbsp;UPDATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; STATUS &nbsp; &nbsp; &nbsp;CHART &nbsp; &nbsp; &nbsp; &nbsp; DESCRIPTION
+1 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:41:20 2018 &nbsp;SUPERSEDED &nbsp;mychart-0.1.0 Install complete
+2 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:50:25 2018 &nbsp;SUPERSEDED &nbsp;mychart-0.2.0 Upgrade complete
+3 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:53:42 2018 &nbsp;DEPLOYED &nbsp; &nbsp;mychart-0.1.0 Rollback to 1
+</code></pre>
+<p>删除一个应用<br>
+如果需要删除一个已部署的 Release，可以利用 helm delete 命令来完成删除。</p>
+<pre><code>$ helm delete mike-test
+release "mike-test" deleted
+</code></pre>
+<p>确认应用是否删除，该应用已被标记为 DELETED 状态。</p>
+<pre><code>$ helm ls -a mike-test
+NAME &nbsp; &nbsp; &nbsp;REVISION &nbsp;UPDATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; STATUS &nbsp;CHART &nbsp; &nbsp; &nbsp; &nbsp; NAMESPACE
+mike-test 3 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:53:42 2018 &nbsp;DELETED mychart-0.1.0 default
+</code></pre>
+<p>也可以使用 --deleted 参数来列出已经删除的 Release</p>
+<pre><code>$ helm ls --deleted
+NAME &nbsp; &nbsp; &nbsp;REVISION &nbsp;UPDATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; STATUS &nbsp;CHART &nbsp; &nbsp; &nbsp; &nbsp; NAMESPACE
+mike-test 3 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:53:42 2018 &nbsp;DELETED mychart-0.1.0 default
+</code></pre>
+<p>从上面的结果也可以看出，默认情况下已经删除的 Release 只是将状态标识为 DELETED 了 ，但该 Release 的历史信息还是继续被保存的。</p>
+<pre><code>$ helm hist mike-test
+REVISION &nbsp;UPDATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; STATUS &nbsp; &nbsp; &nbsp;CHART &nbsp; &nbsp; &nbsp; &nbsp; DESCRIPTION
+1 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:41:20 2018 &nbsp;SUPERSEDED &nbsp;mychart-0.1.0 Install complete
+2 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:50:25 2018 &nbsp;SUPERSEDED &nbsp;mychart-0.2.0 Upgrade complete
+3 &nbsp; &nbsp; &nbsp; &nbsp; Mon Jul 23 10:53:42 2018 &nbsp;DELETED &nbsp; &nbsp; mychart-0.1.0 Deletion complete
+</code></pre>
+<p>如果要移除指定 Release 所有相关的 Kubernetes 资源和 Release 的历史记录，可以用如下命令：</p>
+<pre><code>$ helm delete --purge mike-test
+release "mike-test" deleted
+</code></pre>
+<p>再次查看已删除的 Release，已经无法找到相关信息。</p>
+<pre><code>$ helm hist mike-test
+Error: release: "mike-test" not found
+</code></pre>
+<p>helm ls 命令也已均无查询记录。</p>
+<pre><code>$ helm ls --deleted
+$ helm ls -a mike-test
+</code></pre>
+<p>使用Helm 部署 Wordpress应用实例<br>
+以Wordpress 为例，包括 MySQL、PHP 和 Apache。</p>
+<p>由于测试环境没有可用的 PersistentVolume（持久卷，简称 PV），这里暂时将其关闭。</p>
+<pre><code>$ helm install --name wordpress-test --set "persistence.enabled=false,mariadb.persistence.enabled=false,serviceType=NodePort" &nbsp;stable/wordpress
+</code></pre>
+<pre><code>NAMESPACE: default
+STATUS: DEPLOYED
+ 
+RESOURCES:
+==&gt; v1beta1/Deployment
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DESIRED &nbsp;CURRENT &nbsp;UP-TO-DATE &nbsp;AVAILABLE &nbsp;AGE
+wordpress-test-mariadb &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;26m
+wordpress-test-wordpress &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;26m
+ 
+==&gt; v1/Pod(related)
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; READY &nbsp;STATUS &nbsp; RESTARTS &nbsp;AGE
+wordpress-test-mariadb-84b866bf95-n26ff &nbsp; &nbsp;1/1 &nbsp; &nbsp;Running &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; 26m
+wordpress-test-wordpress-5ff8c64b6c-sgtvv &nbsp;1/1 &nbsp; &nbsp;Running &nbsp;6 &nbsp; &nbsp; &nbsp; &nbsp; 26m
+ 
+==&gt; v1/Secret
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;TYPE &nbsp; &nbsp;DATA &nbsp;AGE
+wordpress-test-mariadb &nbsp; &nbsp;Opaque &nbsp;2 &nbsp; &nbsp; 26m
+wordpress-test-wordpress &nbsp;Opaque &nbsp;2 &nbsp; &nbsp; 26m
+ 
+==&gt; v1/ConfigMap
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DATA &nbsp;AGE
+wordpress-test-mariadb &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; 26m
+wordpress-test-mariadb-tests &nbsp;1 &nbsp; &nbsp; 26m
+ 
+==&gt; v1/Service
+NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;TYPE &nbsp; &nbsp; &nbsp; CLUSTER-IP &nbsp; &nbsp; EXTERNAL-IP &nbsp;PORT(S) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; AGE
+wordpress-test-mariadb &nbsp; &nbsp;ClusterIP &nbsp;10.254.99.67 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; 3306/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;26m
+wordpress-test-wordpress &nbsp;NodePort &nbsp; 10.254.175.16 &nbsp;&lt;none&gt; &nbsp; &nbsp; &nbsp; 80:8563/TCP,443:8839/TCP &nbsp;26m
+ 
+NOTES:
+1. Get the WordPress URL:
+ 
+Or running:
+ 
+export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services wordpress-test-wordpress)
+export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+echo http://$NODE_IP:$NODE_PORT/admin
+
+ 
+2. Login with the following credentials to see your blog
+ 
+echo Username: user
+echo Password: $(kubectl get secret --namespace default wordpress-test-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode)
+</code></pre>
+<p>访问 Wordpress</p>
+<p>部署完成后，我们可以通过上面的提示信息生成相应的访问地址和用户名、密码等相关信息。</p>
+<pre><code># 生成 Wordpress 管理后台地址
+$ export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services wordpress-test-wordpress)
+$ export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+$ echo http://$NODE_IP:$NODE_PORT/admin
+http://192.168.100.211:8433/admin
+</code></pre>
+<pre><code># 生成 Wordpress 管理帐号和密码
+$ echo Username: user
+Username: user
+$ echo Password: $(kubectl get secret --namespace default wordpress-test-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode)
+Password: 9jEXJgnVAY
+</code></pre>
+<p>Helm 其它使用技巧<br>
+如何设置 helm 命令自动补全？</p>
+<p>为了方便 helm 命令的使用，Helm 提供了自动补全功能，如果使用 ZSH 请执行：</p>
+<pre><code>$ source &lt;(helm completion zsh)
+</code></pre>
+<p>如果使用 BASH 请执行：</p>
+<pre><code>$ source &lt;(helm completion bash)
+</code></pre>
+<p>如何使用第三方的 Chart 存储库？</p>
+<p>随着 Helm 越来越普及，除了使用预置官方存储库，三方仓库也越来越多了（前提是网络是可达的）。你可以使用如下命令格式添加三方 Chart 存储库。</p>
+<pre><code>$ helm repo add 存储库名 存储库URL
+$ helm repo update
+</code></pre>
+<p>一些三方存储库资源:</p>
+<pre><code># Prometheus Operator
+https://github.com/coreos/prometheus-operator/tree/master/helm
+</code></pre>
+<pre><code># Bitnami Library for Kubernetes
+https://github.com/bitnami/charts
+</code></pre>
+<pre><code># Openstack-Helm
+https://github.com/att-comdev/openstack-helm
+https://github.com/sapcc/openstack-helm
+</code></pre>
+<pre><code># Tick-Charts
+https://github.com/jackzampolin/tick-charts
+</code></pre>
+<h2 id="toc_h2_9">Helm 如何结合 CI/CD ？</h2>
+<p>采用 Helm 可以把零散的 Kubernetes 应用配置文件作为一个 Chart 管理，Chart 源码可以和源代码一起放到 Git 库中管理。通过把 Chart 参数化，可以在测试环境和生产环境采用不同的 Chart 参数配置。</p>
+<p>下图是采用了 Helm 的一个 CI/CD 流程</p>
+<p><img src="https://img.hacpai.com/file/2019/08/cidi-2b6b0567.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="cidi.png"></p>
+<h2 id="toc_h2_10">Helm 如何管理多环境下 (Test、Staging、Production) 的业务配置？</h2>
+<p>Chart 是支持参数替换的，可以把业务配置相关的参数设置为模板变量。使用 helm install 命令部署的时候指定一个参数值文件，这样就可以把业务参数从 Chart 中剥离了。例如： helm install --values=values-production.yaml wordpress。</p>
+<h2 id="toc_h2_11">Helm 如何解决服务依赖？</h2>
+<p>在 Chart 里可以通过 requirements.yaml 声明对其它 Chart 的依赖关系。如下面声明表明 Chart 依赖 Apache 和 MySQL 这两个第三方 Chart。</p>
+<pre><code>dependencies:
+- name: mariadb
+version: 2.1.1
+repository: https://kubernetes-charts.storage.googleapis.com/
+condition: mariadb.enabled
+tags:
+- wordpress-database
+- name: apache
+version: 1.4.0
+repository: https://kubernetes-charts.storage.googleapis.com/
+</code></pre>
+<h2 id="toc_h2_12">如何让 Helm 连接到指定 Kubernetes 集群？</h2>
+<p>Helm 默认使用和 kubectl 命令相同的配置访问 Kubernetes 集群，其配置默认在 ~/.kube/config 中。</p>
+<h2 id="toc_h2_13">如何在部署时指定命名空间？</h2>
+<p>helm install 默认情况下是部署在 default 这个命名空间的。如果想部署到指定的命令空间，可以加上 --namespace 参数，比如：</p>
+<pre><code>$ helm install local/mychart --name mike-test --namespace mynamespace
+</code></pre>
+<h2 id="toc_h2_14">如何查看已部署应用的详细信息？</h2>
+<pre><code>$ helm get wordpress-test
+</code></pre>
+<p>默认情况下会显示最新的版本的相关信息，如果想要查看指定发布版本的信息可加上 --revision 参数。</p>
+<pre><code>$ helm get &nbsp;--revision 1 &nbsp;wordpress-test
+</code></pre>
+<p>参考：</p>
+<p><a href="https://docs.helm.sh/using_helm/#installing-helm" target="_blank">https://docs.helm.sh/using_helm/#installing-helm</a><br>
+<a href="https://mp.weixin.qq.com/s?__biz=MzI3MTI2NzkxMA==&amp;mid=2247486154&amp;idx=1&amp;sn=becd5dd0fadfe0b6072f5dfdc6fdf786&amp;chksm=eac52be3ddb2a2f555b8b1028db97aa3e92d0a4880b56f361e4b11cd252771147c44c08c8913&amp;mpshare=1&amp;scene=24&amp;srcid=0927K11i8Vke44AuSuNdFclU#rd" target="_blank">https://mp.weixin.qq.com/s?__biz=MzI3MTI2NzkxMA==&amp;mid=2247486154&amp;idx=1&amp;sn=becd5dd0fadfe0b6072f5dfdc6fdf786&amp;chksm=eac52be3ddb2a2f555b8b1028db97aa3e92d0a4880b56f361e4b11cd252771147c44c08c8913&amp;mpshare=1&amp;scene=24&amp;srcid=0927K11i8Vke44AuSuNdFclU#rd</a><br>
+<a href="https://jimmysong.io/kubernetes-handbook/practice/helm.html" target="_blank">https://jimmysong.io/kubernetes-handbook/practice/helm.html</a><br>
+<a href="https://imkira.com/a14.html" target="_blank">https://imkira.com/a14.html</a><br>
+<a href="https://zhaohuabing.com/2018/04/16/using-helm-to-deploy-to-kubernetes/#undefined" target="_blank">https://zhaohuabing.com/2018/04/16/using-helm-to-deploy-to-kubernetes/#undefined</a><br>
+<a href="https://help.aliyun.com/document_detail/58587.html?spm=a2c4e.11153940.blogcont159601.20.6703174aRHyZc9" target="_blank">https://help.aliyun.com/document_detail/58587.html?spm=a2c4e.11153940.blogcont159601.20.6703174aRHyZc9</a></p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h1">
+            <a href="#toc_h1_0">Helm简介</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_1">Helm工作原理</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_2">helm部署</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_3">一、Helm 客户端安装</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_4">二、Helm 服务端安装Tiller</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_5">三、给 Tiller 授权</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_6">四、验证 Tiller 是否安装成功</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_7">五、卸载 Helm 服务器端 Tiller</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_8">六、Helm 使用</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_9">Helm 如何结合 CI/CD ？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_10">Helm 如何管理多环境下 (Test、Staging、Production) 的业务配置？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_11">Helm 如何解决服务依赖？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_12">如何让 Helm 连接到指定 Kubernetes 集群？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_13">如何在部署时指定命名空间？</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_14">如何查看已部署应用的详细信息？</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1565935481170"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1565935481170",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1565935481170",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Helm,Kubernetes",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1565935481170', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 647ms, 2021/03/15 13:04:54 -->

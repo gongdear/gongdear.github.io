@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>地理坐标系和投影坐标系的基本概念 - gongdear</title><meta name="description" content="gis投影概念"/><meta property="og:description" content="gis投影概念"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="地理坐标系和投影坐标系的基本概念 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2018/05/11/1526014646880.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="地理坐标系和投影坐标系的基本概念 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2018/05/11/1526014646880.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="Postgresql数据目录迁移" href="https://gongdear.github.io/articles/2018/05/10/1525922323977.html">
+            <link rel="next" title="堆与栈的介绍、区别" href="https://gongdear.github.io/articles/2018/05/11/1526014707234.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/bing/20180920.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/bing/20180920.jpg?imageView2/1/w/1280/h/720/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2018-05-11
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/GIS">GIS</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                地理坐标系和投影坐标系的基本概念
+            </h2>
+<div class="article__share"
+     data-title="地理坐标系和投影坐标系的基本概念"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2018/05/11/1526014646880.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <p>1、基本概念</p>
+<p>地理坐标系：为球面坐标。 参考平面地是椭球面，坐标单位：经纬度；</p>
+<p>投影坐标系：为平面坐标。参考平面地是水平面，坐标单位：米、千米等；</p>
+<p>地理坐标转换到投影坐标的过程可理解为投影。（投影：将不规则的地球曲面转换为平面）</p>
+<p>2、地理坐标系</p>
+<p>2.1 地球的三级逼近</p>
+<p>2.1.1大地水准面</p>
+<p>地球的自然表面有高山也有洼地，是崎岖不平的，我们要使用数学法则来描述他，就必须找到一个相对规则的数学面。</p>
+<p>大地水准面是地球表面的第一级逼近。假设当海水处于完全静止的平衡状态时，从海平面延伸到所有大陆下部，而与地球重力方向处处正交的一个连续、闭合的曲面，这就是大地水准面。</p>
+<p><img src="http://note.youdao.com/yws/res/119/277774F94104423BBDBBF54313ECF15D" alt=""></p>
+<p>2.1.2地球椭球体</p>
+<p>大地水准面可以近似成一个规则成椭球体，但并不是完全规则，其形状接近一个扁率极小的椭圆绕短轴旋转所形成的规则椭球体，这个椭球体称为地球椭球体。它是地球的第二级逼近。</p>
+<p><img src="http://note.youdao.com/yws/res/110/B5217C1DD91B4FC79306710D4092E48A" alt=""></p>
+<p><img src="http://note.youdao.com/yws/res/114/F6B9A11CB7164686B6BD63D351C82264" alt=""></p>
+<p>下面列举了一些常见椭球体的参数。我国1952年以前采用海福特椭球体，从1953年起采用克拉索夫斯基椭球体。 1978年我国决定采用新椭球体GRS（1975），并以此建立了我国新的、独立的大地坐标系，对应ArcGIS里面的Xian_1980椭球体。从1980年开始采用新椭球体GRS（1980），这个椭球体参数与ArcGIS中的CGCS2000椭球体相同。</p>
+<p><img src="http://note.youdao.com/yws/res/113/7E6F204D09784D9EA89F77AC0CC307A2" alt=""></p>
+<p>2.1.3大地基准面</p>
+<p>确定了一个规则的椭球表面以后，我们会发现还有一个问题，参考椭球体是对地球的抽象，因此其并不能去地球表面完全重合，在设置参考椭球体的时候必然会出现有的地方贴近的好（参考椭球体与地球表面位置接近），有地地方贴近的不好的问题，因此这里还需要一个大地基准面来控制参考椭球和地球的相对位置。 这是地球表面的第三级逼近。有以下两类基准面：</p>
+<p>地心基准面：由卫星数据得到，使用地球的质心作为原点，使用最广泛的是 WGS 1984。</p>
+<p>区域基准面：特定区域内与地球表面吻合，大地原点是参考椭球与大地水准面相切的点，例如Beijing54、Xian80。我们通常称谓的Beijing54、Xian80坐标系实际上指的是我国的两个大地基准面。</p>
+<p>我们通常说的参心大地坐标系和地心大地坐标系的区别就在于此。</p>
+<p>参心大地坐标系：指经过定位与定向后，地球椭球的中心不与地球质心重合而是接近地球质心。区域性大地坐标系。是我国基本测图和常规大地测量的基础。如Beijing54、Xian80。</p>
+<p>地心大地坐标系：指经过定位与定向后，地球椭球的中心与地球质心重合。如CGCS2000、WGS84。</p>
+<p>2.2地理坐标</p>
+<p>地理坐标，就是用经线（子午线）、纬线、经度、纬度表示地面点位的球面坐标。</p>
+<p>一般地理坐标可分为三种，天文经纬度，大地经纬度，地心经纬度。通常地图上使用的经纬度都为大地经纬度，所以这里我介绍一下大地经纬度，其他两种要想了解的话可以百度一下，其实区别不大。</p>
+<p>大地经纬度：</p>
+<p><img src="http://note.youdao.com/yws/res/109/CB597E60928C44678D4D945EB9D28C63" alt=""></p>
+<p>大地经度：参考椭球面上某点的大地子午面与本初子午面间的两面角。东正西负。</p>
+<p>大地纬度 ：参考椭球面上某点的法线与赤道平面的夹角。北正南负。</p>
+<p>大地高： 指某点沿法线方向到参考椭球面的距离。</p>
+<p>看到这里，地理坐标系的思路基本明确的了吧！只需要参考椭球体参数以及大地基准面就可以确定地理坐标系。下面是Arcgis中对北京1954坐标系的说明。</p>
+<p><img src="http://note.youdao.com/yws/res/118/4748AECB01F1412BAC64AF2CAA9BCE7B" alt=""></p>
+<p>主要就是以下几个参数：</p>
+<p>Prime Meridian（起始经度） Datum（大地基准面）: D_Beijing_1954 Spheroid（参考椭球体）: Krasovsky_1940 （克拉索夫斯基椭球体）</p>
+<p>3、投影坐标系</p>
+<p>我们在选择坐标系的时候经常会发现以下情况：</p>
+<p><img src="http://note.youdao.com/yws/res/117/C2157B20C09C4816BF287DF6960FF533" alt=""></p>
+<p>这一大堆1954坐标系究竟是什么鬼,beijing1954不是地理坐标系吗？</p>
+<p>为什么投影坐标系里也有？相信懵逼的不止我一个···</p>
+<p>首先，投影坐标系的生成是以地理坐标系为基准的，所以每个投影坐标系前面都会挂有地理坐标系。而地理坐标系后面的一串乱七八糟的，则是投影参数！</p>
+<p>比如 Beijing 1954 3 Degree GK Zone 39</p>
+<p>意思是</p>
+<p>3度分带法的北京54坐标系，中央经线在东117度的分带坐标，横坐标前加带号。</p>
+<p>3.1投影</p>
+<p>在地球椭球面和平面之间建立点与点之间函数关系的数学方法，称为地图投影。</p>
+<p>地球椭球表面是一种不可能展开的曲面，要把这样一个曲面表现到平面上，就会发生裂隙或褶皱。在投影面上，可运用经纬线的“拉伸”或“压缩”（通过数学手段）来加以避免，以便形成一幅完整的地图。但不可避免会产生变形。</p>
+<p>地图投影的变形通常有：长度变形、面积变形和角度变形。在实际应用中，根据使用地图的目的，限定某种变形。</p>
+<p>根据不同的需要，我们会选择不同的投影组合！</p>
+<p>按变形性质分类： 等角投影：角度变形为零（Mercator） 等积投影：面积变形为零（Albers） 任意投影：长度、角度和面积都存在变形 其中，各种变形相互联系相互影响：等积与等角互斥，等积投影角度变形大，等角投影面积变形大。 从投影面类型划分： 横圆柱投影：投影面为横圆柱 圆锥投影：投影面为圆锥 方位投影：投影面为平面 从投影面与地球位置关系划分为： 正轴投影：投影面中心轴与地轴相互重合 斜轴投影：投影面中心轴与地轴斜向相交 横轴投影：投影面中心轴与地轴相互垂直 相切投影：投影面与椭球体相切 相割投影：投影面与椭球体相割</p>
+<p><img src="http://note.youdao.com/yws/res/111/A4C3BEDDDD854946B20B5886D6E0F5ED" alt=""></p>
+<p>投影参数： 标准线 概念：投影面与参考椭球的切线或割线。分为标准纬线与标准经线。 特点：没有变形，也称主比例尺。 中心线 概念：是指中央经线（原点经线）与中央纬线（原点纬线），用来定义图投影的中心或者原点。 特点：一般会有变形。</p>
+<p>3.2我国常用投影</p>
+<p>3.2.1高斯-克吕格投影</p>
+<p>我国基本比例尺地形图（1：100万、1：50万、1：25万、1：10万、1：5万、1：2.5万、1：1万、1：5000）除1：100万以外均采用高斯-克吕格Gauss-Kruger投影（横轴等角切圆柱投影）为地理基础。</p>
+<p>高斯克吕格投影的特点：</p>
+<p>横轴等角切圆柱投影 – 离开中央子午线越远，变形越大 – 赤道是直线，离开赤道的纬线是弧线，凸向赤道 – 没有角度变形 – 长度和面积变形很小 北京54和西安80投影坐标系的投影方式 高斯投影特点: – 中央子午线长度变形比为1 – 在同一条经线上，长度变形随纬度的降低而增大，在赤道处为最大 – 在同一条纬线上，长度变形随经差的增加而增大，且增大速度较快</p>
+<p>我们经常会听到6°分带，3°分带的说法。其实并不是所有投影都有分带，从下面一张图就可以看出，分带是高斯克吕格投影自带的。</p>
+<p><img src="http://note.youdao.com/yws/res/115/ACC1A5B79E5D43C3A92BCD80644F6A2E" alt=""></p>
+<p>高斯－克吕格投影分带规定：该投影是国家基本比例尺地形图的数学基础，为控制变形，采用分带投影的方法，在比例尺1：2.5万—1：50万图上采用6°分带，对比例尺为1：1万及大于1：1万的图采用3°分带。</p>
+<p>6°分带法：从格林威治零度经线起，每6°分为一个投影带，全球共分为60个投影带，东半球从东经0°—6°为第一带，中央经线为3°，依此类推，投影带号为1—30。其投影代号n和中央经线经度L0的计算公式为：L0=(6n—3)°；西半球投影带从180°回算到0°，编号为31—60，投影代号n和中央经线经度L0的计算公式为L0=360—(6n—3)°。</p>
+<p>3°分带法：从东经1°30′起，每3°为一带，将全球划分为120个投影带，东经1°30′—4°30′，…178°30′—西经178°30′，…1°30′—东经1°30′。</p>
+<p>东半球有60个投影带，编号1—60，各带中央经线计算公式：L0=3°n，中央经线为3°、6°…180°。西半球有60个投影带，编号1—60，各带中央经线计算公式：L0=360°—3°n，中央经线为西经177°、…3°、0°。</p>
+<p>为了便于地形图的测量作业，在高斯-克吕格投影带内布置了平面直角坐标系统，具体方法是，规定中央经线为X轴，赤道为Y轴，中央经线与赤道交点为坐标原点，x值在北半球为正，南半球为负，y值在中央经线以东为正，中央经线以西为负。由于我国疆域均在北半球，x值均为正值，为了避免y值出现负值，规定各投影带的坐标纵轴均西移500km，中央经线上原横坐标值由0变为500km。为了方便带间点位的区分，可以在每个点位横坐标y值的百千米位数前加上所在带号。</p>
+<p><img src="http://note.youdao.com/yws/res/116/6F6587A8D8A2465CAB8E9D3265D6242E" alt=""></p>
+<p>3.2.2其他投影</p>
+<p>1：100万地形图采用兰伯特Lambert投影（正轴等角割圆锥投影），其分幅原则与国际地理学会规定的全球统一使用的国际百万分之一地图投影保持一致。</p>
+<p>海上小于50万的地形图多用墨卡托Mercator投影（正轴等角圆柱投影）。</p>
+<p><img src="http://note.youdao.com/yws/res/112/84BCAA538E1E4BE8A418D4CDCC602399" alt=""></p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1526014646880"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1526014646880",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1526014646880",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("GIS",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1526014646880', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 529ms, 2021/03/15 13:05:19 -->

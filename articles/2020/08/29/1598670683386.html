@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>基于Centos7安装CDH6.3.0集群(二) - gongdear</title><meta name="description" content="An open source blog with Java. Java 开源博客"/><meta property="og:description" content="An open source blog with Java. Java 开源博客"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="基于Centos7安装CDH6.3.0集群(二) - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2020/08/29/1598670683386.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="基于Centos7安装CDH6.3.0集群(二) - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2020/08/29/1598670683386.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="基于Centos7安装CDH6.3.0集群(一)" href="https://gongdear.github.io/articles/2020/08/29/1598633033724.html">
+            <link rel="next" title="为什么 HashMap 的加载因子是0.75？" href="https://gongdear.github.io/articles/2020/09/28/1601277236733.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://b3logfile.com/file/2020/08/image-66ff3384.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)">
+        <div style="background-image: url(https://b3logfile.com/file/2020/08/image-66ff3384.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2020-08-29
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Centos7">Centos7</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/CDH">CDH</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Spark">Spark</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Hadoop">Hadoop</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                基于Centos7安装CDH6.3.0集群(二)
+            </h2>
+<div class="article__share"
+     data-title="基于Centos7安装CDH6.3.0集群(二)"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2020/08/29/1598670683386.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h1 id="toc_h1_0">三 设置安装节点的 cloudera-manager yum信息</h1>
+<p>commonbase机器上：</p>
+<p>vim <code>/data/apache2/data/htdocs/cloudera-repos/cm6/6.3.1/redhat7/yum</code>/<code>cloudera-manager.repo</code></p>
+<p>将地址修改为<a href="http://commonbase.example.com/cloudera-repos" target="_blank">http://commonbase.example.com/cloudera-repos</a></p>
+<pre><code>[cloudera-manager]
+name=Cloudera Manager 6.3.1
+baseurl=http://commonbase.example.com/cloudera-repos/cm6/6.3.1/redhat7/yum/
+gpgkey=http://commonbase.example.com/cloudera-repos/cm6/6.3.1/redhat7/yum/RPM-GPG-KEY-cloudera
+gpgcheck=1
+enabled=1
+autorefresh=0
+type=rpm-md
+</code></pre>
+<pre><code>[root@commonbase yum]# scp cloudera-manager.repo root@cdhmaster1:/etc/yum.repos.d/
+cloudera-manager.repo                                                                                                                                  100%  235     0.6KB/s   00:00  
+[root@commonbase yum]# scp cloudera-manager.repo root@cdhmaster2:/etc/yum.repos.d/
+cloudera-manager.repo                                                                                                                                  100%  235     0.2KB/s   00:01  
+[root@commonbase yum]# scp cloudera-manager.repo root@cdhnode1:/etc/yum.repos.d/
+cloudera-manager.repo                                                                                                                                  100%  235     0.5KB/s   00:00  
+[root@commonbase yum]# scp cloudera-manager.repo root@cdhnode2:/etc/yum.repos.d/
+cloudera-manager.repo                                                                                                                                  100%  235     1.3KB/s   00:00  
+[root@commonbase yum]# scp cloudera-manager.repo root@cdhnode3:/etc/yum.repos.d/
+cloudera-manager.repo 
+</code></pre>
+<h1 id="toc_h1_1">四 开始安装</h1>
+<h2 id="toc_h2_2">1 所有节点安装jdk</h2>
+<p><code>yum install oracle-j2sdk1.8</code></p>
+<p>环境变量</p>
+<pre><code>export JAVA_HOME=/usr/java/jdk1.8.0_181-cloudera
+
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+export PATH=$JAVA_HOME/bin:$PATH
+</code></pre>
+<pre><code>[root@cdhmaster1 jdk1.8.0_181-cloudera]# scp /etc/profile root@cdhmaster2:/etc/profile
+profile                                                                                                 100% 1970   198.0KB/s   00:00  
+[root@cdhmaster1 jdk1.8.0_181-cloudera]# scp /etc/profile root@cdhnode1:/etc/profile
+profile                                                                                                 100% 1970   103.4KB/s   00:00  
+[root@cdhmaster1 jdk1.8.0_181-cloudera]# scp /etc/profile root@cdhnode2:/etc/profile
+profile                                                                                                 100% 1970     3.9KB/s   00:00  
+[root@cdhmaster1 jdk1.8.0_181-cloudera]# scp /etc/profile root@cdhnode3:/etc/profile
+profile                                                                                                 100% 1970    10.7KB/s   00:00  
+[root@cdhmaster1 jdk1.8.0_181-cloudera]# java -version
+java version "1.8.0_181"
+Java(TM) SE Runtime Environment (build 1.8.0_181-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.181-b13, mixed mode)
+</code></pre>
+<h2 id="toc_h2_3">2 master上</h2>
+<p><code>[root@cdhmaster1 data]# yum install cloudera-manager-daemons cloudera-manager-agent cloudera-manager-server</code></p>
+<p><code>[root@cdhmaster2 data]# yum install cloudera-manager-daemons cloudera-manager-agent cloudera-manager-server</code></p>
+<h2 id="toc_h2_4">3 node上</h2>
+<p><code>[root@cdhnode1 data]# yum install cloudera-manager-agent cloudera-manager-daemons</code></p>
+<p><code>[root@cdhnode2 data]# yum install cloudera-manager-agent cloudera-manager-daemons</code></p>
+<p><code>[root@cdhnode3 data]# yum install cloudera-manager-agent cloudera-manager-daemons</code></p>
+<h2 id="toc_h2_5">4 commonbase上</h2>
+<pre><code>[root@commonbase parcels]# scp * root@cdhmaster1:/opt/cloudera/parcel-repo/
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel                                                                                                             100% 1986MB  24.8MB/s   01:20  
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha                                                                                                         100%   41    30.1KB/s   00:00  
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1                                                                                                        100%   40    18.6KB/s   00:00  
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256                                                                                                      100%   64    40.6KB/s   00:00  
+manifest.json                                                                                                                                          100%   33KB  20.4MB/s   00:00  
+[root@commonbase parcels]# scp * root@cdhmaster2:/opt/cloudera/parcel-repo/
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel                                                                                                             100% 1986MB  23.9MB/s   01:23  
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha                                                                                                         100%   41     8.8KB/s   00:00  
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1                                                                                                        100%   40    36.6KB/s   00:00  
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256                                                                                                      100%   64    55.1KB/s   00:00  
+manifest.json  
+</code></pre>
+<h2 id="toc_h2_6">5 master上给刚才的parcels赋用户组</h2>
+<p><code>[root@cdhmaster1 parcel-repo]# chown cloudera-scm:cloudera-scm /opt/cloudera/parcel-repo/*</code></p>
+<p><code>[root@cdhmaster2 data]# chown cloudera-scm:cloudera-scm /opt/cloudera/parcel-repo/*</code></p>
+<h2 id="toc_h2_7">6 node上修改agent配置文件</h2>
+<p><code>vim /etc/cloudera-scm-agent/config.ini</code></p>
+<pre><code># Hostname of the CM server.
+server_host=cdhmaster1.example.com
+</code></pre>
+<h2 id="toc_h2_8">7 设置 Cloudera Manager 数据库</h2>
+<p>7.1 在mysql上执行</p>
+<pre><code>CREATE DATABASE scm DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+顺便把其他的数据库也创建CREATE DATABASE amon DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE rman DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE hue DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+Hive、Impala等元数据库CREATE DATABASE metastore DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE sentry DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE nav DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE navms DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE oozie DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+
+CREATE USER 'cdh'@'%' IDENTIFIED BY $mysql_password;
+
+GRANT ALL privileges ON scm.* TO 'cdh'@'%';
+GRANT ALL privileges ON amon.* TO 'cdh'@'%';
+GRANT ALL privileges ON rman.* TO 'cdh'@'%';
+GRANT ALL privileges ON hue.* TO 'cdh'@'%';
+GRANT ALL privileges ON metastore.* TO 'cdh'@'%';
+GRANT ALL privileges ON sentry.* TO 'cdh'@'%';
+GRANT ALL privileges ON nav.* TO 'cdh'@'%';
+GRANT ALL privileges ON navms.* TO 'cdh'@'%';
+GRANT ALL privileges ON oozie.* TO 'cdh'@'%';
+
+flush privileges;
+</code></pre>
+<p>7.2 初始化数据库</p>
+<pre><code>sudo /opt/cloudera/cm/schema/scm_prepare_database.sh [options] &lt;databaseType&gt; &lt;databaseName&gt; &lt;databaseUser&gt; &lt;password&gt;
+</code></pre>
+<p>参数说明：</p>
+<ul>
+<li><strong>options</strong> 指定操作，如果数据库不再本地请用 <code>-h</code>或 <code>--host</code> 指定mysql的host，不指定默认为localhost</li>
+<li><strong>databaseType</strong> 指定为mysql，也可以是其它类型的数据，例如：oracle等</li>
+<li><strong>databaseName</strong> 指定为scm数据库，这里使用 scm库</li>
+<li><strong>databaseUser</strong> 指定mysql用户名，这里使用 scm</li>
+<li><strong>password</strong> 指定mysql其用户名的密码，这里使用scm</li>
+</ul>
+<p>显然我这里是应该执行</p>
+<p><code>./scm_prepare_database.sh -h commonbase.example.com -P 39106 -u root -p mysql scm cdh $mysql_password</code></p>
+<pre><code>Enter database password: 
+JAVA_HOME=/usr/java/jdk1.8.0_181-cloudera
+Verifying that we can write to /etc/cloudera-scm-server
+Sat Aug 29 12:01:44 CST 2020 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+Creating SCM configuration file in /etc/cloudera-scm-server
+Executing:  /usr/java/jdk1.8.0_181-cloudera/bin/java -cp /usr/share/java/mysql-connector-java.jar:/usr/share/java/oracle-connector-java.jar:/usr/share/java/postgresql-connector-java.jar:/opt/cloudera/cm/schema/../lib/* com.cloudera.enterprise.dbutil.DbCommandExecutor /etc/cloudera-scm-server/db.properties com.cloudera.cmf.db.
+Sat Aug 29 12:01:45 CST 2020 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+[                          main] DbCommandExecutor              INFO  Successfully connected to database.
+All done, your SCM database is configured correctly!
+
+[root@cdhmaster1 schema]# scp /etc/cloudera-scm-server/db.properties root@cdhmaster2:/etc/cloudera-scm-server/db.properties
+db.properties
+</code></pre>
+<h2 id="toc_h2_9">8 安装CDH和其他服务</h2>
+<pre><code>[root@cdhmaster1 schema]# systemctl start cloudera-scm-server
+[root@cdhmaster1 schema]# systemctl enable cloudera-scm-server
+[root@cdhmaster1 schema]# systemctl status cloudera-scm-server
+● cloudera-scm-server.service - Cloudera CM Server Service
+   Loaded: loaded (/usr/lib/systemd/system/cloudera-scm-server.service; enabled; vendor preset: disabled)
+   Active: active (running) since 六 2020-08-29 12:04:58 CST; 10s ago
+ Main PID: 2771 (java)
+   CGroup: /system.slice/cloudera-scm-server.service
+           └─2771 /usr/java/jdk1.8.0_181-cloudera/bin/java -cp .:/usr/share/java/mysql-connector-java.jar:/usr/share/java/oracle-connec...
+
+8月 29 12:04:58 cdhmaster1.example.com cm-server[2771]: JAVA_HOME=/usr/java/jdk1.8.0_181-cloudera
+8月 29 12:04:59 cdhmaster1.example.com cm-server[2771]: Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=2...in 8.0
+8月 29 12:05:00 cdhmaster1.example.com cm-server[2771]: ERROR StatusLogger No log4j2 configuration file found. Using default con...gging.
+8月 29 12:05:03 cdhmaster1.example.com cm-server[2771]: Sat Aug 29 12:05:03 CST 2020 WARN: Establishing SSL connection without s...applic
+8月 29 12:05:03 cdhmaster1.example.com cm-server[2771]: Sat Aug 29 12:05:03 CST 2020 WARN: Establishing SSL connection without s...applic
+8月 29 12:05:03 cdhmaster1.example.com cm-server[2771]: Sat Aug 29 12:05:03 CST 2020 WARN: Establishing SSL connection without s...applic
+8月 29 12:05:03 cdhmaster1.example.com cm-server[2771]: Sat Aug 29 12:05:03 CST 2020 WARN: Establishing SSL connection without s...applic
+8月 29 12:05:03 cdhmaster1.example.com cm-server[2771]: Sat Aug 29 12:05:03 CST 2020 WARN: Establishing SSL connection without s...applic
+8月 29 12:05:06 cdhmaster1.example.com cm-server[2771]: 12:05:06.855 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelp... exist
+8月 29 12:05:07 cdhmaster1.example.com cm-server[2771]: Sat Aug 29 12:05:07 CST 2020 WARN: Establishing SSL connection without s...applic
+Hint: Some lines were ellipsized, use -l to show in full.
+
+</code></pre>
+<h1 id="toc_h1_10">五 安装配置</h1>
+<p>打开浏览器 cdhmaster1.example.com:7180</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-66ff3384.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>登录Cloudera Manager Admin Console，默认凭证为</p>
+<ul>
+<li><strong>Username</strong>: admin</li>
+<li><strong>Password</strong>: admin</li>
+</ul>
+<p><img src="https://b3logfile.com/file/2020/08/image-ffec12a2.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p><img src="https://b3logfile.com/file/2020/08/image-45452e9c.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>这一步选择安装的版本，不同版本支持的主要功能已列出，第一列为Cloudera免费的快速体验版；第二列为Cloudera为企业级试用版（免费试用60天）；第三列是功能和服务最全的Cloudera企业版，是需要认证且收费的。Cloudera Express 和 Cloudera Enterprise 中的<a href="https://www.cloudera.com/content/dam/www/marketing/resources/datasheets/cloudera-enterprise-datasheet.pdf.landing.html" target="_blank">可用功能的完整列表</a>。</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-a4e6cbee.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>集群名称 Cluster Home</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-d5b44f84.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>输入所有主机的域名 换行分割</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-4d784ef6.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>选择版本后开始安装</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-7ef3b879.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p><img src="https://b3logfile.com/file/2020/08/image-d044ea04.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p><img src="https://b3logfile.com/file/2020/08/image-f6b9dca0.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>因为要用spark 所以选择 Data Engineering</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-21d343f2.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p><img src="https://b3logfile.com/file/2020/08/image-b3df8741.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p><img src="https://b3logfile.com/file/2020/08/image-c17c1066.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>原则就是计算和node节点选所有机器，调度节点能选master1和master2就两台都选。</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-058d6e44.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<ul>
+<li><strong>数据库设置</strong>：</li>
+</ul>
+<p>| 服务 | 主机名称 | 数据库 | 用户名 | 密码 |<br>
+| :- | - | :- | - | - |<br>
+| Hive | commonbase.example.com:39106 | metastore | cdh | $mysql_password |<br>
+| Activity Monitor | commonbase.example.com:39106 | amon | cdh | $mysql_password |<br>
+| Oozie Server | commonbase.example.com:39106 | oozie | cdh | $mysql_password |<br>
+| Hue | commonbase.example.com:39106 | hue | cdh | $mysql_password |</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-3118e486.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>一路过关斩将终于是完成了</p>
+<p><img src="https://b3logfile.com/file/2020/08/image-74d43524.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p><img src="https://b3logfile.com/file/2020/08/image-18b5b0d2.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image.png"></p>
+<p>最后部署成功后的状态 因为分配的配置低 问题还是挺多的 等运行一段时间稳定后就可以逐个解决了</p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h1">
+            <a href="#toc_h1_0">三 设置安装节点的 cloudera-manager yum信息</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_1">四 开始安装</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_2">1 所有节点安装jdk</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_3">2 master上</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_4">3 node上</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_5">4 commonbase上</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_6">5 master上给刚才的parcels赋用户组</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_7">6 node上修改agent配置文件</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_8">7 设置 Cloudera Manager 数据库</a>
+        </li>
+        <li class="toc__h2">
+            <a href="#toc_h2_9">8 安装CDH和其他服务</a>
+        </li>
+        <li class="toc__h1">
+            <a href="#toc_h1_10">五 安装配置</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1598670683386"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1598670683386",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1598670683386",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Centos7,CDH,Spark,Hadoop",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1598670683386', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 616ms, 2021/03/15 13:04:39 -->

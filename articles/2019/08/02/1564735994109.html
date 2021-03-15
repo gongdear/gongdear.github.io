@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>Jenkins+GitLab+Docker+SpringCloud实现可持续自动化微服务 - gongdear</title><meta name="description" content="An open source blog with Java. Java 开源博客"/><meta property="og:description" content="An open source blog with Java. Java 开源博客"/>    <meta name="keywords" content="Solo,Java 博客,开源"/><link rel="dns-prefetch" href="https://gongdear.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://gongdear.github.io"><link rel="icon" type="image/png" href="https://static.b3log.org/images/brand/solo-32.png"/><link rel="apple-touch-icon" href="https://static.b3log.org/images/brand/solo-32.png"><link rel="shortcut icon" type="image/x-icon" href="https://static.b3log.org/images/brand/solo-32.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="Jenkins+GitLab+Docker+SpringCloud实现可持续自动化微服务 - gongdear"/><meta property="og:site_name" content="gongdear"/><meta property="og:url"      content="https://gongdear.github.io/articles/2019/08/02/1564735994109.html?"/><meta property="og:image" content="https://static.b3log.org/images/brand/solo-32.png"/><link rel="search" type="application/opensearchdescription+xml" title="Jenkins+GitLab+Docker+SpringCloud实现可持续自动化微服务 - gongdear" href="/opensearch.xml"><link href="https://gongdear.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://gongdear.github.io/manifest.json">        <link rel="canonical" href="https://gongdear.github.io/articles/2019/08/02/1564735994109.html">        <link rel="stylesheet"
+              href="https://gongdear.github.io/skins/Bubble/css/base.css?1615784612180"/>
+            <link rel="prev" title="/var/lib/docker/overlay2 占用很大，清理Docker占用的磁盘空间，迁移 /var/lib/docker 目录" href="https://gongdear.github.io/articles/2019/07/17/1563342180045.html">
+            <link rel="next" title="使用kubeadm安装kubernetes1.15" href="https://gongdear.github.io/articles/2019/08/13/1565683985186.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.5.3/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://gongdear.github.io" rel="start">gongdear</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">gongdear的技术博客</h2>
+            <div class="header__desc">
+                欢迎大家参观我的博客
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://gongdear.github.io" rel="start"><img class="side__logo" alt="gongdear" src="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    91 文章 <br>
+                    <span data-uvstaturl="https://gongdear.github.io">89355</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://gongdear.github.io" rel="start">
+                            gongdear
+                    </a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://gongdear.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://gongdear.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://img.hacpai.com/file/2019/08/14490612ff12a7f04994a00-ec665ed0.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)">
+        <div style="background-image: url(https://img.hacpai.com/file/2019/08/14490612ff12a7f04994a00-ec665ed0.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2019-08-05
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Jenkins">Jenkins</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Docker">Docker</a> &nbsp;
+                    <a rel="tag"
+                       href="https://gongdear.github.io/tags/Kubernetes">Kubernetes</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                Jenkins+GitLab+Docker+SpringCloud实现可持续自动化微服务
+            </h2>
+<div class="article__share"
+     data-title="Jenkins+GitLab+Docker+SpringCloud实现可持续自动化微服务"
+     data-blogtitle="gongdear"
+     data-url="https://gongdear.github.io/articles/2019/08/02/1564735994109.html"
+     data-avatar="https://img.hacpai.com/avatar/1525857473050?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <p>现有混合云平台的场景下，即有线下和线上的环境，又有测试与正式的场景，而且结合了Docker，导致打包内容有所区分，且服务的发布流程复杂起来，手工打包需要在编译阶段就要根据环境到处更改配置，因此纯手工发布增加了实施的难度，需要一个统一的适应各种环境部署的方案。</p>
+<p><img src="https://img.hacpai.com/file/2019/08/14490612ff12a7f04994a00-ec665ed0.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="14490612ff12a7f04994a00.png"></p>
+<p>基于微服务的发布流程</p>
+<p>　　<code>手动/自动构建 -&gt; Jenkins 调度 K8S API -＞动态生成 Jenkins Slave pod -＞ Slave pod 拉取 Git 代码／编译／打包镜像 -＞推送到镜像仓库 Harbor -＞ Slave工作完成，Pod 自动销毁 -＞部署到测试或生产 Kubernetes（K8S）平台。</code></p>
+<p>　　上面是理想状况下的将服务编译打包成镜像上传到镜像库后部署到Kubernetes平台的一个流程，但问题是：</p>
+<p>我们有线上线下平台，代码在线下GitLab，是出不了外网的，因此线上K8S集群无法拉取代码编译。</p>
+<p>Jenkins的master所在服务器是CentOS6.5，没有Docker环境，也没有在K8S集群服务器内，因此无法直接执行docker build镜像和 kubectl apply 发布服务到K8S集群。</p>
+<p>Jenkins的slave节点都是无法访问外网的，</p>
+<p>线上服务需要Pinpoint而线下环境暂时不需要启用Pinpoint，否则一直报错，因此需要根据选择的环境动态的构建Dockerfile，而且要求整个发布流程可选择。</p>
+<p>就上面现实问题，我们将发布流程简化：</p>
+<p><img src="https://img.hacpai.com/file/2019/08/14490611111a7995d53f0a4-24c1e4ea.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="14490611111a7995d53f0a4.png"></p>
+<p><strong>关键点：</strong></p>
+<p>Docker镜像的打包使用com.spotify的docker-maven-plugin插件结合Dockerfile，调用远程服务器的Docker环境生成镜像。</p>
+<p>K8S服务部署采用的是ssh方式，将Deployment文件上传到K8S集群服务器，然后执行部署命令。</p>
+<p>如何利用Dockerfile打包镜像</p>
+<p>　　之前也是用com.spotify的docker-maven-plugin插件来打包镜像并推送到私有镜像仓库，但问题是无法根据环境写条件判断，如动态选择是否需要启动pinpoint，线上线下库地址动态更换，导致镜像名前缀也是要动态变化的，此时直接配置无法满足，需要结合Dockerfile来实现。</p>
+<p>先更改pom文件，指定本项目的Dockerfile文件地址，默认是放在项目根目录下：</p>
+<p><code>&lt;plugin&gt;&lt;groupId&gt;com.spotify&lt;/groupId&gt;</code><br>
+<code>&lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;</code><br>
+<code>&lt;version&gt;1.2.0&lt;/version&gt;&lt;configuration&gt;</code><br>
+<code>&lt;!--覆盖相同标签镜像--&gt;</code><br>
+<code>&lt;forceTags&gt;true&lt;/forceTags&gt;</code><br>
+<code>&lt;!-- 与maven配置文件settings.xml一致 --&gt;</code><br>
+<code>&lt;serverId&gt;nexus-releases&lt;/serverId&gt;</code><br>
+<code>&lt;!--私有仓库地址 --&gt;</code><br>
+<code>&lt;registryUrl&gt;https://${docker.repostory}&lt;/registryUrl&gt;</code><br>
+<code>&lt;!--远程Docker地址 --&gt;</code><br>
+<code>&lt;dockerHost&gt;http://10.3.87.210:2375&lt;/dockerHost&gt;</code><br>
+<code>&lt;!-- 注意imageName一定要是符合正则[a-z0-9-_.]的，否则构建不会成功 --&gt;</code><br>
+<code>&lt;!--指定镜像名称 仓库/镜像名:标签--&gt;</code><br>
+<code>&lt;imageName&gt;${docker.repostory}/${project.artifactId}:${project.version}&lt;/imageName&gt;</code><br>
+<code>&lt;dockerDirectory&gt;${project.basedir}&lt;/dockerDirectory&gt;</code><br>
+<code>&lt;resources&gt;&lt;resource&gt;</code><br>
+<code>&lt;!-- 指定要复制的目录路径，这里是当前目录 --&gt;&lt;!-- 将打包文件放入dockerDirectory指定的位置 --&gt;</code><br>
+<code>&lt;targetPath&gt;/app/&lt;/targetPath&gt;</code><br>
+<code>&lt;!-- 指定要复制的根目录，这里是target目录 --&gt;</code><br>
+<code>&lt;directory&gt;${project.build.directory}&lt;/directory&gt;</code><br>
+<code>&lt;!-- 指定需要拷贝的文件，这里指最后生成的jar包 --&gt;</code><br>
+<code>&lt;include&gt;${project.build.finalName}.jar&lt;/include&gt;</code><br>
+<code>&lt;/resource&gt;&lt;/resources&gt;&lt;/configuration&gt;&lt;/plugin&gt;</code></p>
+<p><code>&lt;registryUrl&gt;https://${docker.repostory}&lt;/registryUrl&gt;</code></p>
+<p>指定远程仓库地址，在主项目的<properties>中指定，这里默认线上仓库<code>&lt;docker.repostory&gt;39.95.40.97:5000&lt;/docker.repostory&gt;</code></properties></p>
+<p><code>&lt;dockerHost&gt;http://10.3.87.210:2375&lt;/dockerHost&gt;</code></p>
+<p>指定Docker镜像打包服务器，这里指定线下服务器。</p>
+<p><code>&lt;imageName&gt;${docker.repostory}/${project.artifactId}:${project.version}&lt;/imageName&gt;</code></p>
+<p>指定镜像名称 仓库/镜像名:标签</p>
+<p><code>&lt;dockerDirectory&gt;${project.basedir}&lt;/dockerDirectory&gt;</code></p>
+<p>指定Dockerfile文件地址，此处指定项目根目录</p>
+<p><strong>Dockerfile****内容</strong></p>
+<blockquote>
+<p>FROM join:0.2</p>
+<p>MAINTAINER {description} Join</p>
+<p>ADD /app/{artifactId}-{version}.jar /app/</p>
+<p>ENTRYPOINT ["java", "-Xmx512m","-Dspring.profiles.active={active}",{jarparam} "-jar", "/app/{artifactId}-{version}.jar"]</p>
+</blockquote>
+<p>　　基础镜像用join:0.2，里面包含了pinpoint和监控jvm的promethus客户端包。</p>
+<p>　　Jarparam会在Jenkins中动态替换运行时参数，active 指定当前运行环境，这里可能有人提议根据项目yml文件中指定内容自动匹配，因为要考虑到如果自动匹配 更换线上线下环境就需要更改yml配置文件后又要上传到gitlab，如此没有必要多做一步，直接在Jenkins中当作参数指定最为便捷。</p>
+<p>　　此处Dockerfile是通用模板，如果有特殊内容添加，可自行更改，此时的模板需要在Jenkins运行时替换参数后才有用，如果想直接在本机运行打包，可手动替换参数内容后运行：</p>
+<p><code>clean package -DskipTests docker:build</code></p>
+<p>推送</p>
+<p><code>clean package -DskipTests docker:build -DpushImage</code></p>
+<p>Jenkins发布流程</p>
+<p>利用Jenkins的pipeline构建流水线</p>
+<p>　　Pipeline也就是构建流水线，对于程序员来说，最好的解释是：使用代码来控制项目的构建、测试、部署等。使用它的好处有很多，包括但不限于：</p>
+<p>l&nbsp; 使用Pipeline可以非常灵活的控制整个构建过程；</p>
+<p>l&nbsp; 可以清楚的知道每个构建阶段使用的时间，方便构建的优化；</p>
+<p>l&nbsp; 构建出错，使用stageView可以快速定位出错的阶段；</p>
+<p>l&nbsp; 一个job可以搞定整个构建，方便管理和维护等。</p>
+<p>　　Pipeline 支持两种语法，声明式和脚本式。这两种方法都支持构建持续交付流水线，都可以通过 web UI 或 Jenkinsfile 文件来定义 Pipeline（通常认为创建 Jenkinsfile 文件并上传到源代码控制仓库是最佳实践）</p>
+<p>Jenkinsfile 就是一个包含对 Jenkins Pipeline 定义的文本文件，会上传到版本控制中。下面的 Pipeline 实现了基本的 3 段持续交付流水线。</p>
+<p>声明式 Pipeline：</p>
+<blockquote>
+<p>// Jenkinsfile (Declarative Pipeline)</p>
+<p>pipeline {</p>
+<p>&nbsp;&nbsp;&nbsp; agent any</p>
+<p>&nbsp;&nbsp;&nbsp; stages {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stage('Build') {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; steps {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo 'Building..'</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stage('Test') {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; steps {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo 'Testing..'</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stage('Deploy') {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; steps {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo 'Deploying....'</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp; }</p>
+<p>}</p>
+</blockquote>
+<p>对应的脚本式 Pipeline：</p>
+<blockquote>
+<p><strong>// Jenkinsfile (Scripted Pipeline)</strong></p>
+<p><strong>node {</strong></p>
+<p>**&nbsp;&nbsp;&nbsp; stage('Build') {**</p>
+<p>**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo 'Building....'**</p>
+<p>**&nbsp;&nbsp;&nbsp; }**</p>
+<p>**&nbsp;&nbsp;&nbsp; stage('Test') {**</p>
+<p>**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo 'Building....'**</p>
+<p>**&nbsp;&nbsp;&nbsp; }**</p>
+<p>**&nbsp;&nbsp;&nbsp; stage('Deploy') {**</p>
+<p>**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo 'Deploying....'**</p>
+<p>**&nbsp;&nbsp;&nbsp; }**</p>
+<p><strong>}</strong></p>
+</blockquote>
+<p>　　注意，所有的 Pipeline 都会有这三个相同的 stage，可以在所有项目的一开始就定义好它们。下面演示在 Jenkins 的测试安装中创建和执行一个简单的 Pipeline。</p>
+<p>　　假设项目已经设置好了源代码控制仓库，并且已经按照入门章节的描述在 Jenkins 中定义好了 Pipeline。</p>
+<p>　　使用文本编辑器（最好支持 Groovy 语法高亮显示），在项目根目录中创建 Jenkinsfile。</p>
+<p>上面的声明式 Pipeline 示例包含了实现一个持续交付流水线所需的最少步骤。必选指令&nbsp;agent指示 Jenkins 为 Pipeline 分配执行程序和工作空间。没有 agent 指令的话，声明式 Pipeline 无效，无法做任何工作！默认情况下 agent 指令会确保源代码仓库已经检出，并且可用于后续步骤。</p>
+<p>　　stage 和 step 指令在声明式 Pipeline 中也是必须的，用于指示 Jenkins 执行什么及在哪个 stage 中执行。</p>
+<p>　　对于脚本式 Pipeline 的更高级用法，上面的示例节点是至关重要的第一步，因为它为 Pipeline 分配了一个执行程序和工作空间。如果没有 node，Pipeline 不能做任何工作！在 node 内，业务的第一阶段是检出此项目的源代码。由于 Jenkinsfile 是直接从源代码控制中提取的，因此 Pipeline 提供了一种快速简单的方法来访问源代码的正确版本：</p>
+<p>// Jenkinsfile (Scripted Pipeline)</p>
+<p>node {</p>
+<p>&nbsp;&nbsp;&nbsp; checkout scm</p>
+<p>&nbsp;&nbsp;&nbsp; /* .. snip .. */</p>
+<p>}</p>
+<p>这个 checkout 步骤会从源代码控制中检查代码，scm 是特殊变量，它指示运行检出步骤，复制触发了这次 Pipeline 运行的指定版本。</p>
+<p>最终的流程样式：</p>
+<p><img src="https://img.hacpai.com/file/2019/08/1449061b79420ff3600847c-08812179.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="1449061b79420ff3600847c.png"></p>
+<p>　　一般用声明式来构建流水，实际操作过程中还是发现脚本式构建更顺手，而且Groovy语言更方便查资料，因此下面以脚本构建为主演示一个流程。</p>
+<p>1.新建任务</p>
+<p><img src="https://img.hacpai.com/file/2019/08/1449061921cd8c4db37576b-7acf1040.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="1449061921cd8c4db37576b.png"></p>
+<p>2.填写任务名和描述，由于防止构建历史太多，只保留3个。</p>
+<p><img src="https://img.hacpai.com/file/2019/08/1449061dbc98013581b96fd-5272753a.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="1449061dbc98013581b96fd.png"></p>
+<p>3.添加构建时全局构建参数，用来构建流程动态选择环境，这里有两种方式，一种是直接在页面上添加，如下图，一种是在Jenkinsfile中添加（第一次构建时不会出现选项，第二次构建才会出现，因此首次构建需要试构建，暂停再刷新页面才会有选择框），两种最张效果一样，这里为了方便采用Jenkinsfile来添加全局参数。</p>
+<p><img src="https://img.hacpai.com/file/2019/08/1449061eb45566627a6d076-78d1f8a6.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="1449061eb45566627a6d076.png"></p>
+<p>Jenkinsfile中添加</p>
+<blockquote>
+<p>properties([</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; parameters([string(name: 'PORT', defaultValue: '7082', description: '程序运行端口'),choice(name: 'ACTIVE_TYPE', choices: ['dev', 'prd', 'local'], description: '程序打包环境'),choice(name: 'ENV_TYPE', choices: ['online', 'offline'], description: '线上、还是线下环境'),booleanParam(name: 'ON_PINPOINT', defaultValue: true, description: '是否添加Pinpoint监控'),booleanParam(name: 'ON_PROMETHEUS', defaultValue: true, description: '是否添加Prometheus监控'),string(name: 'EMAIL', defaultValue: <a href="mailto:'104@qq.com" target="_blank">'104@qq.com</a>', description: '打包结果通知')])</p>
+<p>])</p>
+</blockquote>
+<p><img src="https://img.hacpai.com/file/2019/08/14490611efb6c3b64284a7b-bc91be65.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="14490611efb6c3b64284a7b.png"></p>
+<p>4.选择源码代码库：</p>
+<p><img src="https://img.hacpai.com/file/2019/08/144906165806ad4c815c705-44687631.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="144906165806ad4c815c705.png"></p>
+<p>需要添加认证，将Jenkins的ssh秘钥添加到GitLab的页面中，且需要将此处gitlab中joint用户添加到需要拉取代码的项目中才有权限拉取代码。</p>
+<p>Jenkinsfile位置放在项目的根目录。</p>
+<ol start="5">
+<li>Jenkinsfile中指定maven目录地址</li>
+</ol>
+<p>MVNHOME = '/opt/maven354'</p>
+<p>为防止手工填写项目名和版本号等一系列信息，因此直接读取pom文件中要编译项目的这些信息给全局变量：</p>
+<blockquote>
+<p>pom = readMavenPom file: 'pom.xml'</p>
+<p>echo "group: ${pom.groupId}, artifactId: ${pom.artifactId}, version: ${pom.version} ,description: ${pom.description}"</p>
+<p>artifactId = "${pom.artifactId}"</p>
+<p>version = "${pom.version}"</p>
+<p>description = "${pom.description}"</p>
+<p>根据选择的线上环境还是线下环境，替换镜像仓库ip</p>
+<p>if (params.ENV_TYPE == 'offline' || params.ENV_TYPE == null) {</p>
+<p>sh "sed -i 's#39.95.40.97:7806#10.3.87.51:8080#g' pom.xml"</p>
+<p>image = "10.3.87.51:8080/${artifactId}:${version}"</p>
+<p>}</p>
+</blockquote>
+<p>6.编译</p>
+<p>利用maven构建，利用上面的内容先替换掉Dockerfile、Deployment中的变量，再根据选择的条件是否启用pinpoint和promethus，最后编译。</p>
+<blockquote>
+<p>def jarparam=''</p>
+<p>def pinname = artifactId</p>
+<p>if( pinname.length() &gt; 23) {</p>
+<p>&nbsp; pinname = artifactId.substring(0,23)</p>
+<p>}</p>
+<p>//添加pinpointif(params.ON_PINPOINT) {</p>
+<p>&nbsp; jarparam ='"-javaagent:/app/pinpoint-agent/pinpoint-bootstrap-1.8.0.jar","-Dpinpoint.agentId={pinname}", "-Dpinpoint.applicationName={pinname}",'}//添加prometheusif(params.ON_PROMETHEUS) {</p>
+<p>&nbsp; jarparam = jarparam +'"-javaagent:/app/prometheus/jmx_prometheus_javaagent-0.11.0.jar=1234:/app/prometheus/jmx.yaml",'}</p>
+<p>sh "sed -i 's#{jarparam}#${jarparam}#g' Dockerfile"sh "sed -i 's#{description}#${description}#g;s#{artifactId}#${artifactId}#g;s#{version}#${version}#g;s#{active}#${params.ACTIVE_TYPE}#g;s#{pinname}#${pinname}#g' Dockerfile"sh "sed -i 's#{artifactId}#${artifactId}#g;s#{version}#${version}#g;s#{port}#${params.PORT}#g;s#{image}#${image}#g' Deployment.yaml"sh "'${MVNHOME}/bin/mvn' -DskipTests clean package"</p>
+</blockquote>
+<p>需要注意的是pinpoint的pinpoint.applicationName不能操作24个字符，否则启用不成功，因此超过的直接截断。</p>
+<p>Department文件详情看后文。</p>
+<p>跳过测试编译打包 '${MVNHOME}/bin/mvn' -DskipTests clean package 需要在Jenkins服务器安装maven环境，还有指定maven的jar包私有仓库地址。</p>
+<ol start="7">
+<li>Docker打包</li>
+</ol>
+<p>前提是上一步指定pom文件中的镜像仓库和Dockerfile中的内容是替换后的完整内容。</p>
+<p>sh "'${MVNHOME}/bin/mvn' docker:build"</p>
+<ol start="8">
+<li>推送镜像</li>
+</ol>
+<p>sh "'${MVNHOME}/bin/mvn' docker:push"</p>
+<p>如何发布服务到K8S集群</p>
+<p>　　前面几步已经将项目打包并生成了镜像并推送到了私有仓库，下面就是部署服务到K8S集群。</p>
+<p>先看看Department.yaml文件：</p>
+<blockquote>
+<p>---apiVersion: apps/v1</p>
+<p>kind: Deployment</p>
+<p>metadata:</p>
+<p>&nbsp; name: {artifactId}</p>
+<p>&nbsp; namespace: default</p>
+<p>&nbsp; labels:</p>
+<p>&nbsp; &nbsp; app: {artifactId}</p>
+<p>&nbsp; &nbsp; version: {version}</p>
+<p>spec:</p>
+<p>&nbsp; selector:</p>
+<p>&nbsp; &nbsp; matchLabels:</p>
+<p>&nbsp; &nbsp; &nbsp; app: {artifactId}</p>
+<p>&nbsp; replicas: 1&nbsp; template:</p>
+<p>&nbsp; &nbsp; metadata:</p>
+<p>&nbsp; &nbsp; &nbsp; labels:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; app: {artifactId}</p>
+<p>&nbsp; &nbsp; &nbsp; annotations:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; prometheus.io.jmx: "true"&nbsp; &nbsp; &nbsp; &nbsp; prometheus.io.jmx.port: "1234"&nbsp; &nbsp; spec:</p>
+<p>&nbsp; &nbsp; &nbsp; containers:</p>
+<p>&nbsp; &nbsp; &nbsp; - name: {artifactId}</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; image: {image}</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; # IfNotPresent\Always&nbsp; &nbsp; &nbsp; &nbsp; imagePullPolicy: Always</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; ports:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; - name: prometheusjmx</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; containerPort: 1234&nbsp; &nbsp; &nbsp; &nbsp; livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; httpGet:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; path: /health</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; port: {port}</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; scheme: HTTP</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; initialDelaySeconds: 60## 设置为系统完全启动起来所需的最大时间+若干秒timeoutSeconds: 5&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; successThreshold: 1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; failureThreshold: 5&nbsp; &nbsp; &nbsp; &nbsp; readinessProbe: #kubernetes认为该pod是启动成功的&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; httpGet:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; path: /health</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; port: {port}</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; scheme: HTTP</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; initialDelaySeconds: 40## 设置为系统完全启动起来所需的最少时间timeoutSeconds: 5&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; successThreshold: 1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; failureThreshold: 5&nbsp; &nbsp; &nbsp; &nbsp; env:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; - name: eureka-server</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; value: "eureka-server.default.svc.cluster.local"- name: eureka-server-replica</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; value: "eureka-server-replica.default.svc.cluster.local"&nbsp; &nbsp; &nbsp; &nbsp; resources:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; # 5%的CPU时间和700MiB的内存&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; requests:#&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cpu: 50m&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; memory: 700Mi</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 最多允许它使用&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; limits:#&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cpu: 100m&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; memory: 1000Mi</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; # 指定在容器中挂载路径&nbsp; &nbsp; &nbsp; &nbsp; volumeMounts:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; - name: logs-volume</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mountPath: /logs</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; - name: host-time</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mountPath: /etc/localtime</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; readOnly: true</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; - name: host-timezone</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mountPath: /etc/timezone</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; readOnly: true</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; - name: pinpoint-config</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mountPath: /app/pinpoint-agent/pinpoint.config</p>
+<p>&nbsp; &nbsp; &nbsp; volumes:</p>
+<p>&nbsp; &nbsp; &nbsp; - name: logs-volume</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; hostPath:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; # 宿主机上的目录path: /logs</p>
+<p>&nbsp; &nbsp; &nbsp; - name: host-time</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; hostPath:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; path: /etc/localtime</p>
+<p>&nbsp; &nbsp; &nbsp; - name: host-timezone</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; hostPath:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; path: /usr/share/zoneinfo/Asia/Shanghai</p>
+<p>&nbsp; &nbsp; &nbsp; - name: pinpoint-config</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; configMap:</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; name: pinpoint-config</p>
+<p>&nbsp; &nbsp; &nbsp; # 运行在指定标签的节点，前提是先给节点打标&nbsp; kubectl label nodes 192.168.0.113 edgenode=flow#&nbsp; &nbsp; &nbsp; nodeSelector:#&nbsp; &nbsp; &nbsp; &nbsp; edgenode: flow---apiVersion: v1</p>
+<p>kind: Service</p>
+<p>metadata:</p>
+<p>&nbsp; name: {artifactId}</p>
+<p>&nbsp; namespace: default</p>
+<p>&nbsp; labels:</p>
+<p>&nbsp; &nbsp; app: {artifactId}</p>
+<p>&nbsp; &nbsp; version: {version}</p>
+<p>spec:</p>
+<p>&nbsp; selector:</p>
+<p>&nbsp; &nbsp; app: {artifactId}</p>
+<p>&nbsp; ports:</p>
+<p>&nbsp; - name: tcp-{port}-{port}</p>
+<p>&nbsp; &nbsp; protocol: TCP</p>
+<p>&nbsp; &nbsp; port: {port}</p>
+<p>&nbsp; &nbsp; targetPort: {port}</p>
+</blockquote>
+<p>里面的变量会在前面几步自动替换掉。</p>
+<p>添加了prometheus收集jvm的内容：</p>
+<p>prometheus.io.jmx: "true"</p>
+<p>prometheus.io.jmx.port: "1234"</p>
+<p>containerPort: 1234</p>
+<p>将pinpoint的配置内容pinpoint.config用configMap&nbsp; 保存，方便更改内容。</p>
+<p>其它内容不在此详解，可自行google。</p>
+<p>　　网上资料一般发布服务都是直接kubectl deploy，这种情况只适用于jenkins的服务器已包含在K8S服务器集群中。第二种情况是在K8S集群服务器里面生成Jenkins的一个slave节点，然后在pipeline里面设置node(“k8s”){ ……} 里面发布，具体方法自行google。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这里为了避免麻烦，采用直接SSH到K8S服务器集群的方案发布服务。</p>
+<p>配置sshagent</p>
+<p>SSH Agent Plugin ：sshagent方法支持，用于上传构建产物到目标服务器，使用详情见：</p>
+<p><a href="https://links.jianshu.com/go?to=https%3A%2F%2Fwiki.jenkins.io%2Fdisplay%2FJENKINS%2FSSH%2BAgent%2BPlugin" target="_blank">https://wiki.jenkins.io/display/JENKINS/SSH+Agent+Plugin</a></p>
+<p>在Jenkins插件库搜索后直接下载安装（需要连外网环境），生产环境已安装，直接使用。</p>
+<p>使用：</p>
+<blockquote>
+<p>sshagent(credentials: ['deploy_ssh_key_23']) {</p>
+<p>sh "scp -P 2222 -r Deployment.yaml <a href="mailto:root@39.95.40.97" target="_blank">root@39.95.40.97</a>:/docker/yaml/Deployment-${artifactId}.yaml"</p>
+<p>sh "ssh -p 2222 <a href="mailto:root@39.95.40.97" target="_blank">root@39.95.40.97</a> 'kubectl apply -f /docker/yaml/Deployment-${artifactId}.yaml &amp;&amp; kubectl set env deploy/${artifactId} DEPLOY_DATE=${env.BUILD_ID}'"</p>
+<p>}</p>
+</blockquote>
+<p>先用ssh远程到K8S集群中的服务器，将Deployment文件上传，然后再远程执行kubectl apply发布服务。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 为了避免误操作，在发布前做了发布确认提示判断。</p>
+<p>timeout(time: 10, unit: 'MINUTES') {</p>
+<p>input '确认要部署吗？'</p>
+<p>}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 以上流程已完成整个流程，然后可以去K8S环境去看服务是否有正常运行。</p>
+<p>关于测试</p>
+<p>　　上面的过程没有加入代码测试、代码质量分析SonarQube、发布后服务测试的阶段（Selenium是一套完整的Web应用程序测试系统<a href="http://www.51testing.com/zhuanti/selenium.html），后续可以接入。" target="_blank">http://www.51testing.com/zhuanti/selenium.html），后续可以接入。</a></p>
+<p>如何进行多模块如何构建</p>
+<p>　　很多项目采用的是多模块构成，因此每个项目配置和发布要求不一样，需要单独编译到部署，所以每个模块都需要独立的Dockerfile和Deployment文件，Jenkinsfile通用一份，然后在发布时自动弹出模块列表，选择需要发布的模块进行编译发布。</p>
+<p>//需要处理的项目多项目时先进入子项目</p>
+<p>projectwk ="."mainpom = readMavenPom file:'pom.xml'//存在多个模块时，选择其中一个进行编译if(mainpom.modules.size() &gt; 0 ) {</p>
+<p>&nbsp; echo "项目拥有模块==${mainpom.modules}"&nbsp; timeout(time: 10, unit:'MINUTES') {</p>
+<p>&nbsp; &nbsp; defselproj = input message:'请选择需要处理的项目', parameters: [choice(choices: mainpom.modules, description:'请选择需要处理的项目', name:'selproj')] //, submitterParameter:'project'&nbsp; &nbsp; projectwk = selproj</p>
+<p>&nbsp; &nbsp; echo "选择项目=${projectwk}"&nbsp; }</p>
+<p>}</p>
+<p>&nbsp;读取主项目的pom中的modules判断是否包含多个模块，供用户选择。</p>
+<p>然后根据选择的模块进行编译，dir进入选择的模块读取信息并编译。</p>
+<p>dir("${projectwk}") {</p>
+<p>&nbsp; &nbsp; pom = readMavenPom file:'pom.xml'&nbsp; &nbsp; echo "group: ${pom.groupId}, artifactId: ${pom.artifactId}, version: ${pom.version} ,description: ${pom.description}"&nbsp; &nbsp; artifactId ="${pom.artifactId}"&nbsp; &nbsp; version ="${pom.version}"&nbsp; &nbsp; description ="${pom.description}"}</p>
+<p><strong>完整的Jenkinsfile</strong></p>
+<blockquote>
+<p>properties([</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; parameters([string(name: 'PORT', defaultValue:'7082', description:'程序运行端口'),choice(name:'ACTIVE_TYPE', choices: ['dev','prd','local'], description:'程序打包环境'),choice(name:'ENV_TYPE', choices: ['online','offline'], description:'线上、还是线下环境'),booleanParam(name:'ON_PINPOINT', defaultValue: true, description:'是否添加Pinpoint监控'),booleanParam(name:'ON_PROMETHEUS', defaultValue: true, description:'是否添加Prometheus监控'),string(name:'EMAIL', defaultValue:<a href="mailto:'1041126478@qq.com" target="_blank">'1041126478@qq.com</a>', description:'打包结果通知')])</p>
+<p>])</p>
+<p>node {</p>
+<p>&nbsp; &nbsp; stage('Prepare') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; echo "1.Prepare Stage"&nbsp; &nbsp; &nbsp; &nbsp; MVNHOME ='/opt/maven354'//echo"UUID=${UUID.randomUUID().toString()}"&nbsp; &nbsp; &nbsp; &nbsp; checkout scm</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; //需要处理的项目多项目时先进入子项目</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; projectwk ="."&nbsp; &nbsp; &nbsp; &nbsp; mainpom = readMavenPom file:'pom.xml'&nbsp; &nbsp; &nbsp; &nbsp; repostory ="${mainpom.properties['docker.repostory']}"//存在多个模块时，选择其中一个进行编译</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; if(mainpom.modules.size() &gt; 0 ) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "项目拥有模块==${mainpom.modules}"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; timeout(time: 10, unit:'MINUTES') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; defselproj = input message:'请选择需要处理的项目', parameters: [choice(choices: mainpom.modules, description:'请选择需要处理的项目', name:'selproj')] //, submitterParameter:'project'&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; projectwk = selproj</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "选择项目=${projectwk}"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; dir("${projectwk}") {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pom = readMavenPom file:'pom.xml'&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "group: ${pom.groupId}, artifactId: ${pom.artifactId}, version: ${pom.version} ,description: ${pom.description}"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; artifactId ="${pom.artifactId}"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; version ="${pom.version}"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; description ="${pom.description}"&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; script {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GIT_TAG = sh(returnStdout: true, script:'/usr/local/git/bin/git rev-parse --short HEAD').trim()</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "GIT_TAG== ${GIT_TAG}"&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; image ="192.168.4.2:5000/${artifactId}:${version}"if(params.ENV_TYPE =='offline'|| params.ENV_TYPE == null) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; sh "sed -i 's#39.95.40.97:5000#10.3.80.50:5000#g' pom.xml"&nbsp; &nbsp; &nbsp; &nbsp; image ="10.3.80.50:5000/${artifactId}:${version}"&nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; if(mainpom.modules.size() &gt; 0 ) {</p>
+<p>&nbsp; &nbsp; &nbsp; stage('编译总项目') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "'${MVNHOME}/bin/mvn' -DskipTests clean install"&nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; dir("${projectwk}") {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; stage('编译模块') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "2.编译模块 ${artifactId}"defjarparam=''defpinname = artifactId</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if( pinname.length() &gt; 23) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pinname = artifactId.substring(0,23)</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //添加pinpoint</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(params.ON_PINPOINT) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; jarparam ='"-javaagent:/app/pinpoint-agent/pinpoint-bootstrap-1.8.0.jar","-Dpinpoint.agentId={pinname}", "-Dpinpoint.applicationName={pinname}",'&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //添加prometheus</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(params.ON_PROMETHEUS) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; jarparam = jarparam +'"-javaagent:/app/prometheus/jmx_prometheus_javaagent-0.11.0.jar=1234:/app/prometheus/jmx.yaml",'&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "sed -i 's#{jarparam}#${jarparam}#g' Dockerfile"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "sed -i 's#{description}#${description}#g;s#{artifactId}#${artifactId}#g;s#{version}#${version}#g;s#{active}#${params.ACTIVE_TYPE}#g;s#{pinname}#${pinname}#g' Dockerfile"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "sed -i 's#{artifactId}#${artifactId}#g;s#{version}#${version}#g;s#{port}#${params.PORT}#g;s#{image}#${image}#g' Deployment.yaml"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "'${MVNHOME}/bin/mvn' -DskipTests clean package"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; stash includes: 'target/*.jar', name:'app'&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; stage('Docker打包') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "3.Docker打包"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; unstash 'app'&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "'${MVNHOME}/bin/mvn' docker:build"&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; stage('推送镜像') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "4.Push Docker Image Stage"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "'${MVNHOME}/bin/mvn' docker:push"&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; timeout(time: 10, unit:'MINUTES') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; input '确认要部署吗？'&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; stage('发布') {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; if(params.ENV_TYPE =='offline'|| params.ENV_TYPE == null) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sshagent(credentials: ['deploy_ssh_key_34']) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "scp -r Deployment.yaml <a href="mailto:root@10.2.85.30" target="_blank">root@10.2.85.30</a>:/docker/yaml/Deployment-${artifactId}.yaml"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "ssh <a href="mailto:root@10.2.85.30" target="_blank">root@10.2.85.30</a> 'kubectl apply -f /docker/yaml/Deployment-${artifactId}.yaml &amp;&amp; kubectl set env deploy/${artifactId} DEPLOY_DATE=${env.BUILD_ID}'"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } else {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sshagent(credentials: ['deploy_ssh_key_238']) {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "scp -P 22 -r Deployment.yaml <a href="mailto:root@39.95.40.97" target="_blank">root@39.95.40.97</a>:/docker/yaml/Deployment-${artifactId}.yaml"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh "ssh -p 22 <a href="mailto:root@39.95.40.97" target="_blank">root@39.95.40.97</a> 'kubectl apply -f /docker/yaml/Deployment-${artifactId}.yaml &amp;&amp; kubectl set env deploy/${artifactId} DEPLOY_DATE=${env.BUILD_ID}'"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo "发布完成"&nbsp; &nbsp; &nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; }</p>
+<p>&nbsp; stage('通知负责人'){//&nbsp; &nbsp; emailext body:"构建项目:${description}\r\n构建完成", subject:'构建结果通知【成功】', to:"${EMAIL}"&nbsp; &nbsp; &nbsp; &nbsp; echo "构建项目:${description}\r\n构建完成"&nbsp; }</p>
+<p>}</p>
+</blockquote>
+<p>将Jenkinsfile文件放在项目根目录，然后将源码都上传到GitLab。</p>
+<p>打开BlueOcean，这是Jenkins新出的美化页面。</p>
+<p><img src="https://img.hacpai.com/file/2019/08/144906148446d8e1061fca1-4ebcbe83.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="144906148446d8e1061fca1.png"></p>
+<p>选择自己的项目。</p>
+<p><img src="https://img.hacpai.com/file/2019/08/14490617110860d70391a34-32ecbfc8.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="14490617110860d70391a34.png"></p>
+<p>进入后点击运行，其中会弹出框选择发布参数（这里需要手工填写发布的端口，由于采用配置中心化，端口无法自动读取）。</p>
+<p><img src="https://img.hacpai.com/file/2019/08/14490618d64a4c54dde27d7-8a82934d.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="14490618d64a4c54dde27d7.png"></p>
+<p>进入查看流程状态，失败会有相应的提示：</p>
+<p><img src="https://img.hacpai.com/file/2019/08/1449061f4662807b2bcdd2a-afb31d40.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="1449061f4662807b2bcdd2a.png"></p>
+<p>显示发布服务</p>
+<p><img src="https://img.hacpai.com/file/2019/08/1449061c089a4025365d43e-4974841f.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="1449061c089a4025365d43e.png"></p>
+<p>在K8S内查看部署的服务启动情况。</p>
+<p><img src="https://img.hacpai.com/file/2019/08/144906169e17366bc4d7c62-3aa51b12.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="144906169e17366bc4d7c62.png"></p>
+<p>Jenkinsfile Pipeline</p>
+<p>Jenkinsfile Pipeline语法内容可参考官网：<a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/" target="_blank">https://jenkins.io/doc/book/pipeline/jenkinsfile/</a></p>
+<p>还可以进入项目后，有个流水线语法：</p>
+<p><img src="https://img.hacpai.com/file/2019/08/1449061b3d02e850e974a94-4e0c9e81.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="1449061b3d02e850e974a94.png"></p>
+<p>选择想要的功能，生成：</p>
+<p><img src="https://img.hacpai.com/file/2019/08/14490612ec07a4fe3da36e6-16dab13d.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="14490612ec07a4fe3da36e6.png"></p>
+<p>Jenkins还可用作发布Vue前端项目，具体内容可参考&nbsp;<strong><em>Jenkins</em><strong><strong><em>自动化构建</em></strong></strong><em>vue</em>****<em>项目然后发布到远程服务器</em></strong>&nbsp;文档。</p>
+<p>　　Jenkins要发布Net服务需要有一台windows的Jenkins slave，还需要在此节点上安装编译器MSBuild框架，Git框架、更改服务器上的IIS权限等功能，最后文件分发到其它windows服务器，过程比较繁琐，若无发布审核建议直接通过VS自带发布功能发布程序</p>
+<p>转自：<a href="https://www.jianshu.com/p/53ee367d0095" target="_blank">https://www.jianshu.com/p/53ee367d0095</a></p>
+                    <div>
+                        
+
+    宝剑锋从磨砺出,梅花香自苦寒来.
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="gongdear" data-postId="1564735994109"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                    <div class="item" id="externalRelevantArticles"></div>
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/TweenMax.min.js?1615784612180"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+            <a href="https://ld246.com/member/gongdear"
+       title="https://ld246.com/member/gongdear"
+       class="user__site"
+       target="_blank" rel="noopener nofollow">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path fill="#d23f31" style="fill: var(--color1, #d23f31)" d="M5.787 17.226h17.033l5.954 9.528c0.47 0.752 0.003 1.361-1.042 1.361h-15.141z"></path>
+            <path d="M10.74 3.927h17.033c1.045 0 1.512 0.609 1.042 1.361l-5.954 9.528h-19.872l6.379-10.209c0.235-0.376 0.849-0.681 1.372-0.681z"></path>
+            <path d="M2.953 17.226h2.839l6.804 10.889h-1.892c-0.523 0-1.137-0.305-1.372-0.681z"></path>
+        </svg>
+    </a>
+
+
+ <br>
+        &copy; 2021
+        <a href="https://gongdear.github.io">gongdear</a>
+        
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://gongdear.github.io",
+    staticServePath: "https://gongdear.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: false,
+    articleId: "1564735994109",
+  }
+</script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/common.min.js?1615784612180"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://gongdear.github.io/skins/Bubble/js/circleMagic.min.js?1615784612180"
+        charset="utf-8"></script>
+
+
+<script type="text/javascript">
+    Util.addScript('https://gongdear.github.io/js/page.min.js?1615784612180', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1564735994109",
+        "blogHost": "https://gongdear.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "5";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadExternalRelevantArticles("Jenkins,Docker,Kubernetes",
+        '<h3>站外相关阅读</h3>');
+        page.loadRelevantArticles('1564735994109', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 438ms, 2021/03/15 13:04:56 -->
